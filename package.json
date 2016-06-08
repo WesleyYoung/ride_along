@@ -1,0 +1,11 @@
+{
+  "name": "ride_along",
+  "version": "1.0.0",
+  "description": "App designed to log and notify Xactware customers of Xactware employee's available schedules for 'ride alongs'.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wesley Young",
+  "license": "ISC"
+}
