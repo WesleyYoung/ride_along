@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "nodemailer-smtp-transport": "x.x.x",
+    "http": "x.x.x",
+    "body-parser": "x.x.x",
+    "socket.io": "x.x.x",
+    "async": "x.x.x",
+    "express": "x.x.x"
+  },
   "author": "Wesley Young",
   "license": "ISC"
 }
