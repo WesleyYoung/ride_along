@@ -1,6 +1,8 @@
 .top-logo{
     height: 200px;
-    background-color: lightgrey;
+    width: 100%;
+    background-color: grey;
+    /*background-image: url('../imgs/main-building.png');*/
     padding: 25px;
 }
 
@@ -12,7 +14,12 @@
     left: 200px;
 }
 
-.ui-window{
-    transition: all linear 0.1s;
-    position: relative;
+.ui-window.ng-enter {
+    transition:0.3s linear all;
+    transform:translateY(25px);
+    opacity:0;
+}
+.ui-window.ng-enter.ng-enter-active {
+    transform:translateY(0);
+    opacity:1;
 }

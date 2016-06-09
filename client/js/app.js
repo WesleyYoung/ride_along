@@ -5,11 +5,18 @@
     'use strict';
 
     angular.module('ride-along', [
+        //Angular Libraries
         'ui.router',
         'ngAnimate',
+        //Controllers
         'nav-controller',
         'home-controller',
-        'report-controller'
+        'report-controller',
+        'events-controller',
+        'event-creator-controller',
+        //Animations
+        'ui-window-animate'
+
     ])
 
     .config(["$stateProvider", "$urlRouterProvider",
@@ -25,6 +32,16 @@
                     url: '/reporting',
                     templateUrl: 'templates/reporting.html',
                     controller: 'report-controller as rc'
+                })
+                .state('events', {
+                    url: '/events',
+                    templateUrl: 'templates/events.html',
+                    controller: 'events-controller as ec'
+                })
+                .state('eventCreator', {
+                    url: '/eventCreator',
+                    templateUrl: 'templates/eventCreator.html',
+                    controller: 'event-creator-controller as ecc'
                 });
 
             $urlRouterProvider.otherwise("/main");

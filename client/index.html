@@ -11,12 +11,13 @@
     <!--Custom CSS-->
     <link rel="stylesheet" href="css/side-bar.css"/>
     <link rel="stylesheet" href="css/index-styling.css"/>
+    <link rel="stylesheet" href="css/event-creator-styling.css"/>
 
 </head>
 <body>
 
 <div class="container-fluid top-logo">
-    <img class="" src="imgs/main-logo.png">
+    <img class="" src="imgs/main-logo-2.png">
 </div>
 
 <div class="row" ng-controller="nav-controller as nav">
@@ -39,13 +40,13 @@
 
                     <!-- Brand -->
                     <div class="brand-name-wrapper">
-                        <a class="navbar-brand" href="#">
+                        <a class="navbar-brand">
                             Xactware Scheduler
                         </a>
                     </div>
 
                     <!-- Search -->
-                    <a data-toggle="collapse" href="#search" class="btn btn-default" id="search-trigger">
+                    <a data-toggle="collapse" data-target="#search" class="btn btn-default" id="search-trigger">
                         <i class="fa fa-search"></i>
                     </a>
 
@@ -70,10 +71,12 @@
 
                     <li ng-class="{active: nav.isActive('/main')}"><a href="#/main"><i class="fa fa-home"></i> Home</a></li>
                     <li ng-class="{active: nav.isActive('/reporting')}"><a href="#/reporting"><i class="fa fa-list"></i> Reporting</a></li>
+                    <li ng-class="{active: nav.isActive('/events')}"><a href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</a></li>
+                    <li ng-class="{active: nav.isActive('/eventCreator')}"><a href="#/eventCreator"><i class="fa fa-pencil-square-o"></i> Create Event</a></li>
 
                     <!-- Dropdown-->
                     <li class="panel panel-default" id="dropdown">
-                        <a data-toggle="collapse" href="#dropdown-lvl1">
+                        <a data-toggle="collapse" data-target="#dropdown-lvl1">
                             <i class="fa fa-wrench" aria-hidden="true"></i> Tools <span class="caret"></span>
                         </a>
 
@@ -87,7 +90,7 @@
 
                                     <!-- Dropdown level 2 -->
                                     <li class="panel panel-default" id="dropdown">
-                                        <a data-toggle="collapse" href="#dropdown-lvl2">
+                                        <a data-toggle="collapse" data-target="#dropdown-lvl2">
                                             Sub Level <span class="caret"></span>
                                         </a>
                                         <div id="dropdown-lvl2" class="panel-collapse collapse">
@@ -113,7 +116,7 @@
     <!-- Main Content -->
     <div class="container-fluid">
         <div class="side-body">
-            <div ui-view></div>
+            <div ui-view class="ui-window"></div>
         </div>
     </div>
 </div>
@@ -136,6 +139,11 @@
 <script src="js/controllers/nav-controller.js"></script>
 <script src="js/controllers/home-controller.js"></script>
 <script src="js/controllers/report-controller.js"></script>
+<script src="js/controllers/events-controller.js"></script>
+<script src="js/controllers/event-creator-controller.js"></script>
+
+<!--Animations-->
+<script src="js/animations/slide-in.js"></script>
 
 <!--Styling-->
 <script src="js/styling/side-bar.js"></script>

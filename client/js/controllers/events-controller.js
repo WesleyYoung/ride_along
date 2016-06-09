@@ -4,12 +4,12 @@
 (function(){
     'use strict';
     
-    angular.module('event-controller', [])
-        .controller('event-controller', eventController);
+    angular.module('events-controller', [])
+        .controller('events-controller', eventsController);
     
-    eventController.$inject=[];
+    eventsController.$inject=[];
     
-    function eventController(){
+    function eventsController(){
         var ec = this;
         
         
