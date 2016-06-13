@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/side-bar.css"/>
     <link rel="stylesheet" href="css/index-styling.css"/>
     <link rel="stylesheet" href="css/event-creator-styling.css"/>
+    <link rel="stylesheet" href="css/custom-btns.css"/>
 
 </head>
 <body>
@@ -55,7 +56,7 @@
                         <div class="panel-body">
                             <form class="navbar-form" role="search">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Search">
+                                    <input type="text" class="form-control" placeholder="Search" ng-bind="nav.searchText">
                                 </div>
                                 <button type="submit" class="btn btn-default "><i class="fa fa-paper-plane-o"></i></button>
                             </form>
@@ -129,11 +130,17 @@
 <script src="libs/js/jquery.min.js"></script>
 <script src="libs/js/bootstrap.min.js"></script>
 
+<!--Directives-->
+<script src="js/directives/list-sections.js"></script>
+
+<!--Filters-->
+<script src="js/filters/regions-filter.js"></script>
+
 <!--Services-->
 
 
 <!--Factories-->
-
+<script src="js/factories/list-factory.js"></script>
 
 <!--Controllers--->
 <script src="js/controllers/nav-controller.js"></script>
@@ -148,7 +155,7 @@
 <!--Styling-->
 <script src="js/styling/side-bar.js"></script>
 
-<!--App-->
+<!--App.js-->
 <script src="js/app.js"></script>
 
 </body>

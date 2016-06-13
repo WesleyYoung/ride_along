@@ -12,6 +12,8 @@
     function navController($location){
         var nav = this;
         nav.isActive = isActive;
+        
+        nav.searchText="hhhhhhhhhh";
 
         function isActive(viewLocation) {
             return viewLocation === $location.path();

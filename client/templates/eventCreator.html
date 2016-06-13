@@ -6,32 +6,17 @@
 </head>
 <body>
 
-<div class="container-fluid">
+<div class="container-fluid" style="text-align: center">
+    <br>
     <h1>Event Creator</h1>
-    <div class="col-md-3 product-section psEven">
-        <h2>Product 1</h2>
+    <br>
+    <product-list ng-repeat="product in ecc.products" info="product"></product-list>
+    <br>
+    <region-list ng-repeat="reg in ecc.regions" region="reg"></region-list>
 
-        <button class="btn btn-danger product-btn">Create!</button>
+    <!--<div class="col-sm-4 info-box">
 
-    </div>
-    <div class="col-md-3 product-section psOdd">
-        <h2>Product 2</h2>
-
-        <button class="btn btn-info product-btn">Create!</button>
-
-    </div>
-    <div class="col-md-3 product-section psEven">
-        <h2>Product 3</h2>
-
-        <button class="btn btn-primary product-btn">Create!</button>
-
-    </div>
-    <div class="col-md-3 product-section psOdd">
-        <h2>Product 4</h2>
-
-        <button class="btn btn-success product-btn">Create!</button>
-
-    </div>
+    </div>-->
 </div>
 
 

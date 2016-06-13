@@ -7,11 +7,17 @@
     angular.module('event-creator-controller', [])
         .controller('event-creator-controller', eventCreatorController);
 
-    eventCreatorController.$inject=[];
+    eventCreatorController.$inject=["listFactory"];
     
-    function eventCreatorController(){
-        var ecc = this; 
-        
+    function eventCreatorController(listFactory){
+        var ecc = this;
+
+        ecc.regions=listFactory.regions();
+        ecc.products=listFactory.products();
+
+        ecc.selectedProducts=[];
+        ecc.selectedRegions=[];
+        ecc.selectedSubRegions=[];
         
     }
 })();
