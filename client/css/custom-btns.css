@@ -1,17 +1,6 @@
 
 /*Buttons*/
 
-.product-btn{
-    width: 100%;
-    height: 50px;
-    font-size: x-large;
-    border-radius: 0;
-    color: white;
-}
-.product-btn:after{
-    color: white !important;
-}
-
 .btn-coral{
     background-color: coral;
     border: solid coral 1px;

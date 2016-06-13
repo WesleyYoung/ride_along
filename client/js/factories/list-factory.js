@@ -11,6 +11,42 @@
 
     function listFactory(){
         var lf = this;
+        
+        var futureRegions=[
+            {
+                name: "australia",
+                provinces: {
+                    territorial: [],
+                    new_south_wales: [],
+                    queensland: [],
+                    south_australia: [],
+                    tasmania: [],
+                    victoria: [],
+                    western_australia: []
+                },
+                theme: {
+                    btn_class: "btn-danger"
+                }
+            },
+            {
+                name: "canada",
+                provinces: {
+                    ontario: [],
+                    quebec: [],
+                    nova_scotia: [],
+                    new_brunswick: [],
+                    manitoba: [],
+                    british_columbia: [],
+                    prince_edward_island: [],
+                    saskatchewan: [],
+                    alberta: [],
+                    newfoundland_and_labrador: []
+                },
+                theme: {
+                    btn_class: "btn-darkgreen"
+                }
+            }
+        ];
 
         lf.regions = [
             {
@@ -151,39 +187,6 @@
                 },
                 theme: {
                     btn_class: "btn-indigo"
-                }
-            },
-            {
-                name: "australia",
-                provinces: {
-                    territorial: [],
-                    new_south_wales: [],
-                    queensland: [],
-                    south_australia: [],
-                    tasmania: [],
-                    victoria: [],
-                    western_australia: []
-                },
-                theme: {
-                    btn_class: "btn-danger"
-                }
-            },
-            {
-                name: "canada",
-                provinces: {
-                    ontario: [],
-                    quebec: [],
-                    nova_scotia: [],
-                    new_brunswick: [],
-                    manitoba: [],
-                    british_columbia: [],
-                    prince_edward_island: [],
-                    saskatchewan: [],
-                    alberta: [],
-                    newfoundland_and_labrador: []
-                },
-                theme: {
-                    btn_class: "btn-darkgreen"
                 }
             }
         ];

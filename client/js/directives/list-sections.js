@@ -40,10 +40,10 @@
                 region: "=region",
             },
             template: `
-            <div class="col-md-3 product-section psEven">
+            <div class="{{'col-md-3 region-section psEven ' + region.name}}">
                 <h2>{{region.name|regionToNormal}}</h2>
-
-                <button class="{{'btn product-btn ' + region.theme.btn_class}}">Add</button>
+                <img class="flag" src="{{'imgs/' + region.name + '_flag.png'}}">
+                <button class="{{'btn region-btn ' + region.theme.btn_class}}">Select</button>
                 
                 <!--<p ng-repeat="(provinces,) in subRegions"></p>-->
 
