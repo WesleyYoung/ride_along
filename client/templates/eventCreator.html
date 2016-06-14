@@ -8,17 +8,27 @@
 
 <div class="container-fluid" style="text-align: center">
     <br>
-    <h1>Event Creator</h1>
-    <br>
-    <product-list ng-repeat="product in ecc.products" info="product"></product-list>
-    <br>
-    <region-list ng-repeat="reg in ecc.regions" region="reg"></region-list>
-
-    <!--<div class="col-sm-4 info-box">
-
-    </div>-->
+    <product-list ng-repeat="product in ecc.products" info="product" select="ecc.toggleProduct" ></product-list>
 </div>
+<div class="col-lg-6 row">
+    <region-list ng-repeat="reg in ecc.regions" region="reg" select="ecc.toggleRegion"></region-list>
+</div>
+<div class="col-lg-6 row info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined">
+    <div class="fold">
+        <h2>{{ecc.selectedRegion.name|regionToNormal}}</h2>
+        <br>
+        <select class="form-control province-selector" ng-options="province.name|regionToNormal for province in ecc.selectedRegion.provinces" ng-model="ecc.selectedProvince">
 
+        </select>
+        <br>
+        <div ng-if="ecc.selectedProvince.counties!==undefined&&ecc.selectedProvince.counties!==[]" class="row">
+            <h3>Counties</h3>
+            <br>
+            <p ng-repeat="county in ecc.selectedProvince.counties" class="col-sm-2 county">{{county|regionToNormal}}</p>
+        </div>
+        <br>
+    </div>
+</div>
 
 </body>
 </html>

@@ -15,16 +15,20 @@
             restrict: "AE",
             replace: 'true',
             scope: {
-                info: "=info"
+                info: "=info",
+                select: "=select"
             },
             template: `
-            <div class="col-md-3 product-section psEven">
-                <h2>{{info.name}}</h2>
-                <br>
-                <br>
-                <button class="{{'btn product-btn ' + info.theme.btn_class}}">Add</button>
-
+            <div class="product-section col-md-3" id="info.name" ng-class="{'product-section-selected': info.added}">
+                <div class="">
+                    <!--<h2>{{info.name}}</h2>-->
+                    <img src="{{'imgs/' + info.theme.logo}}" class="product-logo">
+                    <br>
+                    <br>
+                    <button class="{{'btn product-btn ' + info.theme.btn_class}}" ng-click="select(info.name)">{{info.added?'Remove':'Add'}}</button>
+                    </div>
             </div>
+            
             `
         }
     }
@@ -38,12 +42,13 @@
             replace: "true",
             scope: {
                 region: "=region",
+                select: "=select"
             },
             template: `
-            <div class="{{'col-md-3 region-section psEven ' + region.name}}">
+            <div class="{{'col-md-6 region-section'}}" ng-click="select(region)" ng-class="{'region-section-selected': region.added}">
                 <h2>{{region.name|regionToNormal}}</h2>
                 <img class="flag" src="{{'imgs/' + region.name + '_flag.png'}}">
-                <button class="{{'btn region-btn ' + region.theme.btn_class}}">Select</button>
+                <!--<button class="{{'btn region-btn btn-info'}}" ng-click="select(region)"><img class="flag" src="{{'imgs/' + region.name + '_flag.png'}}"></button>-->
                 
                 <!--<p ng-repeat="(provinces,) in subRegions"></p>-->
 

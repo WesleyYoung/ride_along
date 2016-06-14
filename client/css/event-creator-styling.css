@@ -1,7 +1,7 @@
 
 .product-btn{
     width: 100%;
-    height: 50px;
+    height: 55px;
     font-size: x-large;
     border-radius: 0;
     color: white;
@@ -11,24 +11,32 @@
 }
 
 .product-section{
+    margin: 5px 5px 10px 5px;
+    padding: 10px 0 0 0;
     height: 100%;
     text-align: center;
-    padding: 5px 0 0 0;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    border: solid #e0e0e0 2px;
 }
 
 .product-section-selected{
-    background-color: rgba(150, 209, 255, 0.67);
+    border-color: #449d44;
 }
 
 .info-box{
-    border: solid black 1px;
+    border: solid rgba(0,0,0,.2) 1px;
     border-radius: 5px;
-    padding: 5px;
+    padding: 10px;
+    text-align: center;
+    margin: 0;
+    height: 100%;
 }
 
 .region-btn{
     width: 95%;
-    height: 75px;
+    /*height: 75px;*/
+    padding: 5px;
     font-size: x-large;
     border-radius: 10px;
     color: white;
@@ -44,14 +52,20 @@
 }
 
 .region-section{
-    border-radius: 10px;
-    height: 250px;
+    height: 100%;
     text-align: center;
-    padding: 5px 0 0 0;
-    margin: 10px 0 0 0;
+    padding: 5px 0 15px 0;
+    margin: 0;
+    border: solid rgba(0,0,0,.2) 1px;
+    border-radius: 0;
+}
+.region-section:hover{
+    cursor: pointer;
 }
 .region-section-selected{
-
+    /*background-color: rgba(176, 255, 251, 0.75);*/
+    /*border-color: #449d44;*/
+    background-color: rgba(245, 236, 244, 0.84)
 }
 
 .flag{
@@ -59,18 +73,21 @@
     max-width: 160px;
 }
 
-.united_states{
-    border: solid rgba(91, 192, 222, 0.37) 2px;
+.product-logo{
+    height: 100%;
+    width: 95%;
 }
 
-.europe{
-    border: solid #2f0085 2px;
+.province-selector{
+    font-size: x-large;
+    height: 50px;
 }
 
-.australia{
-    border: solid #09691e 2px;
+.county{
+    height: 50px;
+    border: solid transparent 1px;
 }
-
-.canada{
-    border: solid #d9534f 2px;
+.county:hover{
+    cursor: pointer;
+    border-color: rgba(0,0,0,.2);
 }

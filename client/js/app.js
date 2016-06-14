@@ -30,7 +30,8 @@
         'event-creator-controller',
         
         //Animations
-        'ui-window-animate'
+        'ui-window-animate',
+        'fold-animate'
 
     ])
 
