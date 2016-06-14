@@ -119,7 +119,8 @@
                     ]}
                 ],
                 theme: {
-                    btn_class: "btn-info"
+                    btn_class: "btn-info",
+                    flag: "united_states_flag.png"
                 },
                 added: false
             },
@@ -155,7 +156,8 @@
                     {name: "united_kingdom", counties: []}
                 ],
                 theme: {
-                    btn_class: "btn-indigo"
+                    btn_class: "btn-indigo",
+                    flag: "europe_flag.png"
                 },
                 added: false
             },
@@ -171,7 +173,8 @@
                     {name: "western_australia", counties: []}
                 ],
                 theme: {
-                    btn_class: "btn-danger"
+                    btn_class: "btn-danger",
+                    flag: "australia_flag.png"
                 },
                 added: false
             },
@@ -190,14 +193,15 @@
                     {name: "newfoundland_and_labrador", counties: []}
                 ],
                 theme: {
-                    btn_class: "btn-darkgreen"
+                    btn_class: "btn-darkgreen",
+                    flag: "canada_flag.png"
                 },
                 added: false
             }
         ];
 
         lf.products=[
-            {name: "Xactimate", added: false, theme: {btn_class: "btn-warning", logo: "xactimate_logo.png"}},
+            {name: "Xactimate", added: false, theme: {btn_class: "btn-coral", logo: "xactimate_logo.png"}},
             {name: "Xactanalysis", added: false, theme: {btn_class: "btn-primary", logo: "xactanalysis_logo.png"}},
             {name: "Xactanalysis Mobile", added: false, theme: {btn_class: "btn-success", logo: "xactanalysis_mobile_logo.png"}}
             //{name: "Product 4", theme: {btn_class: "btn-coral"}}

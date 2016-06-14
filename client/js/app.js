@@ -9,6 +9,7 @@
         //Angular Libraries
         'ui.router',
         'ngAnimate',
+        'ngMaterial',
         
         //Directives
         "list-sections",

@@ -10,21 +10,23 @@
     <br>
     <product-list ng-repeat="product in ecc.products" info="product" select="ecc.toggleProduct" ></product-list>
 </div>
-<div class="col-lg-6 row">
+
+<div class="col-lg-5 row">
+    <date-section start="ecc.startDate" end="ecc.endDate"></date-section>
+    <br>
     <region-list ng-repeat="reg in ecc.regions" region="reg" select="ecc.toggleRegion"></region-list>
 </div>
-<div class="col-lg-6 row info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined">
+<note-section></note-section>
+<div class="col-lg-5 row info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined">
     <div class="fold">
         <h2>{{ecc.selectedRegion.name|regionToNormal}}</h2>
         <br>
-        <select class="form-control province-selector" ng-options="province.name|regionToNormal for province in ecc.selectedRegion.provinces" ng-model="ecc.selectedProvince">
-
-        </select>
+        <select class="form-control province-selector" ng-options="province.name|regionToNormal for province in ecc.selectedRegion.provinces" ng-model="ecc.selectedProvince"></select>
         <br>
         <div ng-if="ecc.selectedProvince.counties!==undefined&&ecc.selectedProvince.counties!==[]" class="row">
-            <h3>Counties</h3>
+            <h2>Counties</h2>
             <br>
-            <p ng-repeat="county in ecc.selectedProvince.counties" class="col-sm-2 county">{{county|regionToNormal}}</p>
+            <select class="form-control province-selector" ng-options="county|regionToNormal for county in ecc.selectedProvince.counties" ng-model="ecc.selectedCounty"></select>
         </div>
         <br>
     </div>
