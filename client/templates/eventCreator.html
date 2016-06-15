@@ -5,32 +5,60 @@
     <title>Event Creator</title>
 </head>
 <body>
+<md-content>
+    <div class="container-fluid" style="text-align: center">
+        <!--<product-list ng-repeat="product in ecc.products" info="product" select="ecc.toggleProduct" ></product-list>-->
+        <md-button ng-repeat="product in ecc.products" class="product-section col-sm-3" id="product.name" ng-class="{'product-section-selected': product.added}">
+                <img src="{{'imgs/' + product.theme.logo}}" class="product-logo">
+                <br>
+                <br>
+                <button class="{{'btn product-btn ' + product.theme.btn_class}}" ng-click="ecc.toggleProduct(product.name)">{{product.added?'Remove':'Add'}}</button>
+        </md-button>
+    </div>
 
-<div class="container-fluid" style="text-align: center">
-    <br>
-    <product-list ng-repeat="product in ecc.products" info="product" select="ecc.toggleProduct" ></product-list>
-</div>
-
-<div class="col-lg-5 row">
-    <date-section start="ecc.startDate" end="ecc.endDate"></date-section>
-    <br>
-    <region-list ng-repeat="reg in ecc.regions" region="reg" select="ecc.toggleRegion"></region-list>
-</div>
-<note-section></note-section>
-<div class="col-lg-5 row info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined">
-    <div class="fold">
-        <h2>{{ecc.selectedRegion.name|regionToNormal}}</h2>
-        <br>
-        <select class="form-control province-selector" ng-options="province.name|regionToNormal for province in ecc.selectedRegion.provinces" ng-model="ecc.selectedProvince"></select>
-        <br>
-        <div ng-if="ecc.selectedProvince.counties!==undefined&&ecc.selectedProvince.counties!==[]" class="row">
-            <h2>Counties</h2>
-            <br>
-            <select class="form-control province-selector" ng-options="county|regionToNormal for county in ecc.selectedProvince.counties" ng-model="ecc.selectedCounty"></select>
+    <div class="col-lg-5 row">
+        <!--<date-section ng-disabled="ecc.selectedProducts.length==0" start="ecc.startDate" end="ecc.endDate"></date-section>-->
+        <div class="date-section">
+            <h2>Date Range</h2>
+            <md-content>
+                <md-datepicker class="col-sm-6" ng-model="ecc.startDate"></md-datepicker>
+                <md-datepicker class="col-sm-6" ng-model="ecc.endDate"></md-datepicker>
+                <mdp-time-picker></mdp-time-picker>
+            </md-content>
         </div>
         <br>
+        <!--<region-list ng-repeat="reg in ecc.regions" region="reg" select="ecc.toggleRegion"></region-list>-->
+        <div ng-if="ecc.startDate!==undefined&&ecc.endDate!==undefined">
+            <md-button ng-disabled="ecc.selectedProducts.length==0||region.name!=='united_states'||ecc.startDate==undefined||ecc.endDate==undefined" ng-repeat="region in ecc.regions" class="col-sm-6 region-section" ng-click="ecc.toggleRegion(region)" ng-class="{'region-section-selected': region.added}">
+                <h2>{{region.name|regionToNormal}}</h2>
+                <img class="flag" src="{{'imgs/' + region.theme.flag}}">
+                <br>
+                <br>
+            </md-button>
+        </div>
     </div>
-</div>
-
+    <div class="col-sm-4 row info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined">
+        <div class="fold">
+            <h2>{{ecc.selectedRegion.name|regionToNormal}}</h2>
+            <br>
+            <select class="form-control province-selector" ng-options="province.name|regionToNormal for province in ecc.selectedRegion.provinces" ng-model="ecc.selectedProvince"></select>
+            <br>
+            <div ng-if="ecc.selectedProvince.counties!==undefined&&ecc.selectedProvince.counties!==[]" class="row">
+                <h2>Counties</h2>
+                <br>
+                <select class="form-control province-selector" ng-options="county|regionToNormal for county in ecc.selectedProvince.counties" ng-model="ecc.selectedCounty"></select>
+            </div>
+            <br>
+        </div>
+    </div>
+    <div style="margin-top: 10px" class="col-sm-4 info-box note-section fold" ng-if="ecc.selectedProducts.length!==0&&ecc.startDate!==undefined&&ecc.endDate!==undefined&&ecc.selectedRegion!=={}&&ecc.selectedCounty!==undefined">
+        <h2>Notes</h2>
+        <h5>(optional)</h5>
+        <textarea class="form-control note-textarea"></textarea>
+        <br>
+        <md-button style="width: 95%; height: 55px;font-size: x-large" class="md-raised md-primary" aria-label="Submit">SUBMIT</md-button>
+    </div>
+    <!--   -->
+</md-content>
 </body>
 </html>

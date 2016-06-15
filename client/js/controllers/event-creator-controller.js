@@ -18,10 +18,10 @@
         ecc.toggleProduct=toggleProduct;
         ecc.toggleRegion=toggleRegion;
 
-        ecc.startDate = new Date();
-        ecc.endDate = new Date();
+        //ecc.startDate = new Date();
+        ////ecc.endDate = new Date();
         ecc.selectedProducts=[];
-        ecc.selectedCounties=[];
+        //ecc.selectedCounty='';
         ecc.selectedRegion={};
         ecc.selectedProvince={};
 

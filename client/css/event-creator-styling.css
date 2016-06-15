@@ -21,7 +21,8 @@
 }
 
 .product-section-selected{
-    background-color: rgba(68, 157, 68, 0.38);
+    /*background-color: rgba(68, 157, 68, 0.38);*/
+    background-color: rgba(0, 173, 255, 0.29);
 }
 
 .info-box{
@@ -63,9 +64,9 @@
     cursor: pointer;
 }
 .region-section-selected{
-    /*background-color: rgba(176, 255, 251, 0.75);*/
+    background-color: rgba(0, 173, 255, 0.29);
     /*border-color: #449d44;*/
-    background-color: rgba(68, 157, 68, 0.38);/*rgba(245, 236, 244, 0.84)*/
+    /*background-color: rgba(68, 157, 68, 0.38);/*rgba(245, 236, 244, 0.84)*/
 }
 
 .date-section{
@@ -73,6 +74,7 @@
     border-radius: 10px;
     padding: 10px;
     text-align: center;
+    height: 100%;
 }
 
 .note-section{
