@@ -10,6 +10,12 @@
     color: white !important;
 }
 
+.event-submit-btn{
+    width: 95%;
+    height: 55px;
+    font-size: x-large;
+}
+
 .product-section{
     margin: 5px 5px 10px 5px;
     padding: 10px 0 0 0;
@@ -104,14 +110,3 @@
     height: 50px;
 }
 
-.county{
-    height: 55px;
-    border: solid transparent 1px;
-}
-.county:hover{
-    cursor: pointer;
-    border-color: rgba(0,0,0,.2);
-}
-.county-selected{
-
-}

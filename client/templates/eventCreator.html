@@ -6,17 +6,17 @@
 </head>
 <body>
 <md-content>
+    <br>
     <div class="container-fluid" style="text-align: center">
         <!--<product-list ng-repeat="product in ecc.products" info="product" select="ecc.toggleProduct" ></product-list>-->
-        <md-button ng-repeat="product in ecc.products" class="product-section col-sm-3" id="product.name" ng-class="{'product-section-selected': product.added}">
+        <md-button ng-repeat="product in ecc.products" class="product-section col-sm-3" id="product.name" ng-class="{'product-section-selected': product.added}" ng-click="ecc.toggleProduct(product.name)">
                 <img src="{{'imgs/' + product.theme.logo}}" class="product-logo">
                 <br>
-                <br>
-                <button class="{{'btn product-btn ' + product.theme.btn_class}}" ng-click="ecc.toggleProduct(product.name)">{{product.added?'Remove':'Add'}}</button>
+                <button class="{{'btn product-btn ' + product.theme.btn_class}}" >{{product.added?'Remove':'Add'}}</button>
         </md-button>
     </div>
 
-    <div class="col-lg-5 row">
+    <div class="col-lg-5 row fold" ng-if="ecc.selectedProducts.length!==0">
         <!--<date-section ng-disabled="ecc.selectedProducts.length==0" start="ecc.startDate" end="ecc.endDate"></date-section>-->
         <div class="date-section">
             <h2>Date Range</h2>
@@ -28,16 +28,15 @@
         </div>
         <br>
         <!--<region-list ng-repeat="reg in ecc.regions" region="reg" select="ecc.toggleRegion"></region-list>-->
-        <div ng-if="ecc.startDate!==undefined&&ecc.endDate!==undefined">
+        <div ng-if="ecc.startDate!==undefined&&ecc.endDate!==undefined" class="fold">
             <md-button ng-disabled="ecc.selectedProducts.length==0||region.name!=='united_states'||ecc.startDate==undefined||ecc.endDate==undefined" ng-repeat="region in ecc.regions" class="col-sm-6 region-section" ng-click="ecc.toggleRegion(region)" ng-class="{'region-section-selected': region.added}">
-                <h2>{{region.name|regionToNormal}}</h2>
+                <br>
                 <img class="flag" src="{{'imgs/' + region.theme.flag}}">
-                <br>
-                <br>
+                <h3>{{region.name|regionToNormal}}</h3>
             </md-button>
         </div>
     </div>
-    <div class="col-sm-4 row info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined">
+    <div class="col-sm-4 row info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined&&ecc.selectedProducts.length!==0">
         <div class="fold">
             <h2>{{ecc.selectedRegion.name|regionToNormal}}</h2>
             <br>
@@ -51,12 +50,12 @@
             <br>
         </div>
     </div>
-    <div style="margin-top: 10px" class="col-sm-4 info-box note-section fold" ng-if="ecc.selectedProducts.length!==0&&ecc.startDate!==undefined&&ecc.endDate!==undefined&&ecc.selectedRegion!=={}&&ecc.selectedCounty!==undefined">
+    <div style="margin-top: 10px" class="col-sm-4 info-box note-section fold" ng-if="ecc.selectedProducts.length!==0&&ecc.startDate!==undefined&&ecc.endDate!==undefined&&ecc.selectedRegion.name!==undefined&&ecc.selectedCounty!==undefined">
         <h2>Notes</h2>
         <h5>(optional)</h5>
         <textarea class="form-control note-textarea"></textarea>
         <br>
-        <md-button style="width: 95%; height: 55px;font-size: x-large" class="md-raised md-primary" aria-label="Submit">SUBMIT</md-button>
+        <md-button class="md-raised md-primary event-submit-btn" aria-label="Submit">SUBMIT</md-button>
     </div>
     <!--   -->
 </md-content>

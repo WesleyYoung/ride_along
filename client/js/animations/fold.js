@@ -16,7 +16,7 @@
                 return $animateCss(element, {
                     from: { height:'0px', opacity: 0 },
                     to: { height:'100%', opacity: 1 },
-                    duration: .3
+                    duration: .4
                 });
             },
             leave: function(element, doneFn){
