@@ -29,6 +29,7 @@
         'report-controller',
         'events-controller',
         'event-creator-controller',
+        'event-confirmation-controller',
         
         //Animations
         'ui-window-animate',
@@ -59,6 +60,11 @@
                     url: '/eventCreator',
                     templateUrl: 'templates/eventCreator.html',
                     controller: 'event-creator-controller as ecc'
+                })
+                .state('eventConfirmation', {
+                    url: '/eventConfirmation/:products/:daterange/:region/:province/:county/:notes',
+                    templateUrl: 'templates/eventConfirmation.html',
+                    controller: 'event-confirmation-controller as ecc'
                 });
 
             $urlRouterProvider.otherwise("/main");

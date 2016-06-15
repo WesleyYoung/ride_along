@@ -27,7 +27,6 @@
                 });
             },
             move: function(element, doneFn){
-                console.log("YABBABABAB");
                 return $animateCss(element, {
                     from: { opacity: 1 },
                     to: { opacity: 0 },
