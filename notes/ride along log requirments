@@ -2,13 +2,21 @@
 Employee Side
 _____________________
 
-- Start date/time - end date/time (possibly dates in between that may not work)
+- Request Attributes:
 
-- Radius of availability (maximum distance the employee is willing to travel)
+    a. Start date/time - end date/time (possibly dates in between that may not work)
 
-- Contact information
+    b. Radius of availability (maximum distance the employee is willing to travel)
 
-- Product type
+    c. Contact information
+
+    d. Product(s)
+
+- Use google maps API to map the route from office to job site
+
+- Accept, decline, or edit responses from companies. (edited responses will be sent back as a request to the company for approval)
+
+- Calender events
 
 - *Invite specific companies
 
@@ -16,11 +24,45 @@ _____________________
 Customer Side
 _____________________
 
-- Specific day/time
+- Response Attributes:
 
-- Job location
+    a. Specific day/time
 
-- Contact information
+    b. Job location
 
-- Feedback
+    c. Contact information
 
+    d. Product that will be demonstrated (if multiple products are requested on the employee side)
+
+- Ability to be removed from further requests or inquiries (do not contact list)
+
+- Ability to cancel or reschedule ride-alongs using the app
+
+- Ability to find out if the request is legitimate (maybe leave a phone number for the training department so the customer can call in and verify)
+
+- Feedback post ride-along
+
+- Calender Events
+
+
+
+Internal/Admin Side
+______________________
+
+- Reporting:
+
+    a. What companies have utilized this app
+
+    b. Are there companies who have done multiple ride-alongs?
+
+        1. If so, what was the reasoning for doing more than one?
+
+        2. Were they satisfied with each event?
+
+    c. Overall customer satisfaction
+
+    d. All cancellations/reschedules must be logged and recorded to avoid any misunderstandings
+
+- Ability to intervene and cancel ride-alongs
+
+- *Request to be notified any time a ride along is scheduled
