@@ -14,6 +14,9 @@
 
         ecc.regions=listFactory.regions();
         ecc.products=listFactory.products();
+        //Having a bug where if you add a product, then leave the page and come back to it, the ecc.product.added boolean is still true but not added to the list. This seems to solve that issue
+        for(var i=0;i<ecc.products.length;i++){ecc.products[i].added=false}
+        for(var i=0;i<ecc.regions.length;i++){ecc.regions[i].added=false}
 
         ecc.toggleProduct=toggleProduct;
         ecc.toggleRegion=toggleRegion;
@@ -24,6 +27,7 @@
         //ecc.selectedCounty='';
         ecc.selectedRegion={};
         ecc.selectedProvince={};
+        ecc.notes = "";
 
 
         function toggleProduct(product){

@@ -14,6 +14,7 @@
     width: 95%;
     height: 55px;
     font-size: x-large;
+    padding: 10px;
 }
 
 .product-section{
@@ -21,9 +22,9 @@
     padding: 10px 0 0 0;
     height: 100%;
     text-align: center;
-    background-color: #e0e0e0;
+    background-color: white;/*#e0e0e0*/
     border-radius: 10px;
-    border: none;/*solid #e0e0e0 2px;*/
+    border:solid rgba(0,0,0,.2) 1px;
 }
 
 .product-section-selected{

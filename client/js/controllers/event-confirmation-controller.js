@@ -5,13 +5,22 @@
     'use strict';
     
     angular.module('event-confirmation-controller', [])
-        .controller('event-confirmation-controller', eventConfirmation)
+        .controller('event-confirmation-controller', eventConfirmation);
 
-    eventConfirmation.$inject=[];
+    eventConfirmation.$inject=["$stateParams"];
     
-    function eventConfirmation(){
+    function eventConfirmation($stateParams){
         var ecc = this;
         
-        
+        console.log($stateParams);
+
+        ecc.region = $stateParams.region;
+        ecc.province = $stateParams.province;
+        ecc.county = $stateParams.county;
+        ecc.products = $stateParams.products.split(",");
+        ecc.startDate = $stateParams.startDate;
+        ecc.endDate = $stateParams.endDate;
+        ecc.notes = $stateParams.notes;
+
     }
 })();

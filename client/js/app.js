@@ -10,6 +10,9 @@
         'ui.router',
         'ngAnimate',
         'ngMaterial',
+        'ngAria',
+        'ngMessages',
+        'ngRoute',
         
         //Directives
         "list-sections",
@@ -62,7 +65,7 @@
                     controller: 'event-creator-controller as ecc'
                 })
                 .state('eventConfirmation', {
-                    url: '/eventConfirmation/:products/:daterange/:region/:province/:county/:notes',
+                    url: '/eventConfirmation/:products/:region/:province/:county/:startDate/:endDate/:notes',
                     templateUrl: 'templates/eventConfirmation.html',
                     controller: 'event-confirmation-controller as ecc'
                 });
