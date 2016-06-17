@@ -19,6 +19,7 @@
         
         //Filters
         "regions-filter",
+        "long-date-filter",
         
         //Services
         
@@ -32,7 +33,6 @@
         'report-controller',
         'events-controller',
         'event-creator-controller',
-        'event-confirmation-controller',
         
         //Animations
         'ui-window-animate',
@@ -63,11 +63,6 @@
                     url: '/eventCreator',
                     templateUrl: 'templates/eventCreator.html',
                     controller: 'event-creator-controller as ecc'
-                })
-                .state('eventConfirmation', {
-                    url: '/eventConfirmation/:products/:region/:province/:county/:startDate/:endDate/:notes',
-                    templateUrl: 'templates/eventConfirmation.html',
-                    controller: 'event-confirmation-controller as ecc'
                 });
 
             $urlRouterProvider.otherwise("/main");

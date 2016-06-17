@@ -7,10 +7,11 @@
     angular.module('event-creator-controller', [])
         .controller('event-creator-controller', eventCreatorController);
 
-    eventCreatorController.$inject=["listFactory"];
+    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia"];
     
-    function eventCreatorController(listFactory){
+    function eventCreatorController(listFactory, $mdDialog, $mdMedia){
         var ecc = this;
+        var today = new Date();
 
         ecc.regions=listFactory.regions();
         ecc.products=listFactory.products();
@@ -20,15 +21,13 @@
 
         ecc.toggleProduct=toggleProduct;
         ecc.toggleRegion=toggleRegion;
-
-        //ecc.startDate = new Date();
-        ////ecc.endDate = new Date();
+        
+        ecc.minDate=new Date(today.getFullYear(), today.getMonth(), today.getDate()+2);
         ecc.selectedProducts=[];
         //ecc.selectedCounty='';
         ecc.selectedRegion={};
         ecc.selectedProvince={};
         ecc.notes = "";
-
 
         function toggleProduct(product){
             var patt = new RegExp(product, "g"),
@@ -57,14 +56,13 @@
         }
         
         function toggleRegion(region){
-            ecc.selectedCounties=[];
-            ecc.selectedProvince={};
+            //ecc.selectedProvince={};
             if(ecc.selectedRegion.name!==undefined){
                 if(ecc.selectedRegion.name==region.name){
                     for(var i=0;i<ecc.regions.length;i++){
                         ecc.regions[i].added=false;
                     }
-                    ecc.selectedRegion=[];
+                    ecc.selectedRegion={};
                     //console.log(`Region ${region.name} is now deselected`)
                 }else{
                     ecc.selectedRegion=region;
@@ -87,5 +85,49 @@
                 //console.log(`Region ${region.name} is now selected`)
             }
         }
+
+        ecc.showTabDialog = function(ev) {
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'templates/confirmation-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true
+            }).then(function(answer) {
+                    
+                }, function() {
+                    
+                }
+            );
+        };
+
+        function DialogController($scope, $mdDialog) {
+
+            $scope.selectedProducts=ecc.selectedProducts;
+            $scope.selectedRegion=ecc.selectedRegion;
+            $scope.selectedProvince=ecc.selectedProvince;
+            $scope.selectedCounty=ecc.selectedCounty;
+            $scope.startDate=ecc.startDate;
+            $scope.endDate=ecc.endDate;
+            $scope.notes=ecc.notes;
+            
+            
+
+
+            $scope.hide = function() {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function(answer) {
+                $mdDialog.hide(answer);
+            };
+
+        }
+        
     }
+    
+    
+    
 })();
