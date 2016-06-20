@@ -33,12 +33,18 @@
 }
 
 .info-box{
-    border: solid rgba(0,0,0,.2) 1px;
+    border: solid rgba(0,0,0,.3) 1px;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
-    margin: 0;
-    height: 100%;
+    margin: 10px;
+}
+.info-box-left{
+    border: solid rgba(0,0,0,.3) 1px;
+    border-radius: 5px;
+    padding: 10px 10px 10px 20px;
+    text-align: left;
+    margin: 10px;
 }
 
 .region-btn{

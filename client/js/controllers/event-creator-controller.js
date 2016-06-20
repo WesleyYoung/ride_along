@@ -22,10 +22,11 @@
         ecc.toggleProduct=toggleProduct;
         ecc.toggleRegion=toggleRegion;
         
-        ecc.minDate=new Date(today.getFullYear(), today.getMonth(), today.getDate()+2);
+        ecc.minDate1=new Date(today.getFullYear(), today.getMonth(), today.getDate()+2);
+        ecc.minDate2=new Date(today.getFullYear(), today.getMonth(), today.getDate()+9);
         ecc.selectedProducts=[];
         //ecc.selectedCounty='';
-        ecc.selectedRegion={};
+        //ecc.selectedRegion={};
         ecc.selectedProvince={};
         ecc.notes = "";
 
