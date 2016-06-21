@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Confirmation</title>
+</head>
+<body>
+<h2>The region selected was: {{ecc.region|regionToNormal}}</h2>
+<h2>The province selected was: {{ecc.province|regionToNormal}}</h2>
+<h2>The county selected was: {{ecc.county|regionToNormal}}</h2>
+<h2>The products selected were: </h2>
+<h3 ng-repeat="p in ecc.products">{{p}}</h3>
+<h2>The start date was: {{ecc.startDate}}</h2>
+<h2>The end date was: {{ecc.endDate}}</h2>
+<h2 ng-if="ecc.notes!==''">The notes were: {{ecc.notes}}</h2>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!--<div class="container-fluid" style="text-align: center">
+        <md-button ng-repeat="product in ecc.products" class="product-section col-sm-2" id="product.name" ng-class="{'product-section-selected': product.added}" ng-click="ecc.toggleProduct(product.name)">
+                <img src="{{'imgs/' + product.theme.logo}}" class="product-logo">
+                <br>
+                <button class="{{'btn product-btn ' + product.theme.btn_class}}" >{{product.added?'Remove':'Add'}}</button>
+        </md-button>
+    </div>
+
+    <div class="col-sm-4 row fold" ng-if="ecc.selectedProducts.length!==0">
+        <div class="date-section">
+            <h2>Date Range</h2>
+            <md-content>
+                    <span class="col-sm-6">From: <md-datepicker md-min-date="ecc.minDate" ng-model="ecc.startDate"></md-datepicker></span>
+                    <span class="col-sm-6">To: <md-datepicker  md-min-date="ecc.minDate" ng-model="ecc.endDate"></md-datepicker></span>
+            </md-content>
+        </div>
+        <br>
+        <div ng-if="ecc.startDate!==undefined&&ecc.endDate!==undefined" class="fold">
+            <md-button ng-disabled="ecc.selectedProducts.length==0||region.name!=='united_states'||ecc.startDate==undefined||ecc.endDate==undefined" ng-repeat="region in ecc.regions" class="col-sm-6 region-section" ng-click="ecc.toggleRegion(region)" ng-class="{'region-section-selected': region.added}">
+                <br>
+                <img class="flag" src="{{'imgs/' + region.theme.flag}}">
+                <h3>{{region.name|regionToNormal}}</h3>
+            </md-button>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="info-box ui-window fold" ng-if="ecc.selectedRegion.name!==undefined&&ecc.selectedProducts.length!==0">
+            <div class="fold">
+                <h2>{{ecc.selectedRegion.name|regionToNormal}}</h2>
+                <br>
+                <select class="form-control province-selector" ng-options="province.name|regionToNormal for province in ecc.selectedRegion.provinces" ng-model="ecc.selectedProvince"></select>
+                <br>
+                <div ng-if="ecc.selectedProvince.counties!==undefined&&ecc.selectedProvince.counties!==[]" class="row">
+                    <h2>Counties</h2>
+                    <br>
+                    <select class="form-control province-selector" ng-options="county|regionToNormal for county in ecc.selectedProvince.counties" ng-model="ecc.selectedCounty"></select>
+                </div>
+                <br>
+            </div>
+        </div>
+        <br>
+        <div class="info-box note-section fold" ng-if="ecc.selectedProducts.length!==0&&ecc.startDate!==undefined&&ecc.endDate!==undefined&&ecc.selectedRegion.name!==undefined&&ecc.selectedCounty!==undefined">
+            <h2>Notes</h2>
+            <h5>(optional)</h5>
+            <textarea class="form-control note-textarea" ng-model="ecc.notes"></textarea>
+            <br>
+            <md-button class="md-raised md-primary event-submit-btn" aria-label="Submit" ng-click="ecc.showTabDialog($event)">SUBMIT</md-button>
+        </div>
+    </div>
+-->

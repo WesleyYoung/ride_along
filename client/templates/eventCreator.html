@@ -4,36 +4,58 @@
     <meta charset="UTF-8">
     <title>Event Creator</title>
 </head>
-<body>
+<body style="">
+<md-content class=""  style="background-size: 100%; background-image: url('imgs/bg.jpg');  background-repeat: no-repeat;background-attachment: fixed; height: 2000px" >
+    <div style="max-width: 1000px; width: 100%; height: 1000px; border-radius: 10px; text-align: center; margin: 10px;">
+        <div  layout="column" ng-cloak class="md-inline-form" >
+            <md-content layout-padding style="background-color: rgba(255, 255, 255, .9)">
+                <h1>Ride Along Scheduler</h1>
+                <div>
+                    <form name="userForm">
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>First and Last Name</label>
+                                <input ng-model="ecc.name">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Email Address</label>
+                                <input ng-model="ecc.email" type="email">
+                            </md-input-container>
+                        </div>
+                        <!--<div layout-gt-xs="row">-->
+                            <md-input-container class="md-block">
+                                <label>Please select a region</label>
+                                <md-select ng-model="ecc.selectedRegion" style="color: black">
+                                    <md-option ng-repeat="region in ecc.regions" value="{{region.name|regionToNormal}}"></md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block" ng-if="ecc.selectedRegion!==undefined">
+                                <label>Please select a county</label>
+                                <md-select ng-model="ecc.selectedCounty" style="color: black">
+                                    <md-option ng-repeat="county in ecc.selectedRegion.provinces" value="{{county.name|regionToNormal}}"></md-option>
+                                </md-select>
+                            </md-input-container>
+                        <!--</div>-->
 
-<div class="container-fluid">
-    <h1>Event Creator</h1>
-    <div class="col-md-3 product-section psEven">
-        <h2>Product 1</h2>
-
-        <button class="btn btn-danger product-btn">Create!</button>
-
+                        <h3>Choose the date range</h3>
+                        <br>
+                        <md-datepicker md-open-on-focus md-min-date="ecc.minDate1" ng-model="ecc.startDate" md-placeholder="Start date" >
+                        </md-datepicker>
+                        <md-datepicker md-open-on-focus md-min-date="ecc.minDate2" ng-model="ecc.endDate" md-placeholder="End date">
+                        </md-datepicker>
+                        <br>
+                        <br>
+                        <md-button class="md-raised md-primary event-submit-btn" aria-label="Submit" ng-click="ecc.showTabDialog($event)">SUBMIT</md-button>
+                    </form>
+                </div>
+            </md-content>
+        </div>
     </div>
-    <div class="col-md-3 product-section psOdd">
-        <h2>Product 2</h2>
 
-        <button class="btn btn-info product-btn">Create!</button>
-
-    </div>
-    <div class="col-md-3 product-section psEven">
-        <h2>Product 3</h2>
-
-        <button class="btn btn-primary product-btn">Create!</button>
-
-    </div>
-    <div class="col-md-3 product-section psOdd">
-        <h2>Product 4</h2>
-
-        <button class="btn btn-success product-btn">Create!</button>
-
-    </div>
-</div>
-
-
+    <!--<div ng-message="required">This date is required!</div>-->
+    <!--   -->
+</md-content>
 </body>
 </html>
+
+<!--ui-sref="eventConfirmation({products: ecc.selectedProducts, region: ecc.selectedRegion.name, province: ecc.selectedProvince.name, county: ecc.selectedCounty, startDate: ecc.startDate, endDate: ecc.endDate, notes: ecc.notes})"-->

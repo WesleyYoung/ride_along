@@ -5,17 +5,38 @@
     'use strict';
 
     angular.module('ride-along', [
+        
         //Angular Libraries
         'ui.router',
         'ngAnimate',
+        'ngMaterial',
+        'ngAria',
+        'ngMessages',
+        'ngRoute',
+        
+        //Directives
+        "list-sections",
+        
+        //Filters
+        "regions-filter",
+        "long-date-filter",
+        
+        //Services
+        
+
+        //Factories
+        "list-factory",
+        
         //Controllers
         'nav-controller',
         'home-controller',
         'report-controller',
         'events-controller',
         'event-creator-controller',
+        
         //Animations
-        'ui-window-animate'
+        'ui-window-animate',
+        'fold-animate'
 
     ])
 
