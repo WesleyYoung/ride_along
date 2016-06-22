@@ -38,3 +38,9 @@
     transform:translateY(0);
     opacity:1;
 }
+
+md-select {
+    display: inline-block;
+    margin-top: 2px;
+    width: 100%;
+}

@@ -20,7 +20,7 @@
                 var day = input.getDate(),
                     month = input.getMonth(),
                     year = input.getFullYear(),
-                    suffix = day=="1"||day=="21"?"st":day=="2"||day=="22"?"nd":day=="3"?"rd":"th";
+                    suffix = day=="1"||day=="21"||day=="31"?"st":day=="2"||day=="22"?"nd":day=="3"||day=="23"?"rd":"th";
 
                 return monthNames[month] + " " + day + suffix + " " + year
             }else{

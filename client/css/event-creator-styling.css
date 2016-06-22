@@ -117,3 +117,18 @@
     height: 50px;
 }
 
+.bg{
+    background: url('../imgs/bg.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+md-input-container{
+    font-size: large;
+}
+
+.disclaimer{
+    color: red;
+}
