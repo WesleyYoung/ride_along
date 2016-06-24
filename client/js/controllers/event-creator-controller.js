@@ -7,11 +7,13 @@
     angular.module('event-creator-controller', [])
         .controller('event-creator-controller', eventCreatorController);
 
-    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia", "$timeout"];
+    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia", "$timeout", "$http"];
     
-    function eventCreatorController(listFactory, $mdDialog, $mdMedia, $timeout){
+    function eventCreatorController(listFactory, $mdDialog, $mdMedia, $timeout, $http){
         var ecc = this;
         var today = new Date();
+
+        ecc.$http=$http;
 
         ecc.regions=listFactory.regions();
         ecc.products=listFactory.products();
@@ -71,6 +73,8 @@
 
         function DialogController($scope, $mdDialog) {
 
+            var $http = ecc.$http;
+
             //$scope.selectedProducts=ecc.selectedProducts;
             $scope.selectedRegion=ecc.selectedRegion;
             //$scope.selectedProvince=ecc.selectedProvince;
@@ -83,6 +87,7 @@
 
             $scope.notes=ecc.notes;
 
+            $scope.email=ecc.email;
             $scope.name = ecc.name;
 
             $scope.hide = function() {
@@ -92,8 +97,23 @@
                 $mdDialog.cancel();
             };
             $scope.confirm = function() {
-                window.alert('You confirmed the ride-along');
+                //window.alert('You confirmed the ride-along');
+                var postObj = {
+                    name: $scope.name,
+                    email: $scope.email,
+                    startDate: $scope.startDate,
+                    endDate: $scope.endDate,
+                    region: $scope.selectedRegion.name,
+                    province: $scope.provinceName,
+                    county: $scope.countyName
+                };
+
+                $http.post('/formSubmit', postObj).then(function() {
+                    window.alert('Submition successful!');
+                });
                 $mdDialog.hide();
+
+
             };
 
         }
