@@ -1,0 +1,45 @@
+
+/*Buttons*/
+
+.btn-coral{
+    background-color: coral;
+    border: solid coral 1px;
+}
+.btn-coral:hover, .btn-coral:focus {
+    color: white;
+    background-color: #e76f4b;
+    border: solid #e76f4b 1px;
+}
+.btn-coral:active, .btn-coral:target{
+    color: white;
+    background-color: #cb5534;
+    border: solid #cb5534 1px;
+}
+.btn-indigo{
+    background-color: indigo;
+    border: solid indigo 1px;
+}
+.btn-indigo:hover, .btn-indigo:focus{
+    background-color: #2f0085;
+    border: solid #2f0085 1px;
+    color: white;
+}
+.btn-indigo:active, .btn-indigo:target{
+    background-color: #2b0064;
+    border: solid #2f0085 1px;
+    color: white;
+}
+.btn-darkgreen{
+    background-color: forestgreen;
+    border: solid forestgreen 1px;
+}
+.btn-darkgreen:hover, .btn-darkgreen:focus{
+    background-color: #09691e;
+    border: solid #09691e 1px;
+    color: white;
+}
+.btn-darkgreen:active,.btn-darkgreen:target{
+    background-color: #09531b;
+    border: solid #09531b 1px;
+    color: white;
+}

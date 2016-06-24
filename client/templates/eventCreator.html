@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Creator</title>
+</head>
+<body class="bg">
+<!--<div style="background-size: 100%; background-image: url('imgs/bg.jpg');  background-repeat: no-repeat;background-attachment: fixed; width: 2000px">-->
+<md-content class="bg">
+    <div style="max-width: 1000px; width: 100%; height: 1500px; border-radius: 10px; text-align: center; margin: 10px; background-color: transparent;">
+        <div  layout="column" ng-cloak class="md-inline-form" >
+            <md-content layout-padding style="background-color: rgba(255, 255, 255, .9)">
+                <h1>Ride Along Scheduler</h1>
+                <div>
+                    <form name="userForm">
+                        <h3>Please enter your contact information</h3>
+                        <br>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>First and Last Name</label>
+                                <input ng-model="ecc.name">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Email Address</label>
+                                <input ng-model="ecc.email" type="email">
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Department</label>
+                                <input ng-model="ecc.department">
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/">
+                                <label>Phone Number</label>
+                                <input ng-model="ecc.phone">
+                            </md-input-container>
+                        </div>
+                        <h3>Select a region</h3>
+                        <br>
+                        <md-input-container class="col-lg-4">
+                            <label>Region</label>
+                            <md-select ng-model="ecc.regionName" style="color: black" ng-disabled="$index === 1">
+                                <md-option ng-repeat="region in ecc.regions" ng-value="region.name">{{region.name|regionToNormal}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="col-lg-4">
+                            <label>Province</label>
+                            <md-select md-on-open="ecc.assignProvinces(ecc.regionName)" ng-model="ecc.provinceName">
+                                <md-option ng-repeat="province in ecc.selectedRegion.provinces" ng-value="province.name">{{province.name|regionToNormal}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="col-lg-4">
+                            <label>County</label>
+                            <md-select md-on-open="ecc.assignCounties(ecc.provinceName)" ng-model="ecc.countyName">
+                                <md-option ng-repeat="county in ecc.selectedProvince.counties" ng-value="county">{{county|regionToNormal}}</md-option>
+                            </md-select>
+                            <br>
+                            <br>
+                        </md-input-container>
+                        <h3>Choose the date range</h3>
+                        <br>
+                        <md-datepicker md-open-on-focus md-min-date="ecc.minDate1" ng-model="ecc.startDate" md-placeholder="Start date" >
+                        </md-datepicker>
+                        <md-datepicker md-open-on-focus md-min-date="ecc.minDate2" ng-model="ecc.endDate" md-placeholder="End date">
+                        </md-datepicker>
+                        <br>
+                        <br>
+                        <md-button ng-disabled="ecc.name==undefined||ecc.startDate==undefined||ecc.endDate==undefined||ecc.email==undefined" class="md-raised md-primary event-submit-btn" aria-label="Submit" ng-click="ecc.showTabDialog($event)">SUBMIT</md-button>
+                    </form>
+                </div>
+            </md-content>
+        </div>
+    </div>
+
+    <!--<div ng-message="required">This date is required!</div>-->
+    <!--   -->
+</md-content>
+<!--</div>-->
+</body>
+</html>
+
+<!--ui-sref="eventConfirmation({products: ecc.selectedProducts, region: ecc.selectedRegion.name, province: ecc.selectedProvince.name, county: ecc.selectedCounty, startDate: ecc.startDate, endDate: ecc.endDate, notes: ecc.notes})"-->

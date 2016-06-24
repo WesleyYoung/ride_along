@@ -1,0 +1,46 @@
+.top-logo{
+    height: 200px;
+    width: 100%;
+    background-color: grey;
+    /*background-image: url('../imgs/main-building.png');*/
+    padding: 25px;
+}
+
+.ng-hide {
+    height: 0;
+    width: 0;
+    background-color: transparent;
+    top:-200px;
+    left: 200px;
+}
+
+.banner-img{
+    max-width: 500px;
+}
+
+.ui-window.ng-exit{
+    transition: 0.1s linear all;
+    transform: translateY(-15px);
+    opacity: 0;
+}
+
+.ui-window.ng-enter {
+    transition:0.3s linear all;
+    transform:translateY(25px);
+    opacity:0;
+}
+.ui-window.ng-enter.ng-enter-active {
+    transform:translateY(0);
+    opacity:1;
+}
+
+.ui-window.ng-exit.ng-exit-active {
+    transform:translateY(0);
+    opacity:1;
+}
+
+md-select {
+    display: inline-block;
+    margin-top: 2px;
+    width: 100%;
+}

@@ -1,0 +1,41 @@
+
+Controllers:
+
+1. event-creator-controller
+2. events-controller
+3. home-controller
+4. nav-controller
+5. report-controller
+6. TODO login-controller (?)
+
+
+Factories:
+
+1. TODO Internal customer list factory
+2. TODO
+
+
+Services:
+
+1. TODO Event creator/handler service
+2. TODO User service (?)
+
+
+States:
+
+1. /main
+2. /reporting
+3. /events
+4. /eventCreator
+5. TODO /login (?)
+
+
+Directives:
+
+1. list-section
+1. TODO
+
+
+Animations:
+
+1. ui-window-animate
