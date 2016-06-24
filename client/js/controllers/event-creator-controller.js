@@ -7,11 +7,13 @@
     angular.module('event-creator-controller', [])
         .controller('event-creator-controller', eventCreatorController);
 
-    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia"];
+    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia", "$timeout", "$http"];
     
-    function eventCreatorController(listFactory, $mdDialog, $mdMedia){
+    function eventCreatorController(listFactory, $mdDialog, $mdMedia, $timeout, $http){
         var ecc = this;
         var today = new Date();
+
+        ecc.$http=$http;
 
         ecc.regions=listFactory.regions();
         ecc.products=listFactory.products();
@@ -19,8 +21,8 @@
         for(var i=0;i<ecc.products.length;i++){ecc.products[i].added=false}
         for(var i=0;i<ecc.regions.length;i++){ecc.regions[i].added=false}
 
-        ecc.toggleProduct=toggleProduct;
-        ecc.toggleRegion=toggleRegion;
+        ecc.assignProvinces=assignProvinces;
+        ecc.assignCounties=assignCounties;
         
         ecc.minDate1=new Date(today.getFullYear(), today.getMonth(), today.getDate()+2);
         ecc.minDate2=new Date(today.getFullYear(), today.getMonth(), today.getDate()+9);
@@ -29,62 +31,29 @@
         //ecc.selectedRegion={};
         ecc.selectedProvince={};
         ecc.notes = "";
-
-        function toggleProduct(product){
-            var patt = new RegExp(product, "g"),
-                currentProducts = ecc.selectedProducts.join(" "),
-                productsArray = ecc.selectedProducts,
-                out = [];
-            for(var i=0;i<ecc.products.length;i++){
-                if(ecc.products[i].name==product){
-                    ecc.products[i].added==true?ecc.products[i].added=false:ecc.products[i].added=true;
-                }
-            }
-
-            if(patt.test(currentProducts)){
-                for(var i=0;i<productsArray.length;i++){
-                    if(productsArray[i]!==product){
-                        out.push(productsArray[i]);
+        
+        function assignProvinces(reg){
+            return $timeout(function(){
+                for(var i=0;i<ecc.regions.length;i++){
+                    if(ecc.regions[i].name==reg){
+                        ecc.selectedRegion=ecc.regions[i];
+                        //ecc.selectedProvince = ecc.regions[i].provinces;
+                        console.log(ecc.regions[i].name, reg)
                     }
                 }
-                ecc.selectedProducts=out;
-                //currentProducts = ecc.selectedProducts.join(" ");
-                //console.log(`Removed ${product}! ${currentProducts}`)
-            }else{
-                ecc.selectedProducts.push(product);
-                //console.log(`Added ${product}!`)
-            }
+                console.log("hello")
+            }, 650)
+
         }
         
-        function toggleRegion(region){
-            //ecc.selectedProvince={};
-            if(ecc.selectedRegion.name!==undefined){
-                if(ecc.selectedRegion.name==region.name){
-                    for(var i=0;i<ecc.regions.length;i++){
-                        ecc.regions[i].added=false;
-                    }
-                    ecc.selectedRegion={};
-                    //console.log(`Region ${region.name} is now deselected`)
-                }else{
-                    ecc.selectedRegion=region;
-                    for(var i=0;i<ecc.regions.length;i++){
-                        if(ecc.regions[i].name==region.name){
-                            ecc.regions[i].added=true;
-                        }else{
-                            ecc.regions[i].added=false;
-                        }
-                    }
-                    //console.log(`Region ${region.name} is now selected`)
-                }
-            }else{
-                ecc.selectedRegion=region;
-                for(var i=0;i<ecc.regions.length;i++){
-                    if(ecc.regions[i].name==region.name){
-                        ecc.regions[i].added=true;
+        function assignCounties(prov){
+            return $timeout(function(){
+                for(var i=0;i<ecc.selectedRegion.provinces.length;i++){
+                    if(ecc.selectedRegion.provinces[i].name==prov){
+                        ecc.selectedProvince=ecc.selectedRegion.provinces[i];
                     }
                 }
-                //console.log(`Region ${region.name} is now selected`)
-            }
+            }, 650)
         }
 
         ecc.showTabDialog = function(ev) {
@@ -104,16 +73,22 @@
 
         function DialogController($scope, $mdDialog) {
 
-            $scope.selectedProducts=ecc.selectedProducts;
+            var $http = ecc.$http;
+
+            //$scope.selectedProducts=ecc.selectedProducts;
             $scope.selectedRegion=ecc.selectedRegion;
-            $scope.selectedProvince=ecc.selectedProvince;
-            $scope.selectedCounty=ecc.selectedCounty;
+            //$scope.selectedProvince=ecc.selectedProvince;
+            //$scope.selectedCounty=ecc.selectedCounty;
+            $scope.countyName=ecc.countyName;
+            $scope.provinceName=ecc.provinceName;
+
             $scope.startDate=ecc.startDate;
             $scope.endDate=ecc.endDate;
-            $scope.notes=ecc.notes;
-            
-            
 
+            $scope.notes=ecc.notes;
+
+            $scope.email=ecc.email;
+            $scope.name = ecc.name;
 
             $scope.hide = function() {
                 $mdDialog.hide();
@@ -121,8 +96,24 @@
             $scope.cancel = function() {
                 $mdDialog.cancel();
             };
-            $scope.answer = function(answer) {
-                $mdDialog.hide(answer);
+            $scope.confirm = function() {
+                //window.alert('You confirmed the ride-along');
+                var postObj = {
+                    name: $scope.name,
+                    email: $scope.email,
+                    startDate: $scope.startDate,
+                    endDate: $scope.endDate,
+                    region: $scope.selectedRegion.name,
+                    province: $scope.provinceName,
+                    county: $scope.countyName
+                };
+
+                $http.post('/formSubmit', postObj).then(function() {
+                    window.alert('Submition successful!');
+                });
+                $mdDialog.hide();
+
+
             };
 
         }

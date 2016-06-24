@@ -13,11 +13,13 @@
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Event Details</h1>
                         <span flex></span>
-                        <h3>Xactimate</h3>
-                        <h4>{{selectedCounty|regionToNormal}}, {{selectedProvince.name|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
+                        <h3>Xactimate Ride-Along</h3>
+                        <h4>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
                         <h4>{{startDate|longDate}} to {{endDate|longDate}}</h4>
                         <h2 ng-if="notes">Notes: </h2>
                         <h3 ng-if="notes">{{notes}}</h3>
+                        <br>
+                        <p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{name}}) agree to accept any valid responses from ride along partners from {{startDate|longDate}} to {{endDate|longDate}}</p>
                     </md-content>
                 </md-tab>
                 <md-tab label="two">
@@ -41,10 +43,10 @@
                 More on Wikipedia
             </md-button>-->
             <span flex></span>
-            <md-button ng-click="answer('not useful')" >
+            <md-button ng-click="cancel()" >
                 Cancel
             </md-button>
-            <md-button class="md-primary md-raised" ng-click="answer('useful')" style="margin-right:20px;" >
+            <md-button class="md-primary md-raised" ng-click="confirm()" style="margin-right:20px;" >
                 Confirm
             </md-button>
         </md-dialog-actions>
