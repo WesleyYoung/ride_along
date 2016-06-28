@@ -17,9 +17,6 @@
 
         ecc.regions=listFactory.regions();
         ecc.products=listFactory.products();
-        //Having a bug where if you add a product, then leave the page and come back to it, the ecc.product.added boolean is still true but not added to the list. This seems to solve that issue
-        for(var i=0;i<ecc.products.length;i++){ecc.products[i].added=false}
-        for(var i=0;i<ecc.regions.length;i++){ecc.regions[i].added=false}
 
         ecc.assignProvinces=assignProvinces;
         ecc.assignCounties=assignCounties;
@@ -27,8 +24,6 @@
         ecc.minDate1=new Date(today.getFullYear(), today.getMonth(), today.getDate()+2);
         ecc.minDate2=new Date(today.getFullYear(), today.getMonth(), today.getDate()+9);
         ecc.selectedProducts=[];
-        //ecc.selectedCounty='';
-        //ecc.selectedRegion={};
         ecc.selectedProvince={};
         ecc.notes = "";
         
@@ -75,10 +70,7 @@
 
             var $http = ecc.$http;
 
-            //$scope.selectedProducts=ecc.selectedProducts;
             $scope.selectedRegion=ecc.selectedRegion;
-            //$scope.selectedProvince=ecc.selectedProvince;
-            //$scope.selectedCounty=ecc.selectedCounty;
             $scope.countyName=ecc.countyName;
             $scope.provinceName=ecc.provinceName;
 
@@ -105,9 +97,9 @@
                     endDate: $scope.endDate,
                     region: $scope.selectedRegion.name,
                     province: $scope.provinceName,
-                    county: $scope.countyName
+                    county: $scope.countyName,
+                    notes: $scope.notes
                 };
-
                 $http.post('/formSubmit', postObj).then(function() {
                     window.alert('Submition successful!');
                 });

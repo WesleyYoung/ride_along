@@ -39,6 +39,7 @@ app.post('/formSubmit', function(req, res){
         county = req.body.county,
         startDateObj = new Date(req.body.startDate),
         endDateObj = new Date(req.body.endDate),
+        notes = req.body.notes,
         counter = 0;
 
     function sendEmail(em){
@@ -51,15 +52,16 @@ app.post('/formSubmit', function(req, res){
                 Hello! Xactware certified trainer ${req.body.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
             `,
             html: `
-                <h1 style="color: black">Hello!</h1>
+                <h2 style="color: black">Hello!</h2>
                 <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
                 <div style="color: red">
                     <p>
-                    ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+                    <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
                     <br>
-                    ${region.regionToNormal()}, ${province.regionToNormal()} - ${county.regionToNormal()} 
+                    <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
                     </p>
                 </div>
+                <p>${notes}</p>
                       
                 <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
                 `
