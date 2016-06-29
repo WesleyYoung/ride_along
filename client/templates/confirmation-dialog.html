@@ -16,8 +16,10 @@
                         <h3>Xactimate Ride-Along</h3>
                         <h4>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
                         <h4>{{startDate|longDate}} to {{endDate|longDate}}</h4>
-                        <h2 ng-if="notes">Notes: </h2>
-                        <h3 ng-if="notes">{{notes}}</h3>
+                        <br>
+                        <h2>Notes: </h2>
+                        <textarea ng-model="notes" class="form-control"></textarea>
+                        <br>
                         <br>
                         <p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{name}}) agree to accept any valid responses from ride along partners from {{startDate|longDate}} to {{endDate|longDate}}</p>
                     </md-content>

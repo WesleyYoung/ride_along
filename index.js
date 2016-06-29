@@ -12,23 +12,79 @@ app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/client'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
-var nodemailer = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
-
-var transporter = nodemailer.createTransport(smtpTransport({
-    host: 'localhost',
-    port: 25,
-    auth: {
-        user: 'username',
-        pass: 'password'
-    }
-}));
 var server = http.createServer(app);
 
 var io = require('socket.io').listen(server);
 
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+
+var transporter = nodemailer.createTransport("smtps://xactridealong%40gmail.com:XactWare4$6^8*@smtp.gmail.com");
+
+
+
+
 app.post('/formSubmit', function(req, res){
+
+
+    //Here would be the logic in which we decide what emails go out to who
+    var emails = ["wesley.young.portfolio@gmail.com", "8016633893@vtext.com"];
+
     console.log(req.body);
+
+    var name = req.body.name,
+        employeeEmail = req.body.email,
+        region = req.body.region,
+        province = req.body.province,
+        county = req.body.county,
+        startDateObj = new Date(req.body.startDate),
+        endDateObj = new Date(req.body.endDate),
+        notes = req.body.notes,
+        counter = 0;
+
+    function sendEmail(em){
+        counter++;
+        var mailOptions = {
+            from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',
+            to: em,
+            subject: "Ride Along Available",
+            text: `
+                Hello! Xactware certified trainer ${req.body.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+            `,
+            html: `
+                <h2 style="color: black">Hello!</h2>
+                <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
+                <div style="color: red">
+                    <p>
+                    <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+                    <br>
+                    <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
+                    </p>
+                </div>
+                <p>${notes}</p>
+                      
+                <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
+                `
+        };
+
+        transporter.sendMail(mailOptions, function(err, info){
+            if(err){
+                return console.log(err)
+            }else{
+                console.log('message sent! ' + info.response);
+                if(emails[counter]!==undefined){
+                    sendEmail(emails[counter]);
+                }else{
+                    console.log("All emails sent! Recievers were " + emails.join(" "))
+                }
+            }
+
+        });
+    }
+
+    sendEmail(emails[counter]);
+
+
     res.end();
 });
 
@@ -45,3 +101,29 @@ transporter.verify(function(error, success) {
         console.log('Server is ready to take our messages');
     }
 });
+
+Date.prototype.legibleDate=function(){
+    var input = this;
+    var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+    var day = input.getDate(),
+        month = input.getMonth(),
+        year = input.getFullYear(),
+        suffix = day=="1"||day=="21"||day=="31"?"st":day=="2"||day=="22"?"nd":day=="3"||day=="23"?"rd":"th";
+
+    return monthNames[month] + " " + day + suffix + " " + year;
+};
+
+String.prototype.regionToNormal=function(){
+    var input = this,
+        inpArr=input.split('_'),
+        out = [];
+        for(var i=0;i<inpArr.length;i++){
+            out.push(inpArr[i][0].toUpperCase()+inpArr[i].split("").splice(1, inpArr[i].length-1).join("").toLowerCase());
+        }
+        return out.join(" ");
+};
