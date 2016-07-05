@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Event Creator</title>
+
 </head>
 <body class="bg">
 <!--<div style="background-size: 100%; background-image: url('imgs/bg.jpg');  background-repeat: no-repeat;background-attachment: fixed; width: 2000px">-->
@@ -45,13 +46,13 @@
                         </md-input-container>
                         <md-input-container class="col-lg-4">
                             <label>Province</label>
-                            <md-select md-on-open="ecc.assignProvinces(ecc.regionName)" ng-model="ecc.provinceName">
+                            <md-select md-on-open="ecc.assignProvinces(ecc.regionName)" ng-model="ecc.provinceName" ng-disabled="ecc.regionName==undefined||ecc.regionName==''">
                                 <md-option ng-repeat="province in ecc.selectedRegion.provinces" ng-value="province.name">{{province.name|regionToNormal}}</md-option>
                             </md-select>
                         </md-input-container>
                         <md-input-container class="col-lg-4">
                             <label>County</label>
-                            <md-select md-on-open="ecc.assignCounties(ecc.provinceName)" ng-model="ecc.countyName">
+                            <md-select md-on-open="ecc.assignCounties(ecc.provinceName)" ng-model="ecc.countyName" ng-disabled="ecc.provinceName==undefined||ecc.provinceName==''">
                                 <md-option ng-repeat="county in ecc.selectedProvince.counties" ng-value="county">{{county|regionToNormal}}</md-option>
                             </md-select>
                             <br>

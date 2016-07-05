@@ -54,8 +54,8 @@ app.post('/formSubmit', function(req, res){
             html: `
                 <h2 style="color: black">Hello!</h2>
                 <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
-                <div style="color: red">
-                    <p>
+                <div >
+                    <p style="color: red">
                     <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
                     <br>
                     <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
