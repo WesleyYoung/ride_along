@@ -98,7 +98,8 @@
                     region: $scope.selectedRegion.name,
                     province: $scope.provinceName,
                     county: $scope.countyName,
-                    notes: $scope.notes
+                    notes: $scope.notes,
+                    creationDate: new Date()
                 };
                 $http.post('/formSubmit', postObj).then(function() {
                     window.alert('Submition successful!');

@@ -5,6 +5,57 @@
     <title>Event Schedules</title>
 </head>
 <body>
-<h1>Events</h1>
+<md-content style="background-color: transparent">
+    <div style="max-width: 1000px; width: 100%; height: 100%; text-align: center; margin: 10px; background-color: rgba(255, 255, 255, .9);">
+        <md-toolbar md-scroll-shrink ng-if="true">
+            <div class="md-toolbar-tools">
+                <h3>
+                    <span>Events</span>
+                </h3>
+            </div>
+        </md-toolbar>
+        <md-list flex>
+            <md-list-item class="md-3-line" ng-repeat="item in ec.rideAlongs" ng-click="null">
+                <div class="md-list-item-text" layout="column">
+                    <h2>{{item.name}}</h2>
+                    <h3>{{ item.county|regionToNormal}}, {{ item.province|regionToNormal }}</h3>
+                    <h4>{{ item.region|regionToNormal }}</h4>
+                    <h2></h2>
+                    <md-divider ng-if="!$last"></md-divider>
+                </div>
+                <span flex></span>
+                <div layout="row">
+                    <md-fab-speed-dial md-open="false" md-direction="left" class="md-primary md-fling ng-isolate-scope _md-animations-ready md-left">
+                        <md-fab-trigger>
+                            <md-button aria-label="menu" class="md-fab md-primary">
+                                <md-icon md-font-set="md" class="">
+                                    build
+                                </md-icon>
+                            </md-button>
+                        </md-fab-trigger>
+                        <md-fab-actions>
+                            <md-button class="md-fab md-primary">
+                                Hello!
+                            </md-button>
+                            <md-button class="md-fab md-accent">
+                                Hello!
+                            </md-button>
+                            <md-button class="md-fab md-warn">
+                                Hello!
+                            </md-button>
+                        </md-fab-actions>
+                    </md-fab-speed-dial>
+                    <md-button class="md-accent md-fab" style="height: 100%">
+                        <md-icon md-font-set="md" class="">
+                            chat_bubble_outline
+                        </md-icon>
+                    </md-button>
+                </div>
+            </md-list-item>
+            <br>
+        </md-list>
+    </div>
+</md-content>
+
 </body>
 </html>

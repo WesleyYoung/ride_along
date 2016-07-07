@@ -40,8 +40,16 @@
 
     ])
 
-    .config(["$stateProvider", "$urlRouterProvider",
-        function($stateProvider, $urlRouterProvider){
+    .config(["$stateProvider", "$urlRouterProvider", "$mdThemingProvider", "$mdIconProvider",
+        function($stateProvider, $urlRouterProvider, $mdThemingProvider, $mdIconProvider){
+
+            $mdIconProvider.fontSet('md', 'material-icons');
+
+            $mdThemingProvider
+                .theme('default')
+                .primaryPalette("indigo")
+                .accentPalette('green')
+                .warnPalette('blue');
 
             $stateProvider
                 .state('main', {

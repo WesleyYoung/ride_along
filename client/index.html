@@ -23,7 +23,7 @@
     <img class="banner-img" src="imgs/main-logo-2.png">
 </div>
 
-<div class="row" ng-controller="nav-controller as nav">
+<div class="row" ng-controller="nav-controller as nav" style="height: 100%">
     <!-- uncomment code for absolute positioning tweek see top comment in css -->
     <!-- <div class="absolute-wrapper"> </div> -->
     <!-- Menu -->
@@ -118,8 +118,8 @@
 
     <!-- Main Content -->
     <div style="height: 100%">
-        <div class="side-body">
-            <div ui-view class="ui-window"></div>
+        <div class="side-body bg">
+            <div ui-view class="ui-window" style="background-color: transparent"></div>
         </div>
     </div>
 </div>
