@@ -146,7 +146,7 @@
     height: 50px;
 }
 .side-menu #search .panel-body .navbar-form .btn {
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     border: 0;

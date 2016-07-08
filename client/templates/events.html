@@ -6,13 +6,14 @@
 </head>
 <body>
 <md-content style="background-color: transparent">
-    <div style="max-width: 1000px; width: 100%; height: 100%; text-align: center; margin: 10px; background-color: rgba(255, 255, 255, .9);">
+    <div style="max-width: 1000px; width: 95%; height: 100%; text-align: center; margin: 10px; background-color: rgba(255, 255, 255, .9);">
         <md-toolbar md-scroll-shrink ng-if="true">
             <div class="md-toolbar-tools">
                 <h3>
                     <span>Events</span>
                 </h3>
                 <span flex></span>
+                <input type="text" style="color: black" ng-model="ec.searchText"/>
                 <md-button>Filter</md-button>
             </div>
         </md-toolbar>
@@ -20,10 +21,13 @@
             <h2 style="padding: 25px 0 50px 0">No Ride-Alongs</h2>
         </div>
         <md-list flex ng-if="ec.rideAlongs.length!==0">
-            <md-list-item class="md-3-line" ng-repeat="item in ec.rideAlongs" ng-click="ec.showRADetails($event, item)">
+            <md-list-item class="md-3-line" ng-repeat="item in ec.rideAlongs | filter:ec.searchText" ng-click="ec.showRADetails($event, item)">
                 <div class="md-list-item-text" layout="column">
                     <h2>{{item.name}}</h2>
-                    <h3 ng-if="item.open" style="color: green">OPEN</h3><h3 ng-if="!item.open" style="color: red">ACCEPTED</h3>
+                    <h3 ng-if="item.status=='UNAPPROVED'" style="color: #ffc520">PENDING APPROVAL</h3>
+                    <h3 ng-if="item.status=='OPEN'" style="color: green">OPEN</h3>
+                    <h3 ng-if="item.status=='ACCEPTED'" style="color: orangered">ACCEPTED</h3>
+                    <h3 ng-if="item.status=='CANCELLED'" style="color: red">CANCELLED</h3>
                     <h3>{{item.startDate|longDate}} to {{item.endDate|longDate}}</h3>
                     <h3>{{ item.county|regionToNormal}}, {{ item.province|regionToNormal }}</h3>
                     <h4>{{ item.region|regionToNormal }}</h4>
@@ -52,16 +56,33 @@
                         <md-menu-content width="5">
                             <md-menu-item>
                                 <md-button ng-click="ec.removeRA($index)">
+                                    <md-icon md-font-set="md">
+                                        delete_forever
+                                    </md-icon>
                                     Delete
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
+                                <md-button ng-click="ec.changeStatus($index, 'CANCELLED')">
+                                    <md-icon md-font-set="md">
+                                        cancel
+                                    </md-icon>
+                                    Cancel
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
                                 <md-button>
+                                    <md-icon md-font-set="md">
+                                        mode_edit
+                                    </md-icon>
                                     Edit Info
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
                                 <md-button>
+                                    <md-icon md-font-set="md">
+                                        date_range
+                                    </md-icon>
                                     Request Rescheduling
                                 </md-button>
                             </md-menu-item>

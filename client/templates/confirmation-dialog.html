@@ -13,17 +13,16 @@
                     <md-content class="md-padding">
                         <div layout="row">
                             <div layout="column">
-                                <h1 class="md-display-2">Event Details</h1>
+                                <h1 class="md-display-2">Are You Sure?</h1>
                                 <span flex></span>
-                                <h3>Are You Sure?</h3>
+                                <h3>Event Details</h3>
                                 <h4>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
                                 <h4>{{startDate|longDate}} to {{endDate|longDate}}</h4>
                                 <br>
                             </div>
                             <span flex></span>
-                            <div layout="column" style="width: 50%">
+                            <div layout="column" style="width: 50%; padding: 0 15px 0 15px">
                                 <h1 class="md-display-2">Notes: </h1>
-                                <h4>optional</h4>
                                 <textarea style="height: 100%" ng-model="notes" class="form-control"></textarea>
                                 <br>
                             </div>

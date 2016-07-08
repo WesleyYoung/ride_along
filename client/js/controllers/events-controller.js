@@ -12,8 +12,9 @@
     function eventsController($http, $mdDialog, $mdMedia){
         var ec = this;
 
-        ec.rideAlongs = [];
-
+        ec.rideAlongs=[];
+        ec.searchText="";
+        
         ec.showRADetails=showRADetails;
         
         ec.removeRA=function(index){
@@ -24,6 +25,17 @@
                     getEvents()
                 }else{
                     console.log("There was an issue deleting the ride-along")
+                }
+            })
+        };
+        
+        ec.changeStatus=function(index, status){
+            ec.rideAlongs[index].status=status;
+            $http.post('/changeRAStatus', ec.rideAlongs[index]).then(results=>{
+                if(results.data.success==true){
+                    getEvents();
+                }else{
+                    console.log("There was an issue changing the status of the ride-along")
                 }
             })
         };
@@ -48,6 +60,10 @@
 
         function DialogController($scope, $mdDialog){
             $scope.rideAlong = ec.selectedRideAlong;
+            
+            $scope.close=function(){
+                $mdDialog.cancel();
+            }
         }
 
         getEvents();

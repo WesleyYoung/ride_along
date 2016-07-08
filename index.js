@@ -21,16 +21,73 @@ var smtpTransport = require('nodemailer-smtp-transport');
 
 var transporter = nodemailer.createTransport("smtps://xactridealong%40gmail.com:XactWare4$6^8*@smtp.gmail.com");
 
+const fs = require('fs');
 
+
+app.get('/openRideAlongs', function(req, res){
+    fs.readFile('activeRideAlongs.json', (err, data)=>{
+        res.end(data);
+    })
+});
+
+app.post('/deleteRideAlong', function(req, res){
+    var holder = [],
+        toBeDeleted = req.body,
+        successful = false;
+    //console.log(toBeDeleted);
+    fs.readFile('activeRideAlongs.json', (err, data)=>{
+        if(err)throw err;
+        holder= JSON.parse(data);
+        for(var i=0;i<holder.length;i++){
+            //console.log(holder[i]);
+            if(holder[i].name==toBeDeleted.name&&holder[i].startDate==toBeDeleted.startDate&&holder[i].endDate==toBeDeleted.endDate&&holder[i].region==toBeDeleted.region){
+                holder.splice(i, 1);
+                i=holder.length;
+                successful=true;
+            }
+        }
+        fs.writeFile('activeRideAlongs.json', JSON.stringify(holder));
+        res.end(JSON.stringify({success: successful}));
+    })    
+});
+
+app.post('/changeRAStatus', function(req, res){
+    var holder = [],
+        toBeChanged=req.body,
+        successful=false;
+    fs.readFile('activeRideAlongs.json', (err, data)=>{
+        if(err)throw err;
+        holder=JSON.parse(data);
+        console.log(holder);
+        for(var i=0;i<holder.length;i++){
+            if(holder[i].name==toBeChanged.name&&holder[i].startDate==toBeChanged.startDate&&holder[i].endDate==toBeChanged.endDate&&holder[i].region==toBeChanged.region){
+                holder[i].status=toBeChanged.status;
+                i=holder.length;
+                successful=true;
+            }
+        }
+        if(successful)fs.writeFile('activeRideAlongs.json', JSON.stringify(holder));
+        res.end(JSON.stringify({success: successful}));
+    })
+});
 
 
 app.post('/formSubmit', function(req, res){
-
-
+    
     //Here would be the logic in which we decide what emails go out to who
-    var emails = ["wesley.young.portfolio@gmail.com", "8016633893@vtext.com"];
+    var emails = [
+        //"wesley.young.portfolio@gmail.com", 
+        //"8016633893@vtext.com"
+    ],
+        storeObj=[];
 
-    console.log(req.body);
+    //console.log(req.body);
+
+    fs.readFile('activeRideAlongs.json', (err,data)=>{
+        storeObj=JSON.parse(data);
+        storeObj.push(req.body);
+        fs.writeFile('activeRideAlongs.json', JSON.stringify(storeObj))
+    });
 
     var name = req.body.name,
         employeeEmail = req.body.email,
@@ -66,7 +123,6 @@ app.post('/formSubmit', function(req, res){
                 <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
                 `
         };
-
         transporter.sendMail(mailOptions, function(err, info){
             if(err){
                 return console.log(err)
@@ -82,16 +138,13 @@ app.post('/formSubmit', function(req, res){
         });
     }
 
-    sendEmail(emails[counter]);
-
-
+    if(emails.length!==0)sendEmail(emails[counter]);
+    
     res.end();
 });
 
-var port = 3344;
-server.listen(port, function() {
-    console.log(`App listening on port ${port}...`);
-});
+
+
 
 // verify connection configuration
 transporter.verify(function(error, success) {
@@ -127,3 +180,9 @@ String.prototype.regionToNormal=function(){
         }
         return out.join(" ");
 };
+
+
+var port = 3344;
+server.listen(port, function() {
+    console.log(`App listening on port ${port}...`);
+});

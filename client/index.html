@@ -72,44 +72,10 @@
             <div class="side-menu-container">
                 <ul class="nav navbar-nav">
 
-                    <li ng-class="{active: nav.isActive('/main')}"><a href="#/main"><i class="fa fa-home"></i> Home</a></li>
-                    <li ng-class="{active: nav.isActive('/reporting')}"><a href="#/reporting"><i class="fa fa-list"></i> Reporting</a></li>
-                    <li ng-class="{active: nav.isActive('/events')}"><a href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</a></li>
-                    <li ng-class="{active: nav.isActive('/eventCreator')}"><a href="#/eventCreator"><i class="fa fa-pencil-square-o"></i> Create Event</a></li>
-
-                    <!-- Dropdown-->
-                    <li class="panel panel-default" id="dropdown">
-                        <a data-toggle="collapse" data-target="#dropdown-lvl1">
-                            <i class="fa fa-wrench" aria-hidden="true"></i> Tools <span class="caret"></span>
-                        </a>
-
-                        <!-- Dropdown level 1 -->
-                        <div id="dropdown-lvl1" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <ul class="nav navbar-nav">
-                                    <li><a href="#">Tool 1</a></li>
-                                    <li><a href="#">Tool 2</a></li>
-                                    <li><a href="#">Tool 3</a></li>
-
-                                    <!-- Dropdown level 2 -->
-                                    <li class="panel panel-default" id="dropdown">
-                                        <a data-toggle="collapse" data-target="#dropdown-lvl2">
-                                            Sub Level <span class="caret"></span>
-                                        </a>
-                                        <div id="dropdown-lvl2" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <ul class="nav navbar-nav">
-                                                    <li><a href="#">Tool 4</a></li>
-                                                    <li><a href="#">Tool 5</a></li>
-                                                    <li><a href="#">Tool 6</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
+                    <li ng-class="{active: nav.isActive('/main')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/main"><i class="fa fa-home"></i> Home</md-button></li>
+                    <li ng-class="{active: nav.isActive('/reporting')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/reporting"><i class="fa fa-list"></i> Reporting</md-button></li>
+                    <li ng-class="{active: nav.isActive('/events')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</md-button></li>
+                    <li ng-class="{active: nav.isActive('/eventCreator')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/eventCreator"><i class="fa fa-pencil-square-o"></i> Create Event</md-button></li>
                 </ul>
             </div>
         </nav>

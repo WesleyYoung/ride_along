@@ -105,14 +105,14 @@
                     county: $scope.countyName,
                     notes: $scope.notes,
                     creationDate: new Date(),
-                    open: true
+                    status: "UNAPPROVED"
                 };
                 $http.post('/formSubmit', postObj).then(function() {
-                    window.alert('Submition successful!');
+                    console.log('Submition successful!');
+                }, function(err){
+                    if(err)throw err;
                 });
                 $mdDialog.hide();
-
-
             };
 
         }
