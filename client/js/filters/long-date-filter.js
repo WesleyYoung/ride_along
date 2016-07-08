@@ -15,14 +15,22 @@
             "November", "December"
         ];
 
-        return function(input){
-            if(input!==undefined && typeof input == 'object' ){
-                var day = input.getDate(),
-                    month = input.getMonth(),
-                    year = input.getFullYear(),
-                    suffix = day=="1"||day=="21"||day=="31"?"st":day=="2"||day=="22"?"nd":day=="3"||day=="23"?"rd":"th";
+        function convert(input){
+            var day = input.getDate(),
+                month = input.getMonth(),
+                year = input.getFullYear(),
+                suffix = day=="1"||day=="21"||day=="31"?"st":day=="2"||day=="22"?"nd":day=="3"||day=="23"?"rd":"th";
 
-                return monthNames[month] + " " + day + suffix + " " + year
+            return monthNames[month] + " " + day + suffix + " " + year
+        }
+
+        return function(input){
+            if(input!==undefined){
+                if(typeof input == 'object'){
+                    return convert(input)
+                }else if(typeof input == 'string'){
+                    return convert(new Date(input))
+                }
             }else{
                 return input;
             }

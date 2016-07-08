@@ -1,0 +1,34 @@
+<md-dialog ng-cloak style="width: 100%; max-width: 800px">
+    <form>
+        <md-toolbar style="background-color: grey">
+        <div class="md-toolbar-tools">
+            <img style="height: 100%" src="imgs/verisk_small.png">
+            <h2>Ride-Along</h2>
+            <span flex></span>
+        </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <h1 class="md-display-2">{{rideAlong.name}}</h1>
+                <h2>{{rideAlong.startDate|longDate}} to {{rideAlong.endDate|longDate}}</h2>
+                <h3>{{rideAlong.email}}</h3>
+                <h3>{{rideAlong.phone}}</h3>
+                <h4>{{rideAlong.county|regionToNormal}}, {{rideAlong.province|regionToNormal}} - {{rideAlong.region|regionToNormal}}</h4>
+                <h4>{{rideAlong.startDate|longDate}} to {{rideAlong.endDate|longDate}}</h4>
+                <br>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
+                More on Wikipedia
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="">
+                Not Useful
+            </md-button>
+            <md-button ng-click="">
+                Useful
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

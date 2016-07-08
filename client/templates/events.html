@@ -12,12 +12,19 @@
                 <h3>
                     <span>Events</span>
                 </h3>
+                <span flex></span>
+                <md-button>Filter</md-button>
             </div>
         </md-toolbar>
-        <md-list flex>
-            <md-list-item class="md-3-line" ng-repeat="item in ec.rideAlongs" ng-click="null">
+        <div ng-if="ec.rideAlongs.length==0">
+            <h2 style="padding: 25px 0 50px 0">No Ride-Alongs</h2>
+        </div>
+        <md-list flex ng-if="ec.rideAlongs.length!==0">
+            <md-list-item class="md-3-line" ng-repeat="item in ec.rideAlongs" ng-click="ec.showRADetails($event, item)">
                 <div class="md-list-item-text" layout="column">
                     <h2>{{item.name}}</h2>
+                    <h3 ng-if="item.open" style="color: green">OPEN</h3><h3 ng-if="!item.open" style="color: red">ACCEPTED</h3>
+                    <h3>{{item.startDate|longDate}} to {{item.endDate|longDate}}</h3>
                     <h3>{{ item.county|regionToNormal}}, {{ item.province|regionToNormal }}</h3>
                     <h4>{{ item.region|regionToNormal }}</h4>
                     <h2></h2>
@@ -25,35 +32,46 @@
                 </div>
                 <span flex></span>
                 <div layout="row">
-                    <md-fab-speed-dial md-open="false" md-direction="left" class="md-primary md-fling ng-isolate-scope _md-animations-ready md-left">
-                        <md-fab-trigger>
-                            <md-button aria-label="menu" class="md-fab md-primary">
-                                <md-icon md-font-set="md" class="">
-                                    build
-                                </md-icon>
-                            </md-button>
-                        </md-fab-trigger>
-                        <md-fab-actions>
-                            <md-button class="md-fab md-primary">
-                                Hello!
-                            </md-button>
-                            <md-button class="md-fab md-accent">
-                                Hello!
-                            </md-button>
-                            <md-button class="md-fab md-warn">
-                                Hello!
-                            </md-button>
-                        </md-fab-actions>
-                    </md-fab-speed-dial>
                     <md-button class="md-accent md-fab" style="height: 100%">
+                        <md-tooltip md-direction="top">
+                            Send an email to {{item.name}}
+                        </md-tooltip>
                         <md-icon md-font-set="md" class="">
-                            chat_bubble_outline
+                            email
                         </md-icon>
                     </md-button>
+                    <md-menu aria-label="Open phone interactions menu" md-position-mode="target-right target" style="padding: 0">
+                        <md-button aria-label="menu" class="md-fab md-primary" ng-click="$mdOpenMenu()">
+                            <md-tooltip md-direction="top">
+                                Options
+                            </md-tooltip>
+                            <md-icon md-font-set="md" class="">
+                                build
+                            </md-icon>
+                        </md-button>
+                        <md-menu-content width="5">
+                            <md-menu-item>
+                                <md-button ng-click="ec.removeRA($index)">
+                                    Delete
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    Edit Info
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    Request Rescheduling
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
                 </div>
             </md-list-item>
             <br>
         </md-list>
+
     </div>
 </md-content>
 

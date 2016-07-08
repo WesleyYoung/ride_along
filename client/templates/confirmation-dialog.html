@@ -1,4 +1,4 @@
-<md-dialog aria-label="Mango (Fruit)" style="width: 100%; max-width: 800px">
+<md-dialog aria-label="" style="width: 100%; max-width: 800px">
     <form>
         <md-toolbar style="background-color: grey">
             <div class="md-toolbar-tools">
@@ -11,16 +11,23 @@
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="one">
                     <md-content class="md-padding">
-                        <h1 class="md-display-2">Event Details</h1>
-                        <span flex></span>
-                        <h3>Are You Sure?</h3>
-                        <h4>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
-                        <h4>{{startDate|longDate}} to {{endDate|longDate}}</h4>
-                        <br>
-                        <h2>Notes: </h2>
-                        <textarea ng-model="notes" class="form-control"></textarea>
-                        <br>
-                        <br>
+                        <div layout="row">
+                            <div layout="column">
+                                <h1 class="md-display-2">Event Details</h1>
+                                <span flex></span>
+                                <h3>Are You Sure?</h3>
+                                <h4>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
+                                <h4>{{startDate|longDate}} to {{endDate|longDate}}</h4>
+                                <br>
+                            </div>
+                            <span flex></span>
+                            <div layout="column" style="width: 50%">
+                                <h1 class="md-display-2">Notes: </h1>
+                                <h4>optional</h4>
+                                <textarea style="height: 100%" ng-model="notes" class="form-control"></textarea>
+                                <br>
+                            </div>
+                        </div>
                         <p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{name}}) agree to accept any valid responses from ride along partners from {{startDate|longDate}} to {{endDate|longDate}}</p>
                     </md-content>
                 </md-tab>

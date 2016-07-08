@@ -7,18 +7,50 @@
     angular.module('events-controller', [])
         .controller('events-controller', eventsController);
     
-    eventsController.$inject=["$http"];
+    eventsController.$inject=["$http", "$mdDialog", "$mdMedia"];
     
-    function eventsController($http){
+    function eventsController($http, $mdDialog, $mdMedia){
         var ec = this;
 
         ec.rideAlongs = [];
 
-        $http.get('/openRideAlongs').then(results=>{
-            ec.rideAlongs=results.data;
-            console.log(ec.rideAlongs);
-        })
+        ec.showRADetails=showRADetails;
+        
+        ec.removeRA=function(index){
+            console.log(index);
 
+            $http.post('/deleteRideAlong', ec.rideAlongs[index]).then(results=>{
+                if(results.data.success==true){
+                    getEvents()
+                }else{
+                    console.log("There was an issue deleting the ride-along")
+                }
+            })
+        };
+
+        function getEvents(){
+            $http.get('/openRideAlongs').then(results=>{
+                ec.rideAlongs=results.data;
+                console.log(ec.rideAlongs);
+            })
+        }
+
+        function showRADetails(ev, ra){
+            ec.selectedRideAlong=ra;
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'templates/event-view-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true
+            })
+        }
+
+        function DialogController($scope, $mdDialog){
+            $scope.rideAlong = ec.selectedRideAlong;
+        }
+
+        getEvents();
     }
     
     

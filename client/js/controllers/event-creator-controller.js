@@ -77,6 +77,9 @@
             $scope.startDate=ecc.startDate;
             $scope.endDate=ecc.endDate;
 
+            $scope.department = ecc.department;
+            $scope.phone = ecc.phone;
+
             $scope.notes=ecc.notes;
 
             $scope.email=ecc.email;
@@ -93,13 +96,16 @@
                 var postObj = {
                     name: $scope.name,
                     email: $scope.email,
+                    phone: $scope.phone,
+                    department: $scope.department,
                     startDate: $scope.startDate,
                     endDate: $scope.endDate,
                     region: $scope.selectedRegion.name,
                     province: $scope.provinceName,
                     county: $scope.countyName,
                     notes: $scope.notes,
-                    creationDate: new Date()
+                    creationDate: new Date(),
+                    open: true
                 };
                 $http.post('/formSubmit', postObj).then(function() {
                     window.alert('Submition successful!');

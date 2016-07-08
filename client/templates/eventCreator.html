@@ -7,7 +7,7 @@
 </head>
 <body style="background-color: transparent">
 <!--<div style="background-size: 100%; background-image: url('imgs/bg.jpg');  background-repeat: no-repeat;background-attachment: fixed; width: 2000px">-->
-<md-content style="background-color: transparent">
+<md-content style="background-color: transparent" style="width: 98%">
     <div style="max-width: 1000px; width: 100%; height: 100%; text-align: center; margin: 10px; background-color: rgba(255, 255, 255, .9);; ">
         <div  layout="column" ng-cloak class="md-inline-form" >
             <md-toolbar>
@@ -20,7 +20,8 @@
             <md-content style="background-color: transparent; padding: 25px; margin: 0 !important;">
                 <div>
                     <form name="userForm">
-                        <h3>Please enter your contact information</h3>
+                        <h2>Please enter your contact information</h2>
+                        <br>
                         <br>
                         <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-xs>
@@ -72,7 +73,7 @@
                         </md-datepicker>
                         <br>
                         <br>
-                        <md-button ng-disabled="ecc.name==undefined||ecc.startDate==undefined||ecc.endDate==undefined||ecc.email==undefined" class="md-raised md-primary event-submit-btn" aria-label="Submit" ng-click="ecc.showTabDialog($event)">SUBMIT</md-button>
+                        <md-button ng-disabled="ecc.name==undefined||ecc.startDate==undefined||ecc.endDate==undefined||ecc.email==undefined" class="md-raised md-accent event-submit-btn" aria-label="Submit" ng-click="ecc.showTabDialog($event)">SUBMIT</md-button>
                     </form>
                 </div>
             </md-content>
