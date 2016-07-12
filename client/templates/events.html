@@ -99,8 +99,8 @@
                 </div>
             </md-list-item>
         </md-list>
-        <div style="height: 50px; width: 100%; padding: 5px 15px 5px 15px; background-color: rgba(150, 159, 153, 0.31)" layout="row">
-            <h4>Total: {{ec.rideAlongs.length}}</h4>
+        <div style="height: 50px; width: 100%; padding: 10px 15px 5px 15px; background-color: rgba(150, 159, 153, 0.31)" layout="row">
+            <h4 style="margin: 0 15px 0 15px" ng-repeat="(status, count) in ec.counts">{{status + ': ' + count + '   '}}</h4>
         </div>
     </div>
 </md-content>

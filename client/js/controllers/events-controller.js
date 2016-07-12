@@ -13,6 +13,7 @@
         var ec = this;
 
         ec.rideAlongs=[];
+        ec.counts={Total: 0, Open: 0, Unapproved: 0, Cancelled: 0, Accepted: 0};
         ec.searchText="";
         
         ec.showRADetails=showRADetails;
@@ -53,6 +54,14 @@
         function getEvents(){
             $http.get('/openRideAlongs').then(results=>{
                 ec.rideAlongs=results.data;
+                for(var i=0;i<results.data.length;i++){
+                    if(results.data[i].status=="OPEN")ec.counts.Open+=1;
+                    else if(results.data[i].status=="UNAPPROVED")ec.counts.Unapproved+=1;
+                    else if(results.data[i].status=="ACCEPTED")ec.counts.Accepted+=1;
+                    else if(results.data[i].status=="CANCELLED")ec.counts.Cancelled+=1;
+                    
+                    ec.counts.Total+=1;
+                }
                 //console.log(results.data);
             })
         }
