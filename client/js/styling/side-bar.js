@@ -1,4 +1,4 @@
-$(function () {
+(function () {
     $('.navbar-toggle').click(function () {
         $('.navbar-nav').toggleClass('slide-in');
         $('.side-body').toggleClass('body-slide-in');
@@ -18,4 +18,4 @@ $(function () {
         //$('.absolute-wrapper').removeClass('slide-in');
 
     });
-});
+})();

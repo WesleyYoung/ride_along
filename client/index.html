@@ -18,12 +18,10 @@
 
 </head>
 <body>
-
 <div class="container-fluid top-logo">
     <img class="banner-img" src="imgs/main-logo-2.png">
 </div>
-
-<div class="row" ng-controller="nav-controller as nav" style="height: 100%">
+<div class="bg" ng-controller="nav-controller as nav" style="height: 100%;">
     <!-- uncomment code for absolute positioning tweek see top comment in css -->
     <!-- <div class="absolute-wrapper"> </div> -->
     <!-- Menu -->
@@ -44,7 +42,7 @@
                     <!-- Brand -->
                     <div class="brand-name-wrapper">
                         <a class="navbar-brand">
-                            Xactware Scheduler
+                            Xactware
                         </a>
                     </div>
 
@@ -72,10 +70,10 @@
             <div class="side-menu-container">
                 <ul class="nav navbar-nav">
 
-                    <li ng-class="{active: nav.isActive('/main')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/main"><i class="fa fa-home"></i> Home</md-button></li>
-                    <li ng-class="{active: nav.isActive('/reporting')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/reporting"><i class="fa fa-list"></i> Reporting</md-button></li>
-                    <li ng-class="{active: nav.isActive('/events')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</md-button></li>
-                    <li ng-class="{active: nav.isActive('/eventCreator')}"><md-button style="margin: 0; text-align: left; text-transform: none" href="#/eventCreator"><i class="fa fa-pencil-square-o"></i> Create Event</md-button></li>
+                    <li ng-class="{active: nav.isActive('/main')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/main"><i class="fa fa-home"></i> Home</md-button></li>
+                    <li ng-class="{active: nav.isActive('/reporting')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/reporting"><i class="fa fa-list"></i> Reporting</md-button></li>
+                    <li ng-class="{active: nav.isActive('/events')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</md-button></li>
+                    <li ng-class="{active: nav.isActive('/eventCreator')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/eventCreator"><i class="fa fa-pencil-square-o"></i> Create Event</md-button></li>
                 </ul>
             </div>
         </nav>
@@ -84,8 +82,8 @@
 
     <!-- Main Content -->
     <div style="height: 100%">
-        <div class="side-body bg">
-            <div ui-view class="ui-window" style="background-color: transparent"></div>
+        <div class="side-body">
+            <div ui-view class="ui-window" style="background-color: transparent;"></div>
         </div>
     </div>
 </div>

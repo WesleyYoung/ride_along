@@ -1,5 +1,5 @@
 .top-logo{
-    height: 200px;
+    height: 150px;
     width: 100%;
     background-color: grey;
     /*background-image: url('../imgs/main-building.png');*/
@@ -16,6 +16,7 @@
 
 .banner-img{
     max-width: 500px;
+    width: 100%;
 }
 
 .ui-window{
@@ -90,4 +91,12 @@ md-select {
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+}
+
+.data-holder{
+    max-width: 1000px;
+    width: 95%;
+    text-align: center;
+    margin: 10px;
+    background-color: rgba(255, 255, 255, .9);
 }

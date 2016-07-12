@@ -12,18 +12,19 @@
     function fold($animateCss){
         return {
             enter: function(element, doneFn) {
-                var height = element[0].offsetHeight;
+                var height = element[0].clientHeight;
+                //console.log(element);
                 return $animateCss(element, {
-                    from: { height:'0px', opacity: 0 },
-                    to: { height:'100%', opacity: 1 },
+                    from: {opacity: 0 },
+                    to: {opacity: 1 },
                     duration: .4
                 });
             },
             leave: function(element, doneFn){
                 return $animateCss(element, {
-                    from: { opacity: 1},
-                    to: { opacity: 0},
-                    duration: .3
+                    from: {width: '100%', opacity: 1},
+                    to: {width: '50%', opacity: 0},
+                    duration: .2
                 });
             },
             move: function(element, doneFn){

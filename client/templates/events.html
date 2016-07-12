@@ -5,9 +5,9 @@
     <title>Event Schedules</title>
 </head>
 <body>
-<md-content style="background-color: transparent">
-    <div style="max-width: 1000px; width: 95%; height: 100%; text-align: center; margin: 10px; background-color: rgba(255, 255, 255, .9);">
-        <md-toolbar md-scroll-shrink ng-if="true">
+<md-content style="background-color: transparent; height: 100%">
+    <div class="data-holder">
+        <md-toolbar>
             <div class="md-toolbar-tools">
                 <h3>
                     <span>Events</span>
@@ -20,19 +20,19 @@
         <div ng-if="ec.rideAlongs.length==0">
             <h2 style="padding: 25px 0 50px 0">No Ride-Alongs</h2>
         </div>
-        <md-list flex ng-if="ec.rideAlongs.length!==0">
-            <md-list-item class="md-3-line" ng-repeat="item in ec.rideAlongs | filter:ec.searchText" ng-click="ec.showRADetails($event, item)">
+        <md-list flex ng-if="ec.rideAlongs.length!==0" style="overflow-y: scroll; height: 1000px">
+            <md-list-item class="md-3-line" ng-repeat="item in ec.rideAlongs | filter:ec.searchText" ng-click="ec.showRADetails($event, $index, item)">
                 <div class="md-list-item-text" layout="column">
                     <h2>{{item.name}}</h2>
                     <h3 ng-if="item.status=='UNAPPROVED'" style="color: #ffc520">PENDING APPROVAL</h3>
-                    <h3 ng-if="item.status=='OPEN'" style="color: green">OPEN</h3>
-                    <h3 ng-if="item.status=='ACCEPTED'" style="color: orangered">ACCEPTED</h3>
+                    <h3 ng-if="item.status=='OPEN'" style="color: dodgerblue">OPEN</h3>
+                    <h3 ng-if="item.status=='ACCEPTED'" style="color: forestgreen">ACCEPTED</h3>
                     <h3 ng-if="item.status=='CANCELLED'" style="color: red">CANCELLED</h3>
                     <h3>{{item.startDate|longDate}} to {{item.endDate|longDate}}</h3>
-                    <h3>{{ item.county|regionToNormal}}, {{ item.province|regionToNormal }}</h3>
-                    <h4>{{ item.region|regionToNormal }}</h4>
+                    <h3>{{ item.county|regionToNormal}}, {{ item.province|regionToNormal }} - {{ item.region|regionToNormal }}</h3>
+                    <!--<h4></h4>-->
                     <h2></h2>
-                    <md-divider ng-if="!$last"></md-divider>
+                    <md-divider></md-divider>
                 </div>
                 <span flex></span>
                 <div layout="row">
@@ -54,15 +54,15 @@
                             </md-icon>
                         </md-button>
                         <md-menu-content width="5">
-                            <md-menu-item>
-                                <md-button ng-click="ec.removeRA($index)">
+                            <md-menu-item ng-if="item.status!=='OPEN'" class="fold">
+                                <md-button ng-click="ec.changeStatus($index, 'OPEN')">
                                     <md-icon md-font-set="md">
-                                        delete_forever
+                                        check
                                     </md-icon>
-                                    Delete
+                                    Approve
                                 </md-button>
                             </md-menu-item>
-                            <md-menu-item>
+                            <md-menu-item ng-if="item.status!=='CANCELLED'" class="fold">
                                 <md-button ng-click="ec.changeStatus($index, 'CANCELLED')">
                                     <md-icon md-font-set="md">
                                         cancel
@@ -86,13 +86,22 @@
                                     Request Rescheduling
                                 </md-button>
                             </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="ec.removeRA($index, $event)">
+                                    <md-icon md-font-set="md">
+                                        delete_forever
+                                    </md-icon>
+                                    Delete
+                                </md-button>
+                            </md-menu-item>
                         </md-menu-content>
                     </md-menu>
                 </div>
             </md-list-item>
-            <br>
         </md-list>
-
+        <div style="height: 50px; width: 100%; padding: 5px 15px 5px 15px; background-color: rgba(150, 159, 153, 0.31)" layout="row">
+            <h4>Total: {{ec.rideAlongs.length}}</h4>
+        </div>
     </div>
 </md-content>
 

@@ -17,16 +17,26 @@
         
         ec.showRADetails=showRADetails;
         
-        ec.removeRA=function(index){
-            console.log(index);
-
-            $http.post('/deleteRideAlong', ec.rideAlongs[index]).then(results=>{
-                if(results.data.success==true){
-                    getEvents()
-                }else{
-                    console.log("There was an issue deleting the ride-along")
-                }
-            })
+        ec.removeRA=function(index, ev){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure you\'d like to delete this ride-along?')
+                .textContent('As of now, this action cannot be undone')
+                .ariaLabel('Delete ride along')
+                .targetEvent(ev)
+                .ok('Delete')
+                .cancel('Cancel');
+            $mdDialog.show(confirm).then(function() {
+                $http.post('/deleteRideAlong', ec.rideAlongs[index]).then(results=>{
+                    if(results.data.success==true){
+                        getEvents()
+                    }else{
+                        console.log("There was an issue deleting the ride-along")
+                    }
+                })
+            }, function() {
+                
+            });
         };
         
         ec.changeStatus=function(index, status){
@@ -43,12 +53,13 @@
         function getEvents(){
             $http.get('/openRideAlongs').then(results=>{
                 ec.rideAlongs=results.data;
-                console.log(ec.rideAlongs);
+                //console.log(results.data);
             })
         }
 
-        function showRADetails(ev, ra){
+        function showRADetails(ev, ind, ra){
             ec.selectedRideAlong=ra;
+            ec.selectedIndex=ind;
             $mdDialog.show({
                 controller: DialogController,
                 templateUrl: 'templates/event-view-dialog.html',
@@ -60,6 +71,10 @@
 
         function DialogController($scope, $mdDialog){
             $scope.rideAlong = ec.selectedRideAlong;
+            $scope.selectedIndex=ec.selectedIndex;
+            
+            $scope.remove = ec.removeRA;
+            $scope.changeStatus = ec.changeStatus;
             
             $scope.close=function(){
                 $mdDialog.cancel();

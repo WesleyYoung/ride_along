@@ -5,6 +5,9 @@
             <img style="height: 100%" src="imgs/verisk_small.png">
             <h2>Ride-Along</h2>
             <span flex></span>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon md-font-set="md">close</md-icon>
+            </md-button>
         </div>
         </md-toolbar>
         <md-dialog-content>
@@ -19,7 +22,7 @@
             </div>
         </md-dialog-content>
         <md-dialog-actions layout="row">
-            <md-button class="md-warn">
+            <md-button class="md-warn" ng-click="remove(selectedIndex, $event); close()">
                 <md-icon md-font-set="md">
                     delete_forever
                 </md-icon>
@@ -29,8 +32,11 @@
             <md-button class="md-primary" ng-click="close()">
                 Close
             </md-button>
-            <md-button ng-click="">
-                Useful
+            <md-button class="md-raised md-warn" ng-click="changeStatus(selectedIndex, 'CANCELLED'); close()">
+                Cancel
+            </md-button>
+            <md-button class="md-raised md-accent" ng-click="changeStatus(selectedIndex, 'OPEN'); close()">
+                Approve
             </md-button>
         </md-dialog-actions>
     </form>

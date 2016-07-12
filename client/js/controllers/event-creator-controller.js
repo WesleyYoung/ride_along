@@ -109,6 +109,15 @@
                 };
                 $http.post('/formSubmit', postObj).then(function() {
                     console.log('Submition successful!');
+                    $mdDialog.show(
+                        $mdDialog.alert()
+                            .parent(angular.element(document.querySelector('#popupContainer')))
+                            .clickOutsideToClose(true)
+                            .title('Submission Successful!')
+                            .textContent('The appropriate vendors have been notified of your ride-along')
+                            .ariaLabel('Submission Successful')
+                            .ok('Got it!')
+                    );
                 }, function(err){
                     if(err)throw err;
                 });
