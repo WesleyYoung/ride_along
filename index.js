@@ -76,20 +76,12 @@ app.post('/formSubmit', function(req, res){
     
     //Here would be the logic in which we decide what emails go out to who
     var emails = [
-        //"wesley.young.portfolio@gmail.com", 
+        "wesley.young.portfolio@gmail.com"
         //"8016633893@vtext.com"
-    ],
-        storeObj=[];
-
-    //console.log(req.body);
-
-    fs.readFile('activeRideAlongs.json', (err,data)=>{
-        storeObj=JSON.parse(data);
-        storeObj.push(req.body);
-        fs.writeFile('activeRideAlongs.json', JSON.stringify(storeObj))
-    });
+    ], storeObj=[];
 
     var name = req.body.name,
+        status= req.body.status,
         employeeEmail = req.body.email,
         region = req.body.region,
         province = req.body.province,
@@ -97,7 +89,28 @@ app.post('/formSubmit', function(req, res){
         startDateObj = new Date(req.body.startDate),
         endDateObj = new Date(req.body.endDate),
         notes = req.body.notes,
+        phone = req.body.phone,
+        created = new Date(req.body.creationDate),
         counter = 0;
+
+    fs.readFile('activeRideAlongs.json', (err,data)=>{
+        storeObj=JSON.parse(data);
+        storeObj.push({
+            name: name,
+            status: status,
+            email: employeeEmail, 
+            region: region, 
+            province: province, 
+            county: county, 
+            startDate: startDateObj, 
+            endDate: endDateObj, 
+            notes: notes, 
+            phone: phone, 
+            notified: emails,
+            creationDate: created
+        });
+        fs.writeFile('activeRideAlongs.json', JSON.stringify(storeObj))
+    });
 
     function sendEmail(em){
         counter++;
@@ -182,7 +195,7 @@ String.prototype.regionToNormal=function(){
 };
 
 
-var port = 3344;
+var port = 8000;
 server.listen(port, function() {
     console.log(`App listening on port ${port}...`);
 });
