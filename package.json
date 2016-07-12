@@ -11,6 +11,7 @@
     "async": "x.x.x",
     "body-parser": "x.x.x",
     "express": "x.x.x",
+    "fs": "0.0.2",
     "http": "x.x.x",
     "nodemailer-smtp-transport": "x.x.x",
     "socket.io": "x.x.x"
