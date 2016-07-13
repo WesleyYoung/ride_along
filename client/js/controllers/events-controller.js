@@ -7,14 +7,15 @@
     angular.module('events-controller', [])
         .controller('events-controller', eventsController);
     
-    eventsController.$inject=["$http", "$mdDialog", "$mdMedia"];
+    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout"];
     
-    function eventsController($http, $mdDialog, $mdMedia){
+    function eventsController($http, $mdDialog, $mdMedia, $timeout){
         var ec = this;
 
         ec.rideAlongs=[];
         ec.counts={Total: 0, Open: 0, Unapproved: 0, Cancelled: 0, Accepted: 0};
         ec.searchText="";
+        ec.waitingForResponse=false;
         
         ec.showRADetails=showRADetails;
         
@@ -52,17 +53,40 @@
         };
 
         function getEvents(){
+            ec.waitingForResponse=true;
             $http.get('/openRideAlongs').then(results=>{
-                ec.rideAlongs=results.data;
+                var count=0;
+                ec.rideAlongs=[];
+                ec.counts.Total=0;
+                ec.counts.Open=0;
+                ec.counts.Unapproved=0;
+                ec.counts.Accepted=0;
+                ec.counts.Cancelled=0;
                 for(var i=0;i<results.data.length;i++){
                     if(results.data[i].status=="OPEN")ec.counts.Open+=1;
                     else if(results.data[i].status=="UNAPPROVED")ec.counts.Unapproved+=1;
                     else if(results.data[i].status=="ACCEPTED")ec.counts.Accepted+=1;
                     else if(results.data[i].status=="CANCELLED")ec.counts.Cancelled+=1;
-                    
                     ec.counts.Total+=1;
                 }
+                function pushRA(){
+                    if(results.data[count]!==undefined){
+                        ec.rideAlongs.push(results.data[count]);
+                        count+=1;
+                        if(results.data[count]!==undefined){
+                            $timeout(function(){
+                                pushRA();
+                            }, 200)
+                        }
+                    }
+                }
+                $timeout(function(){
+                    ec.waitingForResponse=false;
+                    if(results.data.length!==0)pushRA();
+                }, 750);
                 //console.log(results.data);
+            }, error=>{
+                ec.waitingForResponse=false;
             })
         }
 

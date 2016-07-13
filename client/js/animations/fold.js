@@ -12,12 +12,10 @@
     function fold($animateCss){
         return {
             enter: function(element, doneFn) {
-                var height = element[0].clientHeight;
-                //console.log(element);
                 return $animateCss(element, {
-                    from: {opacity: 0 },
-                    to: {opacity: 1 },
-                    duration: .4
+                    from: {width: '85%', opacity: 0 },
+                    to: {width: '100%', opacity: 1 },
+                    duration: .3
                 });
             },
             leave: function(element, doneFn){

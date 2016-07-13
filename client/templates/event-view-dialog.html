@@ -13,11 +13,15 @@
         <md-dialog-content>
             <div class="md-dialog-content">
                 <h1 class="md-display-2">{{rideAlong.name}}</h1>
-                <h2>{{rideAlong.startDate|longDate}} to {{rideAlong.endDate|longDate}}</h2>
-                <h3>{{rideAlong.email}}</h3>
-                <h3>{{rideAlong.phone}}</h3>
-                <h4>{{rideAlong.county|regionToNormal}}, {{rideAlong.province|regionToNormal}} - {{rideAlong.region|regionToNormal}}</h4>
-                <h4>{{rideAlong.startDate|longDate}} to {{rideAlong.endDate|longDate}}</h4>
+                <h2 ng-if="rideAlong.status=='UNAPPROVED'" style="color: #ffc520; margin:5px">PENDING APPROVAL</h2>
+                <h2 ng-if="rideAlong.status=='OPEN'" style="color: dodgerblue; margin:5px">OPEN</h2>
+                <h2 ng-if="rideAlong.status=='ACCEPTED'" style="color: forestgreen; margin:5px">ACCEPTED</h2>
+                <h2 ng-if="rideAlong.status=='CANCELLED'" style="color: red; margin:5px">CANCELLED</h2>
+                <h2 style="margin: 5px"><md-icon md-font-set="md">date_range</md-icon> {{rideAlong.startDate|longDate}} to {{rideAlong.endDate|longDate}}</h2>
+                <h2 style="margin: 5px"><md-icon md-font-set="md">place</md-icon> {{rideAlong.county|regionToNormal}}, {{rideAlong.province|regionToNormal}} - {{rideAlong.region|regionToNormal}}</h2>
+                <br>
+                <h3 style="margin: 5px"><md-icon md-font-set="md">email</md-icon> {{rideAlong.email}}</h3>
+                <h3 style="margin: 5px"><md-icon md-font-set="md">phone</md-icon> {{rideAlong.phone}}</h3>
                 <br>
             </div>
         </md-dialog-content>
