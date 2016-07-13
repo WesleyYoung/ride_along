@@ -11,19 +11,98 @@
         </div>
         </md-toolbar>
         <md-dialog-content>
-            <div class="md-dialog-content">
-                <h1 class="md-display-2">{{rideAlong.name}}</h1>
-                <h2 ng-if="rideAlong.status=='UNAPPROVED'" style="color: #ffc520; margin:5px">PENDING APPROVAL</h2>
-                <h2 ng-if="rideAlong.status=='OPEN'" style="color: dodgerblue; margin:5px">OPEN</h2>
-                <h2 ng-if="rideAlong.status=='ACCEPTED'" style="color: forestgreen; margin:5px">ACCEPTED</h2>
-                <h2 ng-if="rideAlong.status=='CANCELLED'" style="color: red; margin:5px">CANCELLED</h2>
-                <h2 style="margin: 5px"><md-icon md-font-set="md">date_range</md-icon> {{rideAlong.startDate|longDate}} to {{rideAlong.endDate|longDate}}</h2>
-                <h2 style="margin: 5px"><md-icon md-font-set="md">place</md-icon> {{rideAlong.county|regionToNormal}}, {{rideAlong.province|regionToNormal}} - {{rideAlong.region|regionToNormal}}</h2>
-                <br>
-                <h3 style="margin: 5px"><md-icon md-font-set="md">email</md-icon> {{rideAlong.email}}</h3>
-                <h3 style="margin: 5px"><md-icon md-font-set="md">phone</md-icon> {{rideAlong.phone}}</h3>
-                <br>
-            </div>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Basic Info">
+                    <md-content class="">
+                        <div class="md-dialog-content">
+                            <h1 class="md-display-3">{{rideAlong.name}}</h1>
+                            <h3 ng-if="rideAlong.status=='UNAPPROVED'" style="color: #ffc520; margin:5px">PENDING APPROVAL</h3>
+                            <h3 ng-if="rideAlong.status=='OPEN'" style="color: dodgerblue; margin:5px">OPEN</h3>
+                            <h3 ng-if="rideAlong.status=='ACCEPTED'" style="color: forestgreen; margin:5px">ACCEPTED</h3>
+                            <h3 ng-if="rideAlong.status=='CANCELLED'" style="color: red; margin:5px">CANCELLED</h3>
+                            <md-list ng-cloak>
+                                <md-subheader>Ride-Along Info</md-subheader>
+                                <md-list-item>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="top">
+                                            Window the ride-along will be available through
+                                        </md-tooltip>
+                                        <md-icon md-font-set="md">date_range</md-icon>
+                                    </md-button>
+                                    <h3> {{rideAlong.startDate|longDate}} to {{rideAlong.endDate|longDate}}</h3>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-list-item>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="top">
+                                            Region the ride-along will be available in
+                                        </md-tooltip>
+                                        <md-icon md-font-set="md">place</md-icon>
+                                    </md-button>
+                                    <h3> {{rideAlong.county|regionToNormal}}, {{rideAlong.province|regionToNormal}} - {{rideAlong.region|regionToNormal}}</h3>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-list-item>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="top">Date the ride along was created
+                                        </md-tooltip>
+                                        <md-icon md-font-set="md">create</md-icon>
+                                    </md-button>
+                                    <h3>Added on {{rideAlong.creationDate|longDateTime}}</h3>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-subheader>Contact Information</md-subheader>
+                                <md-list-item>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="top">
+                                            Employee Department
+                                        </md-tooltip>
+                                        <md-icon md-font-set="md">business</md-icon>
+                                    </md-button>
+                                    <h3>{{rideAlong.department}}</h3>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-list-item>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="top">
+                                            Employee Contact Email
+                                        </md-tooltip>
+                                        <md-icon md-font-set="md">email</md-icon>
+                                    </md-button>
+                                    <h3>{{rideAlong.email}}</h3>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-list-item>
+                                    <md-button class="md-icon-button">
+                                        <md-tooltip md-direction="top">
+                                            Employee Contact Phone
+                                        </md-tooltip>
+                                        <md-icon md-font-set="md">phone</md-icon>
+                                    </md-button>
+                                    <h3>{{rideAlong.phone}}</h3>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-list>
+                            <br>
+                        </div>
+                    </md-content>
+
+                </md-tab>
+                <md-tab label="Notified">
+                    <md-content>
+                        <div class="md-dialog-content">
+                            <h1 class="md-display-3">Notified Vendors</h1>
+                            <md-list ng-cloak>
+                                <md-subheader>Emails</md-subheader>
+                                <md-list-item ng-repeat="customer in rideAlong.notified">
+                                    <h3>{{customer}}</h3>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <md-button class="md-warn" ng-click="remove(selectedIndex, $event); close()">

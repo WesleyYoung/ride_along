@@ -13,15 +13,15 @@
         return {
             enter: function(element, doneFn) {
                 return $animateCss(element, {
-                    from: {width: '85%', opacity: 0 },
+                    from: {width: '90%', opacity: 0 },
                     to: {width: '100%', opacity: 1 },
-                    duration: .3
+                    duration: .2
                 });
             },
             leave: function(element, doneFn){
                 return $animateCss(element, {
                     from: {width: '100%', opacity: 1},
-                    to: {width: '50%', opacity: 0},
+                    to: {width: '90%', opacity: 0},
                     duration: .2
                 });
             },

@@ -17,14 +17,15 @@
                 <md-button>Filter</md-button>
             </div>
         </md-toolbar>
-        <div style="height: 800px; padding-top: 200px;" ng-if="ec.waitingForResponse==true">
-            <h1>Loading Ride Alongs...</h1>
-            <md-progress-circular class="md-accent md-hue-1" md-diameter="60"></md-progress-circular>
+        <div style="height: 800px; padding-top: 200px; text-align: center" ng-if="ec.waitingForResponse==true">
+            <h1>Loading Ride Alongs......</h1>
+            <br>
+            <md-progress-circular class="md-accent m" md-diameter="60"></md-progress-circular>
         </div>
         <div ng-if="ec.rideAlongs.length==0&&ec.waitingForResponse==false">
             <h2 style="padding: 25px 0 50px 0">No Ride-Alongs</h2>
         </div>
-        <md-list flex ng-if="ec.rideAlongs.length!==0||ec.waitingForResponse==false" style="overflow-y: scroll; height: 800px">
+        <md-list flex ng-if="ec.rideAlongs.length!==0&&ec.waitingForResponse==false" style="overflow-y: scroll; height: 800px">
             <md-list-item class="md-3-line fold" ng-repeat="item in ec.rideAlongs | filter:ec.searchText" ng-click="ec.showRADetails($event, $index, item)">
                 <div class="md-list-item-text" layout="column">
                     <h2>{{item.name}}</h2>
