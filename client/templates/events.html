@@ -20,7 +20,7 @@
         <div style="height: 800px; padding-top: 200px; text-align: center" ng-if="ec.waitingForResponse==true">
             <h1>Loading Ride Alongs......</h1>
             <br>
-            <md-progress-circular class="md-accent m" md-diameter="60"></md-progress-circular>
+            <md-progress-circular class="md-accent m" md-diameter="60" md-mode="indeterminate"></md-progress-circular>
         </div>
         <div ng-if="ec.rideAlongs.length==0&&ec.waitingForResponse==false">
             <h2 style="padding: 25px 0 50px 0">No Ride-Alongs</h2>

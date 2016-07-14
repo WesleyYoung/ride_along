@@ -24,7 +24,7 @@
                                     </md-tooltip>
                                     <md-icon md-font-set="md">place</md-icon>
                                 </md-button>
-                                <h3>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h3>
+                                <h3>{{ra.countyName|regionToNormal}}, {{ra.provinceName|regionToNormal}} - {{ra.selectedRegion.name|regionToNormal}}</h3>
                                 <md-button class="md-secondary md-primary">Edit</md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
@@ -35,7 +35,7 @@
                                     </md-tooltip>
                                     <md-icon md-font-set="md">date_range</md-icon>
                                 </md-button>
-                                <h3>{{startDate|longDate}} to {{endDate|longDate}}</h3>
+                                <h3>{{ra.startDate|longDate}} to {{ra.endDate|longDate}}</h3>
                                 <md-button class="md-secondary md-primary">Edit</md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
@@ -43,11 +43,26 @@
                             <md-list-item>
                                 <md-button class="md-icon-button">
                                     <md-tooltip md-direction="top">
+                                        Your name
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">account_circle</md-icon>
+                                </md-button>
+                                <h3 ng-if="!edits.name">{{ra.name}}</h3>
+                                <md-input-container class="md-block" ng-if="edits.name" flex-gt-xs style="margin:0 !important; padding-top: 15px;">
+                                    <input ng-model="ra.name">
+                                </md-input-container>
+                                <md-button ng-if="!edits.name" class="md-secondary md-primary" ng-click="editField('name')">Edit</md-button>
+                                <md-button ng-if="edits.name" class="md-secondary md-accent" ng-click="editField('name')">Accept</md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
                                         Your department
                                     </md-tooltip>
                                     <md-icon md-font-set="md">business</md-icon>
                                 </md-button>
-                                <h3>{{department}}</h3>
+                                <h3>{{ra.department}}</h3>
                                 <md-button class="md-secondary md-primary">Edit</md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
@@ -58,7 +73,7 @@
                                     </md-tooltip>
                                     <md-icon md-font-set="md">email</md-icon>
                                 </md-button>
-                                <h3>{{email}}</h3>
+                                <h3>{{ra.email}}</h3>
                                 <md-button class="md-secondary md-primary">Edit</md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
@@ -69,7 +84,7 @@
                                     </md-tooltip>
                                     <md-icon md-font-set="md">phone</md-icon>
                                 </md-button>
-                                <h3>{{phone}}</h3>
+                                <h3>{{ra.phone}}</h3>
                                 <md-button class="md-secondary md-primary">Edit</md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
@@ -89,7 +104,7 @@
                                 <br>
                             </div>
                         </div>-->
-                        <p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{name}}) agree to accept any valid responses from ride along partners from {{startDate|longDate}} to {{endDate|longDate}}</p>
+                        <p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{ra.name}}) agree to accept any valid responses from ride along partners from {{ra.startDate|longDate}} to {{ra.endDate|longDate}}</p>
                     </md-content>
                 </md-tab>
                 <md-tab label="two">
@@ -116,7 +131,7 @@
             <md-button ng-click="cancel()" >
                 Cancel
             </md-button>
-            <md-button class="md-primary md-raised" ng-click="confirm()" style="margin-right:20px;" >
+            <md-button class="md-primary md-raised" ng-click="confirm()" style="margin-right:20px;" ng-disabled="edits.name||edits.region||edits.department||edits.phone||edits.province||edits.email||edits.county">
                 Confirm
             </md-button>
         </md-dialog-actions>

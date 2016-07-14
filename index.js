@@ -58,7 +58,6 @@ app.post('/changeRAStatus', function(req, res){
     fs.readFile('activeRideAlongs.json', (err, data)=>{
         if(err)throw err;
         holder=JSON.parse(data);
-        console.log(holder);
         for(var i=0;i<holder.length;i++){
             if(holder[i].name==toBeChanged.name&&holder[i].startDate==toBeChanged.startDate&&holder[i].endDate==toBeChanged.endDate&&holder[i].region==toBeChanged.region){
                 holder[i].status=toBeChanged.status;
@@ -84,10 +83,11 @@ app.post('/formSubmit', function(req, res){
         status= req.body.status,
         employeeEmail = req.body.email,
         region = req.body.region,
-        province = req.body.province,
-        county = req.body.county,
+        province = req.body.provinceName,
+        county = req.body.countyName,
         startDateObj = new Date(req.body.startDate),
         endDateObj = new Date(req.body.endDate),
+        department = req.body.department,
         notes = req.body.notes,
         phone = req.body.phone,
         created = new Date(req.body.creationDate),
@@ -104,7 +104,8 @@ app.post('/formSubmit', function(req, res){
             county: county, 
             startDate: startDateObj, 
             endDate: endDateObj, 
-            notes: notes, 
+            notes: notes,
+            department: department,
             phone: phone, 
             notified: emails,
             creationDate: created

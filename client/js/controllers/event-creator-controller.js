@@ -69,22 +69,34 @@
         function DialogController($scope, $mdDialog) {
 
             var $http = ecc.$http;
-
-            $scope.selectedRegion=ecc.selectedRegion;
-            $scope.countyName=ecc.countyName;
-            $scope.provinceName=ecc.provinceName;
-
-            $scope.startDate=ecc.startDate;
-            $scope.endDate=ecc.endDate;
-
-            $scope.department = ecc.department;
-            $scope.phone = ecc.phone;
-
-            $scope.notes=ecc.notes;
-
-            $scope.email=ecc.email;
-            $scope.name = ecc.name;
-
+            $scope.ra={
+                selectedRegion:ecc.selectedRegion,
+                region: ecc.selectedRegion.name,
+                countyName:ecc.countyName,
+                provinceName:ecc.provinceName,
+                startDate:ecc.startDate,
+                endDate:ecc.endDate,
+                department: ecc.department,
+                phone: ecc.phone,
+                notes: $scope.notes,
+                email: ecc.email,
+                creationDate: new Date(),
+                name: ecc.name,
+                status: "UNAPPROVED"
+            };
+            $scope.edits={
+                region: false,
+                province: false,
+                county: false,
+                dates: false,
+                department: false,
+                phone: false,
+                email: false,
+                name: false
+            };
+            $scope.editField=function(field){
+                $scope.edits[field]==true?$scope.edits[field]=false:$scope.edits[field]=true;
+            };
             $scope.hide = function() {
                 $mdDialog.hide();
             };
@@ -92,31 +104,17 @@
                 $mdDialog.cancel();
             };
             $scope.confirm = function() {
-                //window.alert('You confirmed the ride-along');
-                var postObj = {
-                    name: $scope.name,
-                    email: $scope.email,
-                    phone: $scope.phone,
-                    department: $scope.department,
-                    startDate: $scope.startDate,
-                    endDate: $scope.endDate,
-                    region: $scope.selectedRegion.name,
-                    province: $scope.provinceName,
-                    county: $scope.countyName,
-                    notes: $scope.notes,
-                    creationDate: new Date(),
-                    status: "UNAPPROVED"
-                };
+                var postObj = $scope.ra;
                 $http.post('/formSubmit', postObj).then(function() {
-                    console.log('Submition successful!');
+                    console.log('Submission successful!');
                     $mdDialog.show(
                         $mdDialog.alert()
                             .parent(angular.element(document.querySelector('#popupContainer')))
                             .clickOutsideToClose(true)
                             .title('Submission Successful!')
-                            .textContent('The appropriate vendors have been notified of your ride-along')
+                            .textContent('The appropriate customers have been notified of your ride-along')
                             .ariaLabel('Submission Successful')
-                            .ok('Got it!')
+                            .ok('Okay!')
                     );
                 }, function(err){
                     if(err)throw err;
