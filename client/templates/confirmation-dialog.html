@@ -12,12 +12,71 @@
         </md-toolbar>
         <md-dialog-content style="max-width:800px;max-height:810px; ">
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="one">
+                <md-tab label="Details">
                     <md-content class="md-padding">
-                        <div layout="row">
+                        <h1 class="md-display-3">Confirm Ride-Along</h1>
+                        <md-list ng-cloak>
+                            <md-subheader>Event Details</md-subheader>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Region the ride-along will be available in
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">place</md-icon>
+                                </md-button>
+                                <h3>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h3>
+                                <md-button class="md-secondary md-primary">Edit</md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Date the ride-along will be available
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">date_range</md-icon>
+                                </md-button>
+                                <h3>{{startDate|longDate}} to {{endDate|longDate}}</h3>
+                                <md-button class="md-secondary md-primary">Edit</md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-subheader>Your Contact Info</md-subheader>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Your department
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">business</md-icon>
+                                </md-button>
+                                <h3>{{department}}</h3>
+                                <md-button class="md-secondary md-primary">Edit</md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Your email address
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">email</md-icon>
+                                </md-button>
+                                <h3>{{email}}</h3>
+                                <md-button class="md-secondary md-primary">Edit</md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Your phone number
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">phone</md-icon>
+                                </md-button>
+                                <h3>{{phone}}</h3>
+                                <md-button class="md-secondary md-primary">Edit</md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
+                        <!--<div layout="row">
                             <div layout="column">
                                 <h1 class="md-display-2">Are You Sure?</h1>
-                                <span flex></span>
                                 <h3>Event Details</h3>
                                 <h4>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
                                 <h4>{{startDate|longDate}} to {{endDate|longDate}}</h4>
@@ -29,7 +88,7 @@
                                 <textarea style="height: 100%" ng-model="notes" class="form-control"></textarea>
                                 <br>
                             </div>
-                        </div>
+                        </div>-->
                         <p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{name}}) agree to accept any valid responses from ride along partners from {{startDate|longDate}} to {{endDate|longDate}}</p>
                     </md-content>
                 </md-tab>
