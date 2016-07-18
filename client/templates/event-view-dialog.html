@@ -138,13 +138,13 @@
                                 </md-list-item>
                                 <md-list-item ng-click="remove(selectedIndex, $event); close()" class="secondary-button-padding">
                                     <h4 style="color: red">Delete</h4>
-                                    <md-icon class="md-secondary" md-font-set="md">
+                                    <md-icon class="md-secondary md-warn" md-font-set="md">
                                         delete_forever
                                     </md-icon>
                                     <md-divider></md-divider>
                                 </md-list-item>
                                 <md-subheader>Notification Options</md-subheader>
-                                <md-list-item ng-click="reschedule(rideAlong)" class="secondary-button-padding">
+                                <md-list-item ng-click="resendNotifications(rideAlong)" class="secondary-button-padding">
                                     <h4>Resend Notifications</h4>
                                     <md-icon class="md-secondary" md-font-set="md">
                                         email

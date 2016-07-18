@@ -82,7 +82,7 @@
                 email: ecc.email,
                 creationDate: new Date(),
                 name: ecc.name,
-                status: "UNAPPROVED"
+                status: "OPEN"
             };
             $scope.edits={
                 region: false,

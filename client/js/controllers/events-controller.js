@@ -7,9 +7,9 @@
     angular.module('events-controller', [])
         .controller('events-controller', eventsController);
     
-    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout"];
+    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster"];
     
-    function eventsController($http, $mdDialog, $mdMedia, $timeout){
+    function eventsController($http, $mdDialog, $mdMedia, $timeout, toaster){
         var ec = this;
 
         ec.rideAlongs=[];
@@ -20,6 +20,7 @@
         
         ec.showRADetails=showRADetails;
         ec.sortEvents=sortEvents;
+        ec.resendNotifications=resendNotifications;
         
         ec.removeRA=function(index, ev){
             // Appending dialog to document.body to cover sidenav in docs app
@@ -91,42 +92,6 @@
                 ec.waitingForResponse=false;
             })
         }
-
-        function showRADetails(ev, ind, ra){
-            ec.selectedRideAlong=ra;
-            ec.selectedIndex=ind;
-            $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'templates/event-view-dialog.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose:true
-            })
-        }
-
-        function DialogController($scope, $mdDialog){
-            $scope.rideAlong = ec.selectedRideAlong;
-            $scope.selectedIndex=ec.selectedIndex;
-            $scope.isOpen=$scope.rideAlong.status=='OPEN'||$scope.rideAlong.status=='ACCEPTED';
-            $scope.reschedule=function(ra){
-                console.log("You tried to reschedule this Ride Along!")
-            };
-            $scope.changeOpenStatus=function(ra){
-                if(ra.status=='OPEN'){
-                    ra.status='CANCELLED';
-                    $scope.isOpen=false;
-                }else if(ra.status=='CANCELLED'){
-                    ra.status='OPEN';
-                    $scope.isOpen=true;
-                }
-            };
-            $scope.remove = ec.removeRA;
-            $scope.changeStatus = ec.changeStatus;
-            
-            $scope.close=function(){
-                $mdDialog.cancel();
-            }
-        }
         
         function sortEvents(status){
             ec.filterByStatus=status;
@@ -167,6 +132,58 @@
             }, error=>{
                 ec.waitingForResponse=false;
             })
+        }
+
+        function showRADetails(ev, ind, ra){
+            ec.selectedRideAlong=ra;
+            ec.selectedIndex=ind;
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'templates/event-view-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true
+            })
+        }
+        
+        function resendNotifications(ra){
+            $http.post('/resendNotifications', ra).then(results=>{
+                console.log("Notifications were successfully sent");
+                toaster.pop('success', "Success!", "All previously notified companies have been re-notified")
+            }, error=>{
+                console.log("There was an error resending the notifications!", error);
+                toaster.pop('error', "Error!", error)
+            })
+        }
+        
+        //Event Dialog Controller
+
+        function DialogController($scope, $mdDialog){
+            $scope.rideAlong = ec.selectedRideAlong;
+            $scope.selectedIndex=ec.selectedIndex;
+            $scope.isOpen=$scope.rideAlong.status=='OPEN'||$scope.rideAlong.status=='ACCEPTED';
+            
+            $scope.reschedule=function(ra){
+                console.log("You tried to reschedule this Ride Along!")
+            };
+            
+            $scope.changeOpenStatus=function(ra){
+                if(ra.status=='OPEN'){
+                    ra.status='CANCELLED';
+                    $scope.isOpen=false;
+                }else if(ra.status=='CANCELLED'){
+                    ra.status='OPEN';
+                    $scope.isOpen=true;
+                }
+            };
+            
+            $scope.resendNotifications=resendNotifications;
+            $scope.remove = ec.removeRA;
+            $scope.changeStatus = ec.changeStatus;
+
+            $scope.close=function(){
+                $mdDialog.cancel();
+            }
         }
 
         getEvents();

@@ -13,6 +13,7 @@
         'ngAria',
         'ngMessages',
         'ngRoute',
+        'toaster',
         
         //Directives
         "list-sections",

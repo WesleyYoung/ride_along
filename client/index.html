@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="libs/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="libs/css/angular-material.min.css"/>
+    <link rel="stylesheet" href="libs/css/toaster.css"/>
 
 
     <!--Custom CSS-->
@@ -84,6 +85,7 @@
     <div style="height: 100%">
         <div class="side-body">
             <div ui-view class="ui-window" style="background-color: transparent;"></div>
+            <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
         </div>
     </div>
 </div>
@@ -100,6 +102,7 @@
 <script src="libs/js/jquery.min.js"></script>
 <script src="libs/js/bootstrap.min.js"></script>
 <script src="libs/js/moment.min.js"></script>
+<script src="libs/js/toaster.js"></script>
 
 
 <!--Directives-->
