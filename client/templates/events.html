@@ -14,7 +14,56 @@
                 </h3>
                 <span flex></span>
                 <input type="text" style="color: black" ng-model="ec.searchText"/>
-                <md-button>Filter</md-button>
+                <md-menu aria-label="Filter Ride-Alongs" md-position-mode="target-right target" style="padding: 0">
+                    <md-button ng-click="$mdOpenMenu()">
+                        <md-tooltip md-direction="top">
+                            Filter Ride-Alonga
+                        </md-tooltip>
+                        Filter
+                    </md-button>
+                    <md-menu-content width="5">
+                        <md-menu-item>
+                            <md-button ng-click="ec.sortEvents('all')">
+                                <md-icon md-font-set="md" ng-if="ec.filterByStatus=='all'">
+                                    check
+                                </md-icon>
+                                All Ride-Alongs
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="ec.sortEvents('OPEN')">
+                                <md-icon md-font-set="md" ng-if="ec.filterByStatus=='OPEN'">
+                                    check
+                                </md-icon>
+                                Open Ride-Alongs
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="ec.sortEvents('UNAPPROVED')">
+                                <md-icon md-font-set="md" ng-if="ec.filterByStatus=='UNAPPROVED'">
+                                    check
+                                </md-icon>
+                                Pending Approval Ride-Alongs
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="ec.sortEvents('CANCELLED')">
+                                <md-icon md-font-set="md" ng-if="ec.filterByStatus=='CANCELLED'">
+                                    check
+                                </md-icon>
+                                Cancelled Ride-Alongs
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="ec.sortEvents('ACCEPTED')">
+                                <md-icon md-font-set="md" ng-if="ec.filterByStatus=='ACCEPTED'">
+                                    check
+                                </md-icon>
+                                Accepted Ride-Alongs
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
         </md-toolbar>
         <div style="height: 800px; padding-top: 200px; text-align: center" ng-if="ec.waitingForResponse==true">
@@ -49,7 +98,7 @@
                             email
                         </md-icon>
                     </md-button>
-                    <md-menu aria-label="Open phone interactions menu" md-position-mode="target-right target" style="padding: 0">
+                    <md-menu aria-label="Ride Along Options" md-position-mode="target-right target" style="padding: 0">
                         <md-button aria-label="menu" class="md-fab md-primary" ng-click="$mdOpenMenu()">
                             <md-tooltip md-direction="top">
                                 Options
@@ -86,7 +135,7 @@
                             <md-menu-item>
                                 <md-button>
                                     <md-icon md-font-set="md">
-                                        date_range
+                                    date_range
                                     </md-icon>
                                     Request Rescheduling
                                 </md-button>

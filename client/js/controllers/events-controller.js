@@ -16,8 +16,10 @@
         ec.counts={Total: 0, Open: 0, Unapproved: 0, Cancelled: 0, Accepted: 0};
         ec.searchText="";
         ec.waitingForResponse=false;
+        ec.filterByStatus="all";
         
         ec.showRADetails=showRADetails;
+        ec.sortEvents=sortEvents;
         
         ec.removeRA=function(index, ev){
             // Appending dialog to document.body to cover sidenav in docs app
@@ -54,7 +56,7 @@
 
         function getEvents(){
             ec.waitingForResponse=true;
-            $http.get('/openRideAlongs').then(results=>{
+            getEventsData().then(results=>{
                 var count=0;
                 ec.rideAlongs=[];
                 ec.counts.Total=0;
@@ -105,13 +107,66 @@
         function DialogController($scope, $mdDialog){
             $scope.rideAlong = ec.selectedRideAlong;
             $scope.selectedIndex=ec.selectedIndex;
-            
+            $scope.isOpen=$scope.rideAlong.status=='OPEN'||$scope.rideAlong.status=='ACCEPTED';
+            $scope.reschedule=function(ra){
+                console.log("You tried to reschedule this Ride Along!")
+            };
+            $scope.changeOpenStatus=function(ra){
+                if(ra.status=='OPEN'){
+                    ra.status='CANCELLED';
+                    $scope.isOpen=false;
+                }else if(ra.status=='CANCELLED'){
+                    ra.status='OPEN';
+                    $scope.isOpen=true;
+                }
+            };
             $scope.remove = ec.removeRA;
             $scope.changeStatus = ec.changeStatus;
             
             $scope.close=function(){
                 $mdDialog.cancel();
             }
+        }
+        
+        function sortEvents(status){
+            ec.filterByStatus=status;
+            ec.waitingForResponse=true;
+            ec.rideAlongs=[];
+            if(status!=='all') {
+                getEventsData().then(results=> {
+                    var count=0;
+                    results.data = results.data.filter(ra=> {
+                        return ra.status == status;
+                    });
+                    function pushRA(){
+                        if(results.data[count]!==undefined){
+                            ec.rideAlongs.push(results.data[count]);
+                            count+=1;
+                            if(results.data[count]!==undefined){
+                                $timeout(function(){
+                                    pushRA();
+                                }, 200)
+                            }
+                        }
+                    }
+                    $timeout(function(){
+                        ec.waitingForResponse=false;
+                        if(results.data.length!==0)pushRA();
+                    }, 750);
+                }, error=> {
+                    console.log(error);
+                });
+            }else{
+                getEvents();
+            }
+        }
+
+        function getEventsData(){
+            return $http.get('/openRideAlongs').then(results=>{
+                return results;
+            }, error=>{
+                ec.waitingForResponse=false;
+            })
         }
 
         getEvents();

@@ -48,8 +48,8 @@
                                     <md-icon md-font-set="md">account_circle</md-icon>
                                 </md-button>
                                 <h3 ng-if="!edits.name">{{ra.name}}</h3>
-                                <md-input-container class="md-block" ng-if="edits.name" flex-gt-xs style="margin:0 !important; padding-top: 15px;">
-                                    <input ng-model="ra.name">
+                                <md-input-container class="md-block fold" ng-if="edits.name" flex-gt-xs style="margin: 0 !important; padding-top: 15px;">
+                                    <input class="fold" ng-model="ra.name" aria-label="name" style="height: 100%; font-size: x-large">
                                 </md-input-container>
                                 <md-button ng-if="!edits.name" class="md-secondary md-primary" ng-click="editField('name')">Edit</md-button>
                                 <md-button ng-if="edits.name" class="md-secondary md-accent" ng-click="editField('name')">Accept</md-button>
