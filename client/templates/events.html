@@ -39,14 +39,6 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button ng-click="ec.sortEvents('UNAPPROVED')">
-                                <md-icon md-font-set="md" ng-if="ec.filterByStatus=='UNAPPROVED'">
-                                    check
-                                </md-icon>
-                                Pending Approval Ride-Alongs
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
                             <md-button ng-click="ec.sortEvents('CANCELLED')">
                                 <md-icon md-font-set="md" ng-if="ec.filterByStatus=='CANCELLED'">
                                     check
@@ -90,15 +82,35 @@
                 </div>
                 <span flex></span>
                 <div layout="row">
-                    <md-button class="md-accent md-fab" style="height: 100%">
-                        <md-tooltip md-direction="top">
-                            Send an email to {{item.name}}
-                        </md-tooltip>
-                        <md-icon md-font-set="md" class="">
-                            email
-                        </md-icon>
-                    </md-button>
-                    <md-menu aria-label="Ride Along Options" md-position-mode="target-right target" style="padding: 0">
+                    <md-menu aria-label="Notification Options" md-position-mode="target-right target" style="padding: 0">
+                        <md-button ng-click="$mdOpenMenu()" class="md-accent md-fab">
+                            <md-tooltip md-direction="top">
+                                Notification Options
+                            </md-tooltip>
+                            <md-icon md-font-set="md" class="">
+                                email
+                            </md-icon>
+                        </md-button>
+                        <md-menu-content width="5">
+                            <md-menu-item>
+                                <md-button>
+                                    <md-icon md-font-set="md">
+                                        email
+                                    </md-icon>
+                                    Resend Notifications
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    <md-icon md-font-set="md">
+                                        add_circle
+                                    </md-icon>
+                                    Invite Specific Company
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <md-menu aria-label="Ride Along Options" md-position-mode="target-left target" style="padding: 0">
                         <md-button aria-label="menu" class="md-fab md-primary" ng-click="$mdOpenMenu()">
                             <md-tooltip md-direction="top">
                                 Options
@@ -154,7 +166,7 @@
             </md-list-item>
         </md-list>
         <div style="height: 50px; width: 100%; padding: 10px 15px 5px 15px; background-color: rgba(150, 159, 153, 0.31)" layout="row">
-            <h4 style="margin: 0 15px 0 15px" ng-repeat="(status, count) in ec.counts">{{status + ': ' + count + '   '}}</h4>
+            <!--<h4 style="margin: 0 15px 0 15px" ng-repeat="(status, count) in ec.counts">{{status + ': ' + count + '   '}}</h4>-->
         </div>
     </div>
 </md-content>

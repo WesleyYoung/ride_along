@@ -162,9 +162,14 @@
             $scope.rideAlong = ec.selectedRideAlong;
             $scope.selectedIndex=ec.selectedIndex;
             $scope.isOpen=$scope.rideAlong.status=='OPEN'||$scope.rideAlong.status=='ACCEPTED';
+            $scope.waiting=false;
             
             $scope.reschedule=function(ra){
                 console.log("You tried to reschedule this Ride Along!")
+            };
+
+            $scope.editInfo=function(ra){
+                console.log("You tried to edit the info of this Ride Along")
             };
             
             $scope.changeOpenStatus=function(ra){
@@ -177,9 +182,20 @@
                 }
             };
             
+            $scope.specificNotification=function(){
+                console.log("you tried to send a specific notification")
+            };
+            
             $scope.resendNotifications=resendNotifications;
             $scope.remove = ec.removeRA;
-            $scope.changeStatus = ec.changeStatus;
+            $scope.changeStatus = function(ind, status){
+                $scope.waiting=true;
+                $timeout(function(){
+                    $scope.waiting=false;
+                }, 1000);
+                ec.changeStatus(ind, status);
+                $scope.rideAlong.status=status;
+            };
 
             $scope.close=function(){
                 $mdDialog.cancel();
