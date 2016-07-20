@@ -23,6 +23,33 @@ var transporter = nodemailer.createTransport("smtps://xactridealong%40gmail.com:
 
 const fs = require('fs');
 
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
+    if(!err) {
+        console.log("We are connected");
+        db.createCollection('rideAlongs', function(err, collection) {
+            if(err)throw err;
+            else console.log("Collection worked")
+        });
+        var collection = db.collection('rideAlongs');
+    }
+
+    else throw err;
+});
+
+function returnDataFromDB(){
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
+        if(!err) {
+            console.log("We are connected");
+            var collection = db.collection('rideAlongs');
+        }
+
+        else throw err;
+    });
+}
+
 
 app.get('/openRideAlongs', function(req, res){
     fs.readFile('activeRideAlongs.json', (err, data)=>{
@@ -68,6 +95,68 @@ app.post('/changeRAStatus', function(req, res){
         if(successful)fs.writeFile('activeRideAlongs.json', JSON.stringify(holder));
         res.end(JSON.stringify({success: successful}));
     })
+});
+
+function sendEmails(ra, emails){
+    var name = ra.name,
+        employeeEmail = ra.email,
+        region = ra.region,
+        province = ra.province,
+        county = ra.county,
+        startDateObj = new Date(ra.startDate),
+        endDateObj = new Date(ra.endDate),
+        department = ra.department,
+        notes = ra.notes,
+        phone = ra.phone,
+        counter = 0;
+    function sendEmail(em){
+        counter++;
+        var mailOptions = {
+            from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',
+            to: em,
+            subject: "Ride Along Available",
+            text: `
+                Hello! Xactware certified trainer ${req.body.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+            `,
+            html: `
+                <h2 style="color: black">Hello!</h2>
+                <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
+                <div >
+                    <p style="color: red">
+                    <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+                    <br>
+                    <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
+                    </p>
+                </div>
+                <p>${notes}</p>
+                      
+                <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
+                `
+        };
+        transporter.sendMail(mailOptions, function(err, info){
+            if(err){
+                res.error(err);
+                return console.log(err)
+            }else{
+                console.log('message sent! ' + info.response);
+                if(emails[counter]!==undefined){
+                    sendEmail(emails[counter]);
+                }else{
+                    console.log("All emails sent! Recievers were " + emails.join(" "))
+                    res.end();
+                }
+            }
+
+        });
+    }
+
+    if(emails.length!==0)sendEmail(emails[counter]);
+}
+
+app.post('/inviteSpecific', function(req, res){
+
+
+
 });
 
 
@@ -139,6 +228,7 @@ app.post('/formSubmit', function(req, res){
         };
         transporter.sendMail(mailOptions, function(err, info){
             if(err){
+                res.error(err);
                 return console.log(err)
             }else{
                 console.log('message sent! ' + info.response);
@@ -146,6 +236,65 @@ app.post('/formSubmit', function(req, res){
                     sendEmail(emails[counter]);
                 }else{
                     console.log("All emails sent! Recievers were " + emails.join(" "))
+                    res.end();
+                }
+            }
+
+        });
+    };
+    if(emails.length!==0)sendEmail(emails[counter]);
+});
+
+app.post('/resendNotifications', function(req, res){
+    var emails = req.body.notified,
+        name = req.body.name,
+        employeeEmail = req.body.email,
+        region = req.body.region,
+        province = req.body.province,
+        county = req.body.county,
+        startDateObj = new Date(req.body.startDate),
+        endDateObj = new Date(req.body.endDate),
+        department = req.body.department,
+        notes = req.body.notes,
+        phone = req.body.phone,
+        counter = 0;
+
+
+    function sendEmail(em){
+        counter++;
+        var mailOptions = {
+            from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',
+            to: em,
+            subject: "Ride Along Available",
+            text: `
+                Hello! Xactware certified trainer ${req.body.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+            `,
+            html: `
+                <h2 style="color: black">Hello!</h2>
+                <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
+                <div >
+                    <p style="color: red">
+                    <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+                    <br>
+                    <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
+                    </p>
+                </div>
+                <p>${notes}</p>
+                      
+                <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
+                `
+        };
+        transporter.sendMail(mailOptions, function(err, info){
+            if(err){
+                res.error(err);
+                return console.log(err)
+            }else{
+                console.log('message sent! ' + info.response);
+                if(emails[counter]!==undefined){
+                    sendEmail(emails[counter]);
+                }else{
+                    console.log("All emails sent! Recievers were " + emails.join(" "))
+                    res.end();
                 }
             }
 
@@ -153,8 +302,7 @@ app.post('/formSubmit', function(req, res){
     }
 
     if(emails.length!==0)sendEmail(emails[counter]);
-    
-    res.end();
+
 });
 
 

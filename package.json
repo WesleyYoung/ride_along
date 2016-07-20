@@ -13,6 +13,7 @@
     "express": "x.x.x",
     "fs": "0.0.2",
     "http": "x.x.x",
+    "mongodb": "^2.2.4",
     "nodemailer-smtp-transport": "x.x.x",
     "socket.io": "x.x.x"
   },

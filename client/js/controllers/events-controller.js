@@ -48,7 +48,7 @@
             ec.rideAlongs[index].status=status;
             $http.post('/changeRAStatus', ec.rideAlongs[index]).then(results=>{
                 if(results.data.success==true){
-                    getEvents();
+                    sortEvents(ec.filterByStatus)
                 }else{
                     console.log("There was an issue changing the status of the ride-along")
                 }
@@ -128,6 +128,7 @@
 
         function getEventsData(){
             return $http.get('/openRideAlongs').then(results=>{
+                results.data=results.data.reverse();
                 return results;
             }, error=>{
                 ec.waitingForResponse=false;
