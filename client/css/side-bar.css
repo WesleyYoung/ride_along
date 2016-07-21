@@ -117,9 +117,12 @@
 }
 .side-menu .brand-name-wrapper {
     min-height: 50px;
+    background-color: #5c89b4;
+
 }
 .side-menu .brand-name-wrapper .navbar-brand {
     display: block;
+    background-color: transparent;
 }
 .side-menu #search {
     position: relative;

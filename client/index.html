@@ -40,29 +40,12 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <!-- Brand -->
+                    <!-- Brand
                     <div class="brand-name-wrapper">
                         <a class="navbar-brand">
-                            Xactware
+
                         </a>
-                    </div>
-
-                    <!-- Search -->
-                    <a data-toggle="collapse" data-target="#search" class="btn btn-default" id="search-trigger">
-                        <i class="fa fa-search"></i>
-                    </a>
-
-                    <!-- Search body -->
-                    <div id="search" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <form class="navbar-form" role="search">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Search" ng-bind="nav.searchText">
-                                </div>
-                                <button type="submit" class="btn btn-default "><i class="fa fa-paper-plane-o"></i></button>
-                            </form>
-                        </div>
-                    </div>
+                    </div>-->
                 </div>
 
             </div>
@@ -72,9 +55,10 @@
                 <ul class="nav navbar-nav">
 
                     <li ng-class="{active: nav.isActive('/main')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/main"><i class="fa fa-home"></i> Home</md-button></li>
-                    <li ng-class="{active: nav.isActive('/reporting')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/reporting"><i class="fa fa-list"></i> Reporting</md-button></li>
-                    <li ng-class="{active: nav.isActive('/events')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</md-button></li>
                     <li ng-class="{active: nav.isActive('/eventCreator')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/eventCreator"><i class="fa fa-pencil-square-o"></i> Create Event</md-button></li>
+                    <li ng-class="{active: nav.isActive('/events')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</md-button></li>
+                    <li ng-class="{active: nav.isActive('/companies')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/companies"><i class="fa fa-building-o"></i> Companies</md-button></li>
+                    <li ng-class="{active: nav.isActive('/reporting')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/reporting"><i class="fa fa-list"></i> Reporting</md-button></li>
                 </ul>
             </div>
         </nav>
@@ -124,6 +108,7 @@
 <script src="js/controllers/report-controller.js"></script>
 <script src="js/controllers/events-controller.js"></script>
 <script src="js/controllers/event-creator-controller.js"></script>
+<script src="js/controllers/company-controller.js"></script>
 
 <!--Animations-->
 <script src="js/animations/ui-window.js"></script>

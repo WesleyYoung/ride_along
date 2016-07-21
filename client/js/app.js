@@ -34,7 +34,8 @@
         'report-controller',
         'events-controller',
         'event-creator-controller',
-        
+        'companyController',
+
         //Animations
         'ui-window-animate',
         'fold-animate'
@@ -82,6 +83,11 @@
                     url: '/eventCreator',
                     templateUrl: 'templates/eventCreator.html',
                     controller: 'event-creator-controller as ecc'
+                })
+                .state('companies', {
+                    url: '/companies',
+                    templateUrl: 'templates/company-manager.html',
+                    controller: 'companyController as cc'
                 });
 
             $urlRouterProvider.otherwise("/main");
