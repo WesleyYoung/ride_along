@@ -26,17 +26,27 @@ const fs = require('fs');
 var MongoClient = require('mongodb').MongoClient;
 
 // Connect to the db
-MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
-    if(!err) {
-        console.log("We are connected");
-        db.createCollection('rideAlongs', function(err, collection) {
-            if(err)throw err;
-            else console.log("Collection worked")
-        });
+MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    if(error)throw error;
+    console.log("We are connected");
+    db.createCollection('rideAlongs', function(err) {
+        if(err)throw err;
+        console.log("Collection worked");
         var collection = db.collection('rideAlongs');
-    }
-
-    else throw err;
+        fs.readFile('activeRideAlongs.json', err,data=>{
+            if(err)throw err;
+            console.log("Read File...");
+            collection.insert(data, {w: 1}, err, result=>{
+                if (err)throw err;
+                console.log("Inserted data...");
+                collection.find().toArray(err, items=>{
+                    if(err)throw err;
+                    console.log("Found Items");
+                    console.log(items);
+                })
+            })
+        });
+    });
 });
 
 function returnDataFromDB(){
