@@ -28,24 +28,10 @@ var MongoClient = require('mongodb').MongoClient;
 // Connect to the db
 MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
     if(error)throw error;
-    console.log("We are connected");
+    console.log("We are connected to Mongo");
     db.createCollection('rideAlongs', function(err) {
         if(err)throw err;
         console.log("Collection worked");
-        var collection = db.collection('rideAlongs');
-        fs.readFile('activeRideAlongs.json', err,data=>{
-            if(err)throw err;
-            console.log("Read File...");
-            collection.insert(data, {w: 1}, err, result=>{
-                if (err)throw err;
-                console.log("Inserted data...");
-                collection.find().toArray(err, items=>{
-                    if(err)throw err;
-                    console.log("Found Items");
-                    console.log(items);
-                })
-            })
-        });
     });
 });
 
@@ -62,49 +48,50 @@ function returnDataFromDB(){
 
 
 app.get('/openRideAlongs', function(req, res){
-    fs.readFile('activeRideAlongs.json', (err, data)=>{
-        res.end(data);
-    })
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('rideAlongs');
+        collection.find().toArray((err,items)=>{
+            if(err)throw err;
+            res.end(JSON.stringify(items));
+        })
+    });
 });
 
 app.post('/deleteRideAlong', function(req, res){
-    var holder = [],
-        toBeDeleted = req.body,
-        successful = false;
-    //console.log(toBeDeleted);
-    fs.readFile('activeRideAlongs.json', (err, data)=>{
-        if(err)throw err;
-        holder= JSON.parse(data);
-        for(var i=0;i<holder.length;i++){
-            //console.log(holder[i]);
-            if(holder[i].name==toBeDeleted.name&&holder[i].startDate==toBeDeleted.startDate&&holder[i].endDate==toBeDeleted.endDate&&holder[i].region==toBeDeleted.region){
-                holder.splice(i, 1);
-                i=holder.length;
-                successful=true;
-            }
-        }
-        fs.writeFile('activeRideAlongs.json', JSON.stringify(holder));
-        res.end(JSON.stringify({success: successful}));
-    })    
+    var toBeDeleted = req.body;
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('rideAlongs');
+        collection.remove({
+            name: toBeDeleted.name,
+            email: toBeDeleted.email,
+            province: toBeDeleted.province,
+            region: toBeDeleted.region,
+            county: toBeDeleted.county
+        }, {w:1}, (err,result)=>{
+            if(err)throw err;
+            res.end(JSON.stringify({success: true}))
+        })
+    });
 });
 
 app.post('/changeRAStatus', function(req, res){
-    var holder = [],
-        toBeChanged=req.body,
-        successful=false;
-    fs.readFile('activeRideAlongs.json', (err, data)=>{
-        if(err)throw err;
-        holder=JSON.parse(data);
-        for(var i=0;i<holder.length;i++){
-            if(holder[i].name==toBeChanged.name&&holder[i].startDate==toBeChanged.startDate&&holder[i].endDate==toBeChanged.endDate&&holder[i].region==toBeChanged.region){
-                holder[i].status=toBeChanged.status;
-                i=holder.length;
-                successful=true;
-            }
-        }
-        if(successful)fs.writeFile('activeRideAlongs.json', JSON.stringify(holder));
-        res.end(JSON.stringify({success: successful}));
-    })
+    var toBeChanged=req.body;
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('rideAlongs');
+        collection.update({
+            name: toBeChanged.name,
+            email: toBeChanged.email,
+            province: toBeChanged.province,
+            region: toBeChanged.region,
+            county: toBeChanged.county
+        }, {$set: {status: toBeChanged.status}}, {w:1}, (err,result)=>{
+            if(err)throw err;
+            res.end(JSON.stringify({success: true}))
+        })
+    });
 });
 
 function sendEmails(ra, emails){
@@ -192,24 +179,28 @@ app.post('/formSubmit', function(req, res){
         created = new Date(req.body.creationDate),
         counter = 0;
 
-    fs.readFile('activeRideAlongs.json', (err,data)=>{
-        storeObj=JSON.parse(data);
-        storeObj.push({
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+        if (error)throw error;
+        var collection = db.collection('rideAlongs');
+        var ra = {
             name: name,
             status: status,
-            email: employeeEmail, 
-            region: region, 
-            province: province, 
-            county: county, 
-            startDate: startDateObj, 
-            endDate: endDateObj, 
+            email: employeeEmail,
+            region: region,
+            province: province,
+            county: county,
+            startDate: startDateObj,
+            endDate: endDateObj,
             notes: notes,
             department: department,
-            phone: phone, 
+            phone: phone,
             notified: emails,
             creationDate: created
-        });
-        fs.writeFile('activeRideAlongs.json', JSON.stringify(storeObj))
+        };
+        collection.insert(ra, {w: 1}, (err, result)=> {
+            if (err)throw err;
+            console.log("Added Ride Along");
+        })
     });
 
     function sendEmail(em){
