@@ -45,18 +45,22 @@
     .config(["$stateProvider", "$urlRouterProvider", "$mdThemingProvider", "$mdIconProvider",
         function($stateProvider, $urlRouterProvider, $mdThemingProvider, $mdIconProvider){
 
+            var mainThemeBlue = $mdThemingProvider.extendPalette('blue', {
+                '500': '#006F9F',
+                'contrastDefaultColor': 'light'
+            });
+
+            $mdThemingProvider.definePalette('mainBlue', mainThemeBlue);
+
             $mdIconProvider.fontSet('md', 'material-icons');
 
             $mdThemingProvider
                 .theme('default')
-                .primaryPalette("indigo", {
-                    'default': '500', // by default use shade 400 from the pink palette for primary intentions
-                    'hue-1': '100', // use shade 100 for the <code>md-hue-1</code> class
-                    'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
-                    'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class
+                .primaryPalette("mainBlue", {
+                    'default': '500'
                 })
                 .accentPalette('green', {
-                    'default': '700', // by default use shade 400 from the pink palette for primary intentions
+                    'default': '600', // by default use shade 400 from the pink palette for primary intentions
                     'hue-1': '100', // use shade 100 for the <code>md-hue-1</code> class
                     'hue-2': '600', // use shade 600 for the <code>md-hue-2</code> class
                     'hue-3': 'A100' // use shade A100 for the <code>md-hue-3</code> class

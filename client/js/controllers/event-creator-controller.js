@@ -20,12 +20,33 @@
 
         ecc.assignProvinces=assignProvinces;
         ecc.assignCounties=assignCounties;
+        ecc.assignRegions=assignRegions;
         
         ecc.minDate1=new Date(today.getFullYear(), today.getMonth(), today.getDate()+2);
         ecc.minDate2=new Date(today.getFullYear(), today.getMonth(), today.getDate()+9);
         ecc.selectedProducts=[];
         ecc.selectedProvince={};
         ecc.notes = "";
+
+        function assignRegions(section, name){
+            if(section=='provinces'){
+                for(var i=0;i<ecc.regions.length;i++){
+                    if(ecc.regions[i].name==name){
+                        ecc.selectedRegion=ecc.regions[i];
+                        return;
+                    }
+                }
+            }else if(section=='counties'){
+                for(var i=0;i<ecc.selectedRegion.provinces.length;i++){
+                    if(ecc.selectedRegion.provinces[i].name==name){
+                        ecc.selectedProvince=ecc.selectedRegion.provinces[i];
+                        return;
+                    }
+                }
+            }else{
+                console.log("there was an issue loading the different regions")
+            }
+        }
         
         function assignProvinces(reg){
             return $timeout(function(){

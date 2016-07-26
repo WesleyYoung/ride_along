@@ -13,7 +13,7 @@
                     <span>Companies</span>
                 </h3>
                 <span flex></span>
-                <input type="text" style="color: black"/>
+                <input type="text" style="color: black" ng-model="cc.filterText"/>
                 <md-button>
                     Filter
                 </md-button>
@@ -34,7 +34,7 @@
             <h3>No Companies Exist In The DataBase</h3>
         </div>
         <md-list flex style="overflow-y: scroll; height: 800px;" ng-if="cc.companies.length!==0&&cc.waitingForResponse==false">
-            <md-list-item class="md-3-line fold" ng-if="cc.companies.length>0" ng-repeat="company in cc.companies" ng-click="cc.openCODetails(company)">
+            <md-list-item class="md-3-line fold" ng-if="cc.companies.length>0" ng-repeat="company in cc.companies | filter:cc.filterText" ng-click="cc.openCODetails(company)">
                 <div class="md-list-item-text" layout="column">
                     <h2>{{company.name}}</h2>
                     <md-divider></md-divider>

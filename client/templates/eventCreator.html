@@ -50,26 +50,28 @@
                         <br>
                         <br>
                         <h3>Select a region</h3>
-                        <md-input-container class="col-lg-4">
-                            <label>Region</label>
-                            <md-select ng-model="ecc.regionName" style="color: black" ng-disabled="$index === 1">
-                                <md-option ng-repeat="region in ecc.regions" ng-value="region.name">{{region.name|regionToNormal}}</md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container class="col-lg-4">
-                            <label>Province</label>
-                            <md-select md-on-open="ecc.assignProvinces(ecc.regionName)" ng-model="ecc.provinceName" ng-disabled="ecc.regionName==undefined||ecc.regionName==''">
-                                <md-option ng-repeat="province in ecc.selectedRegion.provinces" ng-value="province.name">{{province.name|regionToNormal}}</md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container class="col-lg-4">
-                            <label>County</label>
-                            <md-select md-on-open="ecc.assignCounties(ecc.provinceName)" ng-model="ecc.countyName" ng-disabled="ecc.provinceName==undefined||ecc.provinceName==''">
-                                <md-option ng-repeat="county in ecc.selectedProvince.counties" ng-value="county">{{county|regionToNormal}}</md-option>
-                            </md-select>
-                            <br>
-                            <br>
-                        </md-input-container>
+                        <div layout-gt-xs="row">
+                            <md-input-container flex-gt-xs>
+                                <label>Region</label>
+                                <md-select ng-model="ecc.regionName" style="color: black" ng-disabled="$index === 1">
+                                    <md-option ng-repeat="region in ecc.regions" ng-value="region.name">{{region.name|regionToNormal}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex-gt-xs>
+                                <label>Province</label>
+                                <md-select md-on-open="ecc.assignRegions('provinces', ecc.regionName)" ng-model="ecc.provinceName" ng-disabled="ecc.regionName==undefined||ecc.regionName==''">
+                                    <md-option ng-repeat="province in ecc.selectedRegion.provinces" ng-value="province.name">{{province.name|regionToNormal}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex-gt-xs>
+                                <label>County</label>
+                                <md-select md-on-open="ecc.assignRegions('counties', ecc.provinceName)" ng-model="ecc.countyName" ng-disabled="ecc.provinceName==undefined||ecc.provinceName==''">
+                                    <md-option ng-repeat="county in ecc.selectedProvince.counties" ng-value="county">{{county|regionToNormal}}</md-option>
+                                </md-select>
+                                <br>
+                                <br>
+                            </md-input-container>
+                        </div>
                         <br>
                         <md-button ng-disabled="ecc.name==undefined||ecc.startDate==undefined||ecc.endDate==undefined||ecc.email==undefined||ecc.countyName==undefined||ecc.countyName==''" class="md-raised md-accent event-submit-btn" aria-label="Submit" ng-click="ecc.showTabDialog($event)">SUBMIT</md-button>
                     </form>

@@ -26,14 +26,14 @@
     <!-- uncomment code for absolute positioning tweek see top comment in css -->
     <!-- <div class="absolute-wrapper"> </div> -->
     <!-- Menu -->
-    <div class="side-menu">
-
+    <!--style="background-color: rgba(67, 160, 71, .9); border-color: rgba(67, 160, 71, .9)"-->
+    <div class="side-menu" >
         <nav class="navbar navbar-default" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <div class="brand-wrapper">
                     <!-- Hamburger -->
-                    <button type="button" class="navbar-toggle">
+                    <button class="navbar-toggle md-accent md-raised">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -52,8 +52,17 @@
 
             <!-- Main Menu -->
             <div class="side-menu-container">
+                <!--<md-list>
+                    <md-list-item>
+                        <md-button class="md-accent md-raised" href="#/eventCreator">
+                            Create Event
+                        </md-button>
+                        <md-icon md-font-set="md" class="md-secondary">
+                            build
+                        </md-icon>
+                    </md-list-item>
+                </md-list>-->
                 <ul class="nav navbar-nav">
-
                     <li ng-class="{active: nav.isActive('/main')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/main"><i class="fa fa-home"></i> Home</md-button></li>
                     <li ng-class="{active: nav.isActive('/eventCreator')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/eventCreator"><i class="fa fa-pencil-square-o"></i> Create Event</md-button></li>
                     <li ng-class="{active: nav.isActive('/events')}"><md-button style="padding: 10px; font-size: medium; margin: 0; text-align: left; text-transform: none" href="#/events"><i class="fa fa-calendar-check-o"></i> Open Events</md-button></li>
