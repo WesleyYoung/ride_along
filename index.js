@@ -327,18 +327,22 @@ app.post('/addCompany', (req, res)=>{
     MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
         if (error)throw error;
         var collection = db.collection('companies');
-        var co = {
-            name: com.name,
-            dba: com.dba,
-            phone: com.phone,
-            emails: com.emails,
-            acceptedRideAlongs: com.acceptedRideAlongs,
-            type: com.type,
-            id: com.id
-        };
-        collection.insert(co, {w: 1}, (err, result)=> {
+        collection.insert(com, {w: 1}, (err, result)=> {
             if (err)throw err;
             console.log("Added Company");
+            res.end();
+        })
+    });
+});
+
+app.post('/removeCompany', (req, res)=>{
+    var toBeDeleted = req.body;
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('companies');
+        collection.remove({id: toBeDeleted.id}, {w:1}, (err,result)=>{
+            if(err)throw err;
+            res.end(JSON.stringify({success: true}))
         })
     });
 });

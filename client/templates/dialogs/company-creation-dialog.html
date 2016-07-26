@@ -10,52 +10,83 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content style="max-width:800px;max-height:810px; ">
-            <md-content class="md-padding">
-                <h1 class="md-display-3">New Company</h1>
-                <md-subheader>Please Fill Out All Fields Marked With *</md-subheader>
-                <br>
-                <div layout-gt-xs="row">
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <label>Name *</label>
-                        <input ng-model="name"/>
-                    </md-input-container>
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <label>DBA</label>
-                        <input ng-model="dba"/>
-                    </md-input-container>
-                </div>
-                <div layout-gt-xs="row">
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <label>Contact Phone Number *</label>
-                        <input ng-model="phone"/>
-                    </md-input-container>
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <label>Company Type *</label>
-                        <input ng-model="type"/>
-                    </md-input-container>
-                </div>
-                <md-subheader>Please enter all email addresses you wish to recieve notifications for this company</md-subheader>
-                <br>
-
-
-                <md-list ng-cloak>
-                    <md-list-item>
-                        <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
-                            <label>Email Address</label>
-                            <input ng-model="newEmail"/>
-                        </md-input-container>
-                        <md-button class="md-raised md-accent md-secondary" ng-click="addEmail()">
-                            Add
-                        </md-button>
-                        <md-divider></md-divider>
-                    </md-list-item>
-                    <md-list-item ng-repeat="email in emails">
-                        <h4>{{email}}</h4>
-                        <md-divider></md-divider>
-                    </md-list-item>
-                </md-list>
-            </md-content>
+        <md-dialog-content style="max-width:800px;max-height:810px;">
+            <md-tabs md-selected="selectedTab" md-dynamic-height md-border-bottom>
+                <md-tab label="Basic Info">
+                    <md-content class="md-padding">
+                        <h3 class="md-display-2">New Company</h3>
+                        <md-subheader>Please Fill Out All Fields Below</md-subheader>
+                        <br>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Name</label>
+                                <input ng-model="name"/>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Contact Phone Number</label>
+                                <input ng-model="phone"/>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Address</label>
+                                <input ng-model="address"/>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Company Type</label>
+                                <input ng-model="type"/>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Region</label>
+                                <md-select ng-model="region">
+                                    <md-option ng-repeat="reg in regions" ng-value="reg.name">{{reg.name|regionToNormal}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>Province</label>
+                                <md-select ng-disabled="region==''" md-on-open="assignRegions('provinces')" ng-model="province">
+                                    <md-option ng-repeat="prov in provinces" ng-value="prov.name">{{prov.name|regionToNormal}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <label>County</label>
+                                <md-select ng-disabled="region==''||province==''" md-on-open="assignRegions('counties')" ng-model="county">
+                                    <md-option ng-repeat="co in counties" ng-value="co">{{co|regionToNormal}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <br>
+                        <br>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Email Addresses">
+                    <md-content class="md-padding">
+                        <h3 class="md-display-2">Contact Emails</h3>
+                        <md-subheader>Please enter all email addresses you wish to recieve notifications for this company</md-subheader>
+                        <br>
+                        <md-list ng-cloak>
+                            <md-list-item>
+                                <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
+                                    <label>Email Address</label>
+                                    <input ng-model="newEmail"/>
+                                </md-input-container>
+                                <md-button class="md-raised md-accent md-secondary" ng-click="addEmail()">
+                                    Add
+                                </md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item ng-repeat="email in emails">
+                                <h4>{{email}}</h4>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <!--<md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
@@ -65,7 +96,10 @@
             <md-button ng-click="cancel()" >
                 Cancel
             </md-button>
-            <md-button class="md-primary md-raised" ng-click="addCompany()" style="margin-right:20px;">
+            <md-button class="md-accent md-raised" ng-if="selectedTab==0" ng-click="continueForm()">
+                Continue
+            </md-button>
+            <md-button class="md-primary md-raised" ng-if="selectedTab==1" ng-click="addCompany()" style="margin-right:20px;">
                 Confirm
             </md-button>
         </md-dialog-actions>
