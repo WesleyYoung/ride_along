@@ -54,7 +54,7 @@
         ecc.showTabDialog = function(ev) {
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: 'templates/confirmation-dialog.html',
+                templateUrl: 'templates/dialogs/confirmation-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose:true

@@ -140,7 +140,7 @@
             ec.selectedIndex=ind;
             $mdDialog.show({
                 controller: DialogController,
-                templateUrl: 'templates/event-view-dialog.html',
+                templateUrl: 'templates/dialogs/event-view-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose:true

@@ -31,7 +31,11 @@ MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
     console.log("We are connected to Mongo");
     db.createCollection('rideAlongs', function(err) {
         if(err)throw err;
-        console.log("Collection worked");
+        console.log("'Ride-Along' collection worked");
+        db.createCollection('companies', function(err){
+            if(err)throw err;
+            console.log("'Companies' collection worked");
+        })
     });
 });
 
@@ -48,6 +52,7 @@ function returnDataFromDB(){
 
 
 app.get('/openRideAlongs', function(req, res){
+    console.log("Request Received");
     MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
         if(error)throw error;
         var collection = db.collection('rideAlongs');
@@ -56,6 +61,17 @@ app.get('/openRideAlongs', function(req, res){
             res.end(JSON.stringify(items));
         })
     });
+});
+
+app.get('/getCompanies', (req, res)=>{
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('companies');
+        collection.find().toArray((err,items)=>{
+            if(err)throw err;
+            res.end(JSON.stringify(items));
+        })
+    });    
 });
 
 app.post('/deleteRideAlong', function(req, res){
@@ -306,6 +322,33 @@ app.post('/resendNotifications', function(req, res){
 
 });
 
+app.post('/addCompany', (req, res)=>{
+    var com = req.body;
+    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+        if (error)throw error;
+        var collection = db.collection('companies');
+        var co = {
+            name: com.name,
+            dba: com.dba,
+            phone: com.phone,
+            emails: com.emails,
+            acceptedRideAlongs: com.acceptedRideAlongs,
+            type: com.type,
+            id: com.id
+        };
+        collection.insert(co, {w: 1}, (err, result)=> {
+            if (err)throw err;
+            console.log("Added Company");
+        })
+    });
+});
+
+
+app.post('/acceptance', (req, res)=>{
+    console.log("Received!"); 
+    console.log(req.body);
+    res.end('Thanks for the post m8')
+});
 
 
 
