@@ -22,10 +22,6 @@
                                 <label>Name</label>
                                 <input ng-model="name"/>
                             </md-input-container>
-                            <md-input-container class="md-block" flex-gt-xs>
-                                <label>Contact Phone Number</label>
-                                <input ng-model="phone"/>
-                            </md-input-container>
                         </div>
                         <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-xs>
@@ -66,21 +62,31 @@
                 <md-tab label="Email Addresses">
                     <md-content class="md-padding">
                         <h3 class="md-display-2">Contact Emails</h3>
-                        <md-subheader>Please enter all email addresses you wish to recieve notifications for this company</md-subheader>
+                        <md-subheader>Please enter all contacts you wish to recieve notifications for this company</md-subheader>
                         <br>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
+                                <label>Name</label>
+                                <input ng-model="contact.name"/>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
+                                <label>Email Address</label>
+                                <input ng-model="contact.email"/>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
+                                <label>Phone Number</label>
+                                <input ng-model="contact.phone"/>
+                            </md-input-container>
+                        </div>
+                        <md-button class="md-raised md-accent" ng-click="addContact()">
+                            Add
+                        </md-button>
+                        <md-divider></md-divider>
                         <md-list ng-cloak>
-                            <md-list-item>
-                                <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
-                                    <label>Email Address</label>
-                                    <input ng-model="newEmail"/>
-                                </md-input-container>
-                                <md-button class="md-raised md-accent md-secondary" ng-click="addEmail()">
-                                    Add
-                                </md-button>
-                                <md-divider></md-divider>
-                            </md-list-item>
-                            <md-list-item ng-repeat="email in emails">
-                                <h4>{{email}}</h4>
+                            <md-list-item ng-repeat="contact in contacts">
+                                <h4>{{contact.name}}</h4>
                                 <md-divider></md-divider>
                             </md-list-item>
                         </md-list>

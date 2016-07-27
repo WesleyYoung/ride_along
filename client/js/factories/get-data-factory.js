@@ -13,6 +13,8 @@
         
         
         return {
+            
+            //Companies
             companies: function(){
                 return $http.get('/getCompanies').then(results=>{
                     return results.data;
@@ -20,7 +22,7 @@
                     return err;
                 })
             },
-            companiesById: function(ids){
+            companiesByIds: function(ids){
                 return $http.get('/getCompanies').then(results=>{
                     return results.data.filter(function(co){
                         var correct=false;
@@ -35,9 +37,27 @@
                     return err;
                 })
             },
+            
+            
+            //Ride Alongs
             rideAlongs: function(){
                 return $http.get('/activeRideAlongs').then(results=>{
                     return results.data;
+                }, err=>{
+                    return err;
+                })
+            },
+            rideAlongsByIds: function(ids){
+                return $http.get('/activeRideAlongs').then(results=>{
+                    return results.data.filter(function(ra){
+                        var correct=false;
+                        for(var i=0;i<ids.length;i++){
+                            if(ra.id==ids[i]){
+                                correct=true;
+                            }
+                        }
+                        return correct;
+                    })
                 }, err=>{
                     return err;
                 })

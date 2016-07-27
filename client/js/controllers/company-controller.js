@@ -12,11 +12,13 @@
     function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout){
         var cc = this;
         
-        cc.showTabDialog=showTabDialog;
+        cc.showCreatorDialog=showCreatorDialog;
+        cc.showInfoDialog=showInfoDialog;
         cc.openCoDetails=openCODetails;
         cc.removeCo=removeCO;
         
         cc.companies = [];
+        cc.selectedCompany = {};
         
         cc.waitingForResponse = true;
         
@@ -64,10 +66,11 @@
             })
         }
 
-        function showTabDialog(ev){
+        function showInfoDialog(co, ev){
+            cc.selectedCompany = co;
             $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'templates/dialogs/company-creation-dialog.html',
+                controller: InfoDialogController,
+                templateUrl: 'templates/dialogs/company-view-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose:true
@@ -79,15 +82,32 @@
             );
         }
         
-        function uniqueId(){
-            var letters = ["A", "E", "I", "O", "U"];
-            return Math.floor((Math.random() * 999999) + 100000) + letters[Math.floor((Math.random()*(letters.length-1)))] + Math.floor((Math.random() * 999999) + 100000);
+        function InfoDialogController($scope, $mdDialog){
+            $scope.company = cc.selectedCompany;
+
+            $scope.cancel=$mdDialog.cancel;
+        }
+        
+        
+        function showCreatorDialog(ev){
+            $mdDialog.show({
+                controller: CreatorDialogController,
+                templateUrl: 'templates/dialogs/company-creation-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose:true
+            }).then(function(answer) {
+
+                }, function() {
+
+                }
+            );
         }
 
-        function DialogController($scope, $mdDialog){
+        function CreatorDialogController($scope, $mdDialog){
 
             $scope.addCompany=addCompany;
-            $scope.addEmail=addEmail;
+            $scope.addContact=addContact;
             $scope.assignRegions=assignRegions;
             $scope.cancel=$mdDialog.cancel;
             
@@ -105,21 +125,26 @@
             //Company attributes
             $scope.name = "";
             $scope.address = "";
-            $scope.phone = "";
             $scope.emails = [];
-            $scope.newEmail = "";
             $scope.type="";
             $scope.region = "";
             $scope.province = "";
             $scope.county = "";
+            $scope.contacts = [];
+
+            //Contact attributes
+            $scope.contact = {
+                name: "",
+                email: "",
+                phone: ""
+            };
 
             function addCompany(){
                 var id = uniqueId();
                 $http.post('/addCompany',{
                     name: $scope.name,
                     address: $scope.address,
-                    phone: $scope.phone,
-                    emails: $scope.emails,
+                    contacts: $scope.contacts,
                     type: $scope.type,
                     id: id,
                     acceptedRideAlongs: [],
@@ -158,9 +183,18 @@
                 }
             }
             
-            function addEmail(){
-                $scope.emails.push($scope.newEmail);
-                $scope.newEmail="";
+            function addContact(){
+                $scope.contacts.push($scope.contact);
+                $scope.contact={
+                    name: "",
+                    email: "",
+                    phone: ""
+                };
+            }
+
+            function uniqueId(){
+                var letters = ["A", "E", "I", "O", "U"];
+                return Math.floor((Math.random() * 999999) + 100000) + letters[Math.floor((Math.random()*(letters.length-1)))] + Math.floor((Math.random() * 999999) + 100000);
             }
         }
     }

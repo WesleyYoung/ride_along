@@ -1,0 +1,84 @@
+<md-dialog ng-cloak style="width: 100%; max-width: 800px">
+    <md-toolbar style="background-color: grey">
+        <div class="md-toolbar-tools">
+            <img style="height: 100%" src="imgs/verisk_small.png">
+            <h2>{{company.name}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon md-font-set="md">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Info">
+                <md-content>
+                    <div class="md-dialog-content">
+                        <h2 class="md-display-2">{{company.name}}</h2>
+                        <md-subheader>Info</md-subheader>
+                        <md-list ng-cloak>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Company Address
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">business</md-icon>
+                                </md-button>
+                                <h4>{{company.address}}</h4>
+                                <md-button class="md-primary md-secondary">
+                                    Edit
+                                </md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Company Location
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">map</md-icon>
+                                </md-button>
+                                <h4>{{company.county|regionToNormal}}, {{company.province|regionToNormal}} - {{company.region|regionToNormal}}</h4>
+                                <md-button class="md-primary md-secondary">
+                                    Edit
+                                </md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Company Phone
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">phone</md-icon>
+                                </md-button>
+                                <h4>{{company.phone}}</h4>
+                                <md-button class="md-primary md-secondary">
+                                    Edit
+                                </md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Company Phone
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">phone</md-icon>
+                                </md-button>
+                                <h4>{{company.phone}}</h4>
+                                <md-button class="md-primary md-secondary">
+                                    Edit
+                                </md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <span flex></span>
+        <md-button class="md-primary" ng-click="cancel()">
+            Close
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

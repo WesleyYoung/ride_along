@@ -162,7 +162,7 @@
         function DialogController($scope, $mdDialog){
             $scope.rideAlong = ec.selectedRideAlong;
             $scope.notified=[];
-            getDataFactory.companiesById($scope.rideAlong.notified).then(results=>{
+            getDataFactory.companiesByIds($scope.rideAlong.notified).then(results=>{
                 $scope.notified = results;
             }, err=>{
                 if(err)throw err;

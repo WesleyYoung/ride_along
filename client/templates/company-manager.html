@@ -17,7 +17,7 @@
                 <md-button>
                     Filter
                 </md-button>
-                <md-button class="md-accent md-raised" ng-click="cc.showTabDialog($event)">
+                <md-button class="md-accent md-raised" ng-click="cc.showCreatorDialog($event)">
                     <md-icon md-font-set="md">
                         add_circle_outline
                     </md-icon>
@@ -34,9 +34,12 @@
             <h3>No Companies Exist In The DataBase</h3>
         </div>
         <md-list flex style="overflow-y: scroll; height: 800px;" ng-if="cc.companies.length!==0&&cc.waitingForResponse==false">
-            <md-list-item class="md-3-line fold" ng-if="cc.companies.length>0" ng-repeat="company in cc.companies | filter:cc.filterText" ng-click="cc.openCODetails(company)">
+            <md-list-item class="md-3-line fold" ng-if="cc.companies.length>0" ng-repeat="company in cc.companies | filter:cc.filterText" ng-click="cc.showInfoDialog(company, $event)">
                 <div class="md-list-item-text" layout="column">
                     <h2>{{company.name}}</h2>
+                    <h3>{{company.address}}</h3>
+                    <h3>{{company.county|regionToNormal}}, {{company.province|regionToNormal}} - {{company.region|regionToNormal}}</h3>
+                    <h2></h2>
                     <md-divider></md-divider>
                 </div>
                 <span flex></span>

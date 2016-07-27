@@ -52,7 +52,6 @@ function returnDataFromDB(){
 
 
 app.get('/openRideAlongs', function(req, res){
-    console.log("Request Received");
     MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
         if(error)throw error;
         var collection = db.collection('rideAlongs');
@@ -236,7 +235,7 @@ app.post('/formSubmit', function(req, res){
                 res.error(err);
                 return console.log(err)
             }else{
-                console.log('message sent! ' + info.response);
+                //console.log('message sent! ' + info.response);
                 if(emails[counter]!==undefined){
                     sendEmail(emails[counter]);
                 }else{

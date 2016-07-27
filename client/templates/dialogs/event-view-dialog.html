@@ -15,7 +15,7 @@
                 <md-tab label="Info">
                     <md-content class="">
                         <div class="md-dialog-content">
-                            <h1 class="md-display-2">{{rideAlong.name}}</h1>
+                            <h2 class="md-display-2">{{rideAlong.name}}</h2>
                             <h3 ng-if="rideAlong.status=='UNAPPROVED'" style="color: #ffc520; margin:5px">PENDING APPROVAL</h3>
                             <h3 ng-if="rideAlong.status=='OPEN'" style="color: dodgerblue; margin:5px">OPEN</h3>
                             <h3 ng-if="rideAlong.status=='ACCEPTED'" style="color: forestgreen; margin:5px">ACCEPTED</h3>
@@ -96,7 +96,7 @@
                             <md-list ng-repeat="customer in notified" ng-cloak>
                                 <md-list-item>
                                     <h2>{{customer.name}}</h2>
-                                    <md-divider></md-divider>
+                                    <md-divider class="md-accent"></md-divider>
                                 </md-list-item>
                                 <md-list-item ng-repeat="email in customer.emails">
                                     <h4>{{email}}</h4>

@@ -70,7 +70,7 @@
             <md-progress-circular class="md-accent m" md-diameter="60" md-mode="indeterminate"></md-progress-circular>
         </div>
         <div ng-if="ec.rideAlongs.length==0&&ec.waitingForResponse==false">
-            <h2 style="padding: 25px 0 50px 0">No Ride-Alongs</h2>
+            <h2 style="padding: 25px 0 50px 0; height: 800px">No Ride-Alongs</h2>
         </div>
         <md-list flex ng-if="ec.rideAlongs.length!==0&&ec.waitingForResponse==false" style="overflow-y: scroll; height: 800px">
             <md-list-item class="md-3-line fold" ng-repeat="item in ec.rideAlongs | filter:ec.searchText" ng-click="ec.showRADetails($event, $index, item)">
