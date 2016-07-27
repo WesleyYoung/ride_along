@@ -88,13 +88,16 @@
         };
 
         function DialogController($scope, $mdDialog) {
-
+            
             var $http = ecc.$http;
+            
+            var id = uniqueId();
+            
             $scope.ra={
                 selectedRegion:ecc.selectedRegion,
                 region: ecc.selectedRegion.name,
-                countyName:ecc.countyName,
-                provinceName:ecc.provinceName,
+                county:ecc.countyName,
+                province:ecc.provinceName,
                 startDate:ecc.startDate,
                 endDate:ecc.endDate,
                 department: ecc.department,
@@ -103,7 +106,9 @@
                 email: ecc.email,
                 creationDate: new Date(),
                 name: ecc.name,
-                status: "OPEN"
+                status: "OPEN",
+                notified: [],
+                id: id
             };
             $scope.edits={
                 region: false,
@@ -142,6 +147,11 @@
                 });
                 $mdDialog.hide();
             };
+
+            function uniqueId(){
+                var letters = ["A", "E", "I", "O", "U"];
+                return Math.floor((Math.random() * 999999) + 100000) + letters[Math.floor((Math.random()*(letters.length-1)))] + Math.floor((Math.random() * 999999) + 100000);
+            }
 
         }
         

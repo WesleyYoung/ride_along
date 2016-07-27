@@ -92,12 +92,17 @@
                     <md-content>
                         <div class="md-dialog-content">
                             <h1 class="md-display-1">Notified Customers</h1>
-                            <md-list ng-cloak>
-                                <md-subheader>Emails</md-subheader>
-                                <md-list-item ng-repeat="customer in rideAlong.notified">
-                                    <h3>{{customer}}</h3>
+                            <md-subheader>Customers</md-subheader>
+                            <md-list ng-repeat="customer in notified" ng-cloak>
+                                <md-list-item>
+                                    <h2>{{customer.name}}</h2>
                                     <md-divider></md-divider>
                                 </md-list-item>
+                                <md-list-item ng-repeat="email in customer.emails">
+                                    <h4>{{email}}</h4>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-divider></md-divider>
                             </md-list>
                         </div>
                     </md-content>

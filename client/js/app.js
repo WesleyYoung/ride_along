@@ -27,6 +27,7 @@
 
         //Factories
         "list-factory",
+        "get-data-factory",
         
         //Controllers
         'nav-controller',

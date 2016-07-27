@@ -7,9 +7,9 @@
     angular.module('events-controller', [])
         .controller('events-controller', eventsController);
     
-    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster"];
+    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster", "getDataFactory"];
     
-    function eventsController($http, $mdDialog, $mdMedia, $timeout, toaster){
+    function eventsController($http, $mdDialog, $mdMedia, $timeout, toaster, getDataFactory){
         var ec = this;
 
         ec.rideAlongs=[];
@@ -161,6 +161,12 @@
 
         function DialogController($scope, $mdDialog){
             $scope.rideAlong = ec.selectedRideAlong;
+            $scope.notified=[];
+            getDataFactory.companiesById($scope.rideAlong.notified).then(results=>{
+                $scope.notified = results;
+            }, err=>{
+                if(err)throw err;
+            });
             $scope.selectedIndex=ec.selectedIndex;
             $scope.isOpen=$scope.rideAlong.status=='OPEN'||$scope.rideAlong.status=='ACCEPTED';
             $scope.waiting=false;

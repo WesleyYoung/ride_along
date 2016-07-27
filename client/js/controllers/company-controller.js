@@ -22,6 +22,7 @@
         
         function getCompanies(){
             cc.waitingForResponse = true;
+            cc.companies=[];
             $http.get('/getCompanies').then(results=> {
                 var count=0;
                 function pushCO(){
@@ -53,9 +54,9 @@
             console.log(co);
         }
         
-        function removeCO(index, ev){
+        function removeCO(ra){
             console.log("Trying...");
-            $http.post('/removeCompany', cc.companies[index]).then(results=>{
+            $http.post('/removeCompany', ra).then(results=>{
                 console.log("Company Removed!");
                 getCompanies();
             }, error=>{
@@ -122,6 +123,7 @@
                     type: $scope.type,
                     id: id,
                     acceptedRideAlongs: [],
+                    notifiedRideAlongs: [],
                     region: $scope.region,
                     province: $scope.province,
                     county: $scope.county

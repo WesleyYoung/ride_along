@@ -176,47 +176,35 @@ app.post('/inviteSpecific', function(req, res){
 app.post('/formSubmit', function(req, res){
     
     //Here would be the logic in which we decide what emails go out to who
-    var emails = [
-        "wesley.young.portfolio@gmail.com"
-        //"8016633893@vtext.com"
-    ], storeObj=[];
-
-    var name = req.body.name,
-        status= req.body.status,
-        employeeEmail = req.body.email,
-        region = req.body.region,
-        province = req.body.provinceName,
-        county = req.body.countyName,
-        startDateObj = new Date(req.body.startDate),
-        endDateObj = new Date(req.body.endDate),
-        department = req.body.department,
-        notes = req.body.notes,
-        phone = req.body.phone,
-        created = new Date(req.body.creationDate),
+    var emails = [],
         counter = 0;
+    
+    var rideAlong = req.body,
+        startDateObj = new Date(rideAlong.startDate), 
+        endDateObj = new Date(rideAlong.endDate);
 
     MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
         if (error)throw error;
-        var collection = db.collection('rideAlongs');
-        var ra = {
-            name: name,
-            status: status,
-            email: employeeEmail,
-            region: region,
-            province: province,
-            county: county,
-            startDate: startDateObj,
-            endDate: endDateObj,
-            notes: notes,
-            department: department,
-            phone: phone,
-            notified: emails,
-            creationDate: created
-        };
-        collection.insert(ra, {w: 1}, (err, result)=> {
-            if (err)throw err;
-            console.log("Added Ride Along");
-        })
+        var raCollection = db.collection('rideAlongs'),
+            coCollection = db.collection('companies');
+        
+        coCollection.find().toArray((err,items)=>{
+            if(err)throw err;
+            for(var i=0;i<items.length;i++){
+                if(items[i].province==rideAlong.province&&items[i].county==rideAlong.county){
+                    rideAlong.notified.push(items[i].id);
+                    coCollection.update({id: items[i].id}, {$push: {notifiedRideAlongs: rideAlong.id}});
+                    for(var j=0;j<items[i].emails.length;j++){
+                        emails.push(items[i].emails[j])
+                    }
+                }
+            }
+            raCollection.insert(rideAlong, {w: 1}, (err, result)=> {
+                if (err)throw err;
+                console.log("Added Ride Along");
+                if(emails.length!==0)sendEmail(emails[counter]);
+            })
+        });
     });
 
     function sendEmail(em){
@@ -226,21 +214,21 @@ app.post('/formSubmit', function(req, res){
             to: em,
             subject: "Ride Along Available",
             text: `
-                Hello! Xactware certified trainer ${req.body.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+                Hello! Xactware certified trainer ${rideAlong.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
             `,
             html: `
                 <h2 style="color: black">Hello!</h2>
-                <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
+                <p style="color: black">Xactware certified trainer ${rideAlong.name} is available to schedule a ride along with you!</p> 
                 <div >
                     <p style="color: red">
                     <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
                     <br>
-                    <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
+                    <strong style="color: black">Where </strong> ${rideAlong.county.regionToNormal()}, ${rideAlong.province.regionToNormal()} - ${rideAlong.region.regionToNormal()} 
                     </p>
                 </div>
-                <p>${notes}</p>
+                <p>${rideAlong.notes}</p>
                       
-                <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
+                <h4 style="color: green">You may contact ${rideAlong.name} at ${rideAlong.email}</h4>  
                 `
         };
         transporter.sendMail(mailOptions, function(err, info){
@@ -252,14 +240,13 @@ app.post('/formSubmit', function(req, res){
                 if(emails[counter]!==undefined){
                     sendEmail(emails[counter]);
                 }else{
-                    console.log("All emails sent! Recievers were " + emails.join(" "))
+                    console.log("All emails sent! Recievers were " + emails.join(" "));
                     res.end();
                 }
             }
 
         });
-    };
-    if(emails.length!==0)sendEmail(emails[counter]);
+    }
 });
 
 app.post('/resendNotifications', function(req, res){
