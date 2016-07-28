@@ -28,10 +28,10 @@
         <div style="height: 800px; padding-top: 200px; text-align: center" ng-if="cc.waitingForResponse==true">
             <h1>Loading Companies......</h1>
             <br>
-            <md-progress-circular class="md-accent m" md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+            <md-progress-circular class="md-primary m" md-diameter="60" md-mode="indeterminate"></md-progress-circular>
         </div>
         <div style="height: 800px; padding-top: 200px;" ng-if="cc.companies.length==0&&cc.waitingForResponse==false">
-            <h3>No Companies Exist In The DataBase</h3>
+            <h3>No Companies Exist In The Database</h3>
         </div>
         <md-list flex style="overflow-y: scroll; height: 800px;" ng-if="cc.companies.length!==0&&cc.waitingForResponse==false">
             <md-list-item class="md-3-line fold" ng-if="cc.companies.length>0" ng-repeat="company in cc.companies | filter:cc.filterText" ng-click="cc.showInfoDialog(company, $event)">

@@ -26,7 +26,10 @@ const fs = require('fs');
 var MongoClient = require('mongodb').MongoClient;
 
 // Connect to the db
-MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+
+var mongoUrl = "mongodb://localhost:27017/exampleDb";
+
+MongoClient.connect(mongoUrl, function(error, db) {
     if(error)throw error;
     console.log("We are connected to Mongo");
     db.createCollection('rideAlongs', function(err) {
@@ -39,20 +42,8 @@ MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
     });
 });
 
-function returnDataFromDB(){
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(err, db) {
-        if(!err) {
-            console.log("We are connected");
-            var collection = db.collection('rideAlongs');
-        }
-
-        else throw err;
-    });
-}
-
-
 app.get('/openRideAlongs', function(req, res){
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    MongoClient.connect(mongoUrl, function(error, db) {
         if(error)throw error;
         var collection = db.collection('rideAlongs');
         collection.find().toArray((err,items)=>{
@@ -63,7 +54,7 @@ app.get('/openRideAlongs', function(req, res){
 });
 
 app.get('/getCompanies', (req, res)=>{
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    MongoClient.connect(mongoUrl, function(error, db) {
         if(error)throw error;
         var collection = db.collection('companies');
         collection.find().toArray((err,items)=>{
@@ -75,7 +66,7 @@ app.get('/getCompanies', (req, res)=>{
 
 app.post('/deleteRideAlong', function(req, res){
     var toBeDeleted = req.body;
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    MongoClient.connect(mongoUrl, function(error, db) {
         if(error)throw error;
         var collection = db.collection('rideAlongs');
         collection.remove({
@@ -93,7 +84,7 @@ app.post('/deleteRideAlong', function(req, res){
 
 app.post('/changeRAStatus', function(req, res){
     var toBeChanged=req.body;
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    MongoClient.connect(mongoUrl, function(error, db) {
         if(error)throw error;
         var collection = db.collection('rideAlongs');
         collection.update({
@@ -182,7 +173,7 @@ app.post('/formSubmit', function(req, res){
         startDateObj = new Date(rideAlong.startDate), 
         endDateObj = new Date(rideAlong.endDate);
 
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    MongoClient.connect(mongoUrl, function(error, db) {
         if (error)throw error;
         var raCollection = db.collection('rideAlongs'),
             coCollection = db.collection('companies');
@@ -193,8 +184,8 @@ app.post('/formSubmit', function(req, res){
                 if(items[i].province==rideAlong.province&&items[i].county==rideAlong.county){
                     rideAlong.notified.push(items[i].id);
                     coCollection.update({id: items[i].id}, {$push: {notifiedRideAlongs: rideAlong.id}});
-                    for(var j=0;j<items[i].emails.length;j++){
-                        emails.push(items[i].emails[j])
+                    for(var j=0;j<items[i].contacts.length;j++){
+                        emails.push(items[i].contacts[j].email)
                     }
                 }
             }
@@ -310,7 +301,7 @@ app.post('/resendNotifications', function(req, res){
 
 app.post('/addCompany', (req, res)=>{
     var com = req.body;
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    MongoClient.connect(mongoUrl, function(error, db) {
         if (error)throw error;
         var collection = db.collection('companies');
         collection.insert(com, {w: 1}, (err, result)=> {
@@ -323,12 +314,46 @@ app.post('/addCompany', (req, res)=>{
 
 app.post('/removeCompany', (req, res)=>{
     var toBeDeleted = req.body;
-    MongoClient.connect("mongodb://localhost:27017/exampleDb", function(error, db) {
+    MongoClient.connect(mongoUrl, function(error, db) {
         if(error)throw error;
         var collection = db.collection('companies');
         collection.remove({id: toBeDeleted.id}, {w:1}, (err,result)=>{
             if(err)throw err;
             res.end(JSON.stringify({success: true}))
+        })
+    });
+});
+
+app.post('/addContact', (req, res)=>{
+    var contact = req.body.contact,
+        id = req.body.id;
+    MongoClient.connect(mongoUrl, function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('companies');
+        collection.update({id: id}, {$push: {contacts: contact}}, (err,result)=>{
+            if(err)throw err;
+            collection.findOne({id: id}, (err, item)=>{
+                if(err)throw err;
+                res.end(JSON.stringify({success: true, updated: item}))
+            });
+        })
+    });
+});
+
+app.post('/removeContact', (req, res)=>{
+    var companyId = req.body.companyId,
+        contactId = req.body.contactId;
+    MongoClient.connect(mongoUrl, function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('companies');
+        collection.update({id: companyId}, {
+            $pull: {contacts: {id: contactId}}
+        }, (err, result)=>{
+            if(err)throw err;
+            collection.findOne({id: companyId}, (err, item)=>{
+                if(err)throw err;
+                res.end(JSON.stringify({success: true, updated: item}))
+            })    
         })
     });
 });

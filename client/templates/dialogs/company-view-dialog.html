@@ -10,13 +10,26 @@
         </div>
     </md-toolbar>
     <md-dialog-content>
-        <md-tabs md-dynamic-height md-border-bottom>
+        <md-tabs md-selected="selectedTab" md-dynamic-height md-border-bottom>
             <md-tab label="Info">
                 <md-content>
                     <div class="md-dialog-content">
                         <h2 class="md-display-2">{{company.name}}</h2>
                         <md-subheader>Info</md-subheader>
                         <md-list ng-cloak>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Company Type
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">info</md-icon>
+                                </md-button>
+                                <h4>{{company.type}}</h4>
+                                <md-button class="md-primary md-secondary">
+                                    Edit
+                                </md-button>
+                                <md-divider></md-divider>
+                            </md-list-item>
                             <md-list-item>
                                 <md-button class="md-icon-button">
                                     <md-tooltip md-direction="top">
@@ -43,7 +56,7 @@
                                 </md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
-                            <md-list-item>
+                            <!--<md-list-item>
                                 <md-button class="md-icon-button">
                                     <md-tooltip md-direction="top">
                                         Company Phone
@@ -55,21 +68,59 @@
                                     Edit
                                 </md-button>
                                 <md-divider></md-divider>
-                            </md-list-item>
-                            <md-list-item>
+                            </md-list-item>-->
+                        </md-list>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Contacts">
+                <md-content>
+                    <div class="md-dialog-content">
+                        <h3 class="md-display-2">Contacts</h3>
+                        <md-subheader>Info</md-subheader>
+                        <md-list ng-cloak>
+                            <md-list-item ng-repeat="_contact in company.contacts">
                                 <md-button class="md-icon-button">
                                     <md-tooltip md-direction="top">
-                                        Company Phone
+                                        Contact
                                     </md-tooltip>
-                                    <md-icon md-font-set="md">phone</md-icon>
+                                    <md-icon md-font-set="md">person</md-icon>
                                 </md-button>
-                                <h4>{{company.phone}}</h4>
-                                <md-button class="md-primary md-secondary">
+                                <h4>{{_contact.name}}</h4>
+                                <md-button class="md-secondary md-warn" ng-click="removeContact(_contact)">
+                                    Delete
+                                </md-button>
+                                <md-button class="md-secondary md-primary">
                                     Edit
                                 </md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
                         </md-list>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Add Contact">
+                <md-content>
+                    <div class="md-dialog-content">
+                        <h3 class="md-display-2">Add New Contact</h3>
+                        <md-subheader>Please Fill Out All Fields Below</md-subheader>
+                        <br>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
+                                <label>Name</label>
+                                <input ng-model="newContact.name"/>
+                            </md-input-container>
+                        </div>
+                        <div layout-gt-xs="row">
+                            <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
+                                <label>Email Address</label>
+                                <input ng-model="newContact.email"/>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs style="margin: 20px 0 0 0;">
+                                <label>Phone Number</label>
+                                <input ng-model="newContact.phone"/>
+                            </md-input-container>
+                        </div>
                     </div>
                 </md-content>
             </md-tab>
@@ -79,6 +130,16 @@
         <span flex></span>
         <md-button class="md-primary" ng-click="cancel()">
             Close
+        </md-button>
+        <md-button ng-disabled="newContact.name==''||newContact.email==''||newContact.phone==''" class="md-accent md-raised" ng-if="selectedTab==2" ng-click="addContact()">
+            Add Contact
+        </md-button>
+        <md-button ng-if="selectedTab==1||selectedTab==0" ng-click="switchToCreator()" class="md-accent md-raised">
+            <md-tooltip md-direction="top">
+                Add New Contact
+            </md-tooltip>
+            <md-icon md-font-set="md" class="md-accent">add_circle_outline</md-icon>
+            Add New Contact
         </md-button>
     </md-dialog-actions>
 </md-dialog>

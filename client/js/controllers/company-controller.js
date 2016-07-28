@@ -7,9 +7,9 @@
         
         .controller('companyController', companyController);
 
-    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout"];
+    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster"];
 
-    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout){
+    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster){
         var cc = this;
         
         cc.showCreatorDialog=showCreatorDialog;
@@ -52,6 +52,11 @@
         }
         getCompanies();
 
+        function uniqueId(){
+            var letters = ["A", "E", "I", "O", "U"];
+            return Math.floor((Math.random() * 999999) + 100000) + letters[Math.floor((Math.random()*(letters.length-1)))] + Math.floor((Math.random() * 999999) + 100000);
+        }
+
         function openCODetails(co){
             console.log(co);
         }
@@ -83,9 +88,54 @@
         }
         
         function InfoDialogController($scope, $mdDialog){
+            var id = uniqueId();
+            
             $scope.company = cc.selectedCompany;
+            $scope.selectedTab  = 0;
+            $scope.newContact={
+                name: "",
+                email: "",
+                phone: "",
+                id: id
+            };
 
             $scope.cancel=$mdDialog.cancel;
+
+            $scope.switchToCreator=function(){
+                $scope.selectedTab=2;
+            };
+            
+            $scope.addContact=function(){
+                $http.post('/addContact', {id: $scope.company.id, contact: $scope.newContact})
+                    .then(result=>{
+                        getCompanies();
+                        toaster.pop('success', 'Contact Added!', '');
+                        var id = uniqueId();
+                        $scope.newContact={
+                            name: "",
+                            email: "",
+                            phone: "",
+                            id: id
+                        };
+                        $scope.company=result.data.updated;
+                    }, error=>{
+                        toaster.pop('error', 'There was an issue trying to add the contact');
+                        console.log(error);
+                    })
+            };
+            
+            $scope.removeContact=function(contact){
+                $http.post('/removeContact', {companyId: $scope.company.id, contactId: contact.id})
+                    .then(result=>{
+                        getCompanies();
+                        toaster.pop('success', 'Contact Removed');
+                        $scope.company=result.data.updated;
+                    }, error=>{
+                        toaster.pop('error', 'There was an error');
+                        console.log(error);
+                    })
+            }
+
         }
         
         
@@ -105,7 +155,8 @@
         }
 
         function CreatorDialogController($scope, $mdDialog){
-
+            var id = uniqueId();
+            
             $scope.addCompany=addCompany;
             $scope.addContact=addContact;
             $scope.assignRegions=assignRegions;
@@ -136,7 +187,8 @@
             $scope.contact = {
                 name: "",
                 email: "",
-                phone: ""
+                phone: "",
+                id: id
             };
 
             function addCompany(){
@@ -185,16 +237,13 @@
             
             function addContact(){
                 $scope.contacts.push($scope.contact);
+                var id = uniqueId();
                 $scope.contact={
                     name: "",
                     email: "",
-                    phone: ""
+                    phone: "",
+                    id: id
                 };
-            }
-
-            function uniqueId(){
-                var letters = ["A", "E", "I", "O", "U"];
-                return Math.floor((Math.random() * 999999) + 100000) + letters[Math.floor((Math.random()*(letters.length-1)))] + Math.floor((Math.random() * 999999) + 100000);
             }
         }
     }
