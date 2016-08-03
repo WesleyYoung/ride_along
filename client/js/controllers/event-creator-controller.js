@@ -94,7 +94,7 @@
             var id = uniqueId();
             
             $scope.ra={
-                selectedRegion:ecc.selectedRegion,
+                //selectedRegion:ecc.selectedRegion,
                 region: ecc.selectedRegion.name,
                 county:ecc.countyName,
                 province:ecc.provinceName,
@@ -133,6 +133,7 @@
                 var postObj = $scope.ra;
                 $http.post('/formSubmit', postObj).then(function() {
                     console.log('Submission successful!');
+                    console.log(postObj.id);
                     $mdDialog.show(
                         $mdDialog.alert()
                             .parent(angular.element(document.querySelector('#popupContainer')))

@@ -25,8 +25,6 @@ const fs = require('fs');
 
 var MongoClient = require('mongodb').MongoClient;
 
-// Connect to the db
-
 var mongoUrl = "mongodb://localhost:27017/exampleDb";
 
 MongoClient.connect(mongoUrl, function(error, db) {
@@ -38,6 +36,18 @@ MongoClient.connect(mongoUrl, function(error, db) {
         db.createCollection('companies', function(err){
             if(err)throw err;
             console.log("'Companies' collection worked");
+        })
+    });
+});
+
+app.get('/rideAlongById/:id', (req, res)=>{
+    var id = req.params.id;
+    MongoClient.connect(mongoUrl, function(error, db) {
+        if(error)throw error;
+        var collection = db.collection('rideAlongs');
+        collection.findOne({id: id}, (err, item)=>{
+            if(err)throw err;
+            res.end(JSON.stringify(item));
         })
     });
 });
@@ -70,11 +80,7 @@ app.post('/deleteRideAlong', function(req, res){
         if(error)throw error;
         var collection = db.collection('rideAlongs');
         collection.remove({
-            name: toBeDeleted.name,
-            email: toBeDeleted.email,
-            province: toBeDeleted.province,
-            region: toBeDeleted.region,
-            county: toBeDeleted.county
+            id: toBeDeleted.id
         }, {w:1}, (err,result)=>{
             if(err)throw err;
             res.end(JSON.stringify({success: true}))
@@ -99,62 +105,6 @@ app.post('/changeRAStatus', function(req, res){
         })
     });
 });
-
-function sendEmails(ra, emails){
-    var name = ra.name,
-        employeeEmail = ra.email,
-        region = ra.region,
-        province = ra.province,
-        county = ra.county,
-        startDateObj = new Date(ra.startDate),
-        endDateObj = new Date(ra.endDate),
-        department = ra.department,
-        notes = ra.notes,
-        phone = ra.phone,
-        counter = 0;
-    function sendEmail(em){
-        counter++;
-        var mailOptions = {
-            from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',
-            to: em,
-            subject: "Ride Along Available",
-            text: `
-                Hello! Xactware certified trainer ${req.body.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
-            `,
-            html: `
-                <h2 style="color: black">Hello!</h2>
-                <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
-                <div >
-                    <p style="color: red">
-                    <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
-                    <br>
-                    <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
-                    </p>
-                </div>
-                <p>${notes}</p>
-                      
-                <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
-                `
-        };
-        transporter.sendMail(mailOptions, function(err, info){
-            if(err){
-                res.error(err);
-                return console.log(err)
-            }else{
-                console.log('message sent! ' + info.response);
-                if(emails[counter]!==undefined){
-                    sendEmail(emails[counter]);
-                }else{
-                    console.log("All emails sent! Recievers were " + emails.join(" "))
-                    res.end();
-                }
-            }
-
-        });
-    }
-
-    if(emails.length!==0)sendEmail(emails[counter]);
-}
 
 app.post('/inviteSpecific', function(req, res){
 
@@ -223,18 +173,15 @@ app.post('/formSubmit', function(req, res){
         };
         transporter.sendMail(mailOptions, function(err, info){
             if(err){
-                res.error(err);
-                return console.log(err)
-            }else{
-                //console.log('message sent! ' + info.response);
-                if(emails[counter]!==undefined){
-                    sendEmail(emails[counter]);
-                }else{
-                    console.log("All emails sent! Recievers were " + emails.join(" "));
-                    res.end();
-                }
+                console.log(err.response.split("<")[1].split(">")[0]);
             }
-
+            //console.log('message sent! ' + info.response);
+            if(emails[counter]!==undefined){
+                sendEmail(emails[counter]);
+            }else{
+                console.log("All emails sent! Receivers were: " + emails.join(" "));
+                res.end();
+            }
         });
     }
 });
@@ -368,13 +315,21 @@ app.post('/acceptance', (req, res)=>{
 
 
 // verify connection configuration
-transporter.verify(function(error, success) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Server is ready to take our messages');
-    }
-});
+function verifyTransporter(){
+    transporter.verify(function(error, success) {
+        if (error) {
+            if(error.code=='ECONNRESET'){
+                console.log('ECONNRESET Error thrown, trying to verify again...');
+                verifyTransporter();
+            }else{
+                throw error;
+            }
+        } else {
+            console.log('Server is ready to take our messages');
+        }
+    });
+}
+verifyTransporter();
 
 Date.prototype.legibleDate=function(){
     var input = this;

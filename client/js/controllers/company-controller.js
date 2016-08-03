@@ -7,9 +7,9 @@
         
         .controller('companyController', companyController);
 
-    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster"];
+    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster", "getDataFactory"];
 
-    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster){
+    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster, getDataFactory){
         var cc = this;
         
         cc.showCreatorDialog=showCreatorDialog;
@@ -25,13 +25,13 @@
         function getCompanies(){
             cc.waitingForResponse = true;
             cc.companies=[];
-            $http.get('/getCompanies').then(results=> {
+            getDataFactory.companies().then(results=> {
                 var count=0;
                 function pushCO(){
-                    if(results.data[count]!==undefined){
-                        cc.companies.push(results.data[count])
+                    if(results[count]!==undefined){
+                        cc.companies.push(results[count]);
                         count+=1;
-                        if(results.data[count]!==undefined){
+                        if(results[count]!==undefined){
                             $timeout(function(){
                                 pushCO();
                             }, 200)
@@ -39,9 +39,9 @@
                     }
                 }
                 $timeout(function(){
-                    console.log(results.data);
+                    //console.log(results.data);
                     cc.waitingForResponse = false;
-                    if(results.data.length!==0)pushCO();
+                    if(results.length!==0)pushCO();
                 }, 750);
             }, error=>{
                 if(error){
@@ -62,13 +62,22 @@
         }
         
         function removeCO(ra){
-            console.log("Trying...");
-            $http.post('/removeCompany', ra).then(results=>{
-                console.log("Company Removed!");
-                getCompanies();
-            }, error=>{
-                throw error;
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure?')
+                .textContent('As of now, companies cannot be re-added once removed')
+                .ariaLabel('Are you sure you want to delete this company?')
+                .ok('Delete')
+                .cancel('Cancel');
+            $mdDialog.show(confirm).then(function(){
+                console.log("Trying...");
+                $http.post('/removeCompany', ra).then(results=>{
+                    console.log("Company Removed!");
+                    getCompanies();
+                }, error=>{
+                    throw error;
+                })
             })
+
         }
 
         function showInfoDialog(co, ev){
@@ -125,17 +134,24 @@
             };
             
             $scope.removeContact=function(contact){
-                $http.post('/removeContact', {companyId: $scope.company.id, contactId: contact.id})
-                    .then(result=>{
-                        getCompanies();
-                        toaster.pop('success', 'Contact Removed');
-                        $scope.company=result.data.updated;
-                    }, error=>{
-                        toaster.pop('error', 'There was an error');
-                        console.log(error);
-                    })
+                var confirm = $mdDialog.confirm()
+                    .title('Are you sure?')
+                    .textContent('As of now, contacts cannot be re-added once removed')
+                    .ariaLabel('Are you sure you want to delete this contact?')
+                    .ok('Delete')
+                    .cancel('Cancel');
+                $mdDialog.show(confirm).then(function(){
+                    $http.post('/removeContact', {companyId: $scope.company.id, contactId: contact.id})
+                        .then(result=>{
+                            getCompanies();
+                            toaster.pop('success', 'Contact Removed');
+                            $scope.company=result.data.updated;
+                        }, error=>{
+                            toaster.pop('error', 'There was an error');
+                            console.log(error);
+                        })
+                })
             }
-
         }
         
         
