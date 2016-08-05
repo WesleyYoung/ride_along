@@ -11,8 +11,8 @@
             </div>
         </md-toolbar>
         <md-dialog-content style="max-width:800px;max-height:810px;">
-            <md-tabs md-selected="selectedTab" md-dynamic-height md-border-bottom>
-                <md-tab label="Basic Info">
+            <!--<md-tabs md-selected="selectedTab" md-dynamic-height md-border-bottom>
+                <md-tab label="Basic Info">-->
                     <md-content class="md-padding">
                         <h3 class="md-display-2">New Company</h3>
                         <md-subheader>Please Fill Out All Fields Below</md-subheader>
@@ -58,7 +58,7 @@
                         <br>
                         <br>
                     </md-content>
-                </md-tab>
+                <!--</md-tab>
                 <md-tab label="Email Addresses">
                     <md-content class="md-padding">
                         <h3 class="md-display-2">Contact Emails</h3>
@@ -92,7 +92,7 @@
                         </md-list>
                     </md-content>
                 </md-tab>
-            </md-tabs>
+            </md-tabs>-->
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <!--<md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" md-autofocus>
@@ -102,10 +102,10 @@
             <md-button ng-click="cancel()" >
                 Cancel
             </md-button>
-            <md-button class="md-accent md-raised" ng-if="selectedTab==0" ng-click="continueForm()">
+            <!--<md-button class="md-accent md-raised" ng-if="selectedTab==0" ng-click="continueForm()">
                 Continue
-            </md-button>
-            <md-button class="md-primary md-raised" ng-if="selectedTab==1" ng-click="addCompany()" style="margin-right:20px;">
+            </md-button>-->
+            <md-button class="md-primary md-raised" ng-click="addCompany()" style="margin-right:20px;">
                 Confirm
             </md-button>
         </md-dialog-actions>

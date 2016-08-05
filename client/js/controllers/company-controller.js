@@ -223,6 +223,18 @@
                 }).then(response=>{
                     $scope.cancel();
                     getCompanies();
+                    cc.showInfoDialog({
+                        name: $scope.name,
+                        address: $scope.address,
+                        contacts: $scope.contacts,
+                        type: $scope.type,
+                        id: id,
+                        acceptedRideAlongs: [],
+                        notifiedRideAlongs: [],
+                        region: $scope.region,
+                        province: $scope.province,
+                        county: $scope.county
+                    });
                     console.log("Added Company");
                 }, error=>{
                     if(error){
