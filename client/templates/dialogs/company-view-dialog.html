@@ -127,6 +127,28 @@
                     </div>
                 </md-content>
             </md-tab>
+            <md-tab label="Notified">
+                <md-content>
+                    <div class="md-dialog-content">
+                        <h3 class="md-display-2">Notified</h3>
+                        <md-subheader></md-subheader>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Accepted">
+                <md-content>
+                    <div class="md-dialog-content">
+                        <h3 class="md-display-2">Accepted</h3>
+                        <md-subheader></md-subheader>
+                        <md-list>
+                            <md-list-item ng-repeat="id in company.acceptedRideAlongs">
+                                <h4>{{id}}</h4>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </md-content>
+            </md-tab>
         </md-tabs>
     </md-dialog-content>
     <md-dialog-actions>
@@ -137,7 +159,7 @@
         <md-button ng-disabled="newContact.name==''||newContact.email==''||newContact.phone==''" class="md-accent md-raised" ng-if="selectedTab==2" ng-click="addContact()">
             Add Contact
         </md-button>
-        <md-button ng-if="selectedTab==1||selectedTab==0" ng-click="switchToCreator()" class="md-accent md-raised">
+        <md-button ng-if="selectedTab!==2" ng-click="switchToCreator()" class="md-accent md-raised">
             <md-tooltip md-direction="top">
                 Add New Contact
             </md-tooltip>

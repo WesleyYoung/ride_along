@@ -108,7 +108,13 @@
                 name: ecc.name,
                 status: "OPEN",
                 notified: [],
-                id: id
+                id: id,
+                accepted:{
+                    acceptedCompany: "",
+                    acceptedContact: "",
+                    rap: {},
+                    manager: {}
+                }
             };
             $scope.edits={
                 region: false,

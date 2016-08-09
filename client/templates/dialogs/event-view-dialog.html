@@ -172,6 +172,35 @@
                         </div>
                     </md-content>
                 </md-tab>
+                <md-tab label="Acceptance Details" ng-if="rideAlong.status=='ACCEPTED'">
+                    <md-content>
+                        <div class="md-dialog-content">
+                            <h2 class="md-display-2">Acceptance Details</h2>
+                            <md-subheader>Ride Along Partner</md-subheader>
+                            <md-list>
+                                <md-list-item>
+                                    <h4>{{rideAlong.accepted.rap.name}}</h4>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-list-item>
+                                    <h4>{{rideAlong.accepted.rap.phone}}</h4>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-list>
+                            <md-subheader>Accepting Manager</md-subheader>
+                            <md-list>
+                                <md-list-item>
+                                    <h4>{{rideAlong.accepted.manager.name}}</h4>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                                <md-list-item>
+                                    <h4>{{rideAlong.accepted.manager.phone}}</h4>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </md-content>
+                </md-tab>
             </md-tabs>
         </md-dialog-content>
         <md-dialog-actions layout="row">

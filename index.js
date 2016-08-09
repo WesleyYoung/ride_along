@@ -116,8 +116,10 @@ app.post('/inviteSpecific', function(req, res){
 app.post('/formSubmit', function(req, res){
     
     //Here would be the logic in which we decide what emails go out to who
-    var emails = [],
-        counter = 0;
+    var emails=[],
+        companyIds=[],
+        contactIds=[],
+        counter=0;
     
     var rideAlong = req.body,
         startDateObj = new Date(rideAlong.startDate), 
@@ -135,7 +137,9 @@ app.post('/formSubmit', function(req, res){
                     rideAlong.notified.push(items[i].id);
                     coCollection.update({id: items[i].id}, {$push: {notifiedRideAlongs: rideAlong.id}});
                     for(var j=0;j<items[i].contacts.length;j++){
-                        emails.push(items[i].contacts[j].email)
+                        emails.push(items[i].contacts[j].email);
+                        contactIds.push(items[i].contacts[j].id);
+                        companyIds.push(items[i].id);
                     }
                 }
             }
@@ -148,7 +152,6 @@ app.post('/formSubmit', function(req, res){
     });
 
     function sendEmail(em){
-        counter++;
         var mailOptions = {
             from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',
             to: em,
@@ -167,10 +170,20 @@ app.post('/formSubmit', function(req, res){
                     </p>
                 </div>
                 <p>${rideAlong.notes}</p>
+                
+                <div>
+                    Copy this link into your browser to respond to the ride-along
+                    
+                    
+                    localhost:8001/#/respond?id=${rideAlong.id}&companyId=${companyIds[counter]}&contactId=${contactIds[counter]}
+                </div>
+                
+                <a href="localhost:8001/#/respond?id=${rideAlong.id}&companyId=${companyIds[counter]}&contactId=${contactIds[counter]}">Click Here To Respond To This Ride-Along</a>
                       
                 <h4 style="color: green">You may contact ${rideAlong.name} at ${rideAlong.email}</h4>  
                 `
         };
+        counter++;
         transporter.sendMail(mailOptions, function(err, info){
             if(err){
                 console.log(err.response.split("<")[1].split(">")[0]);
@@ -306,10 +319,28 @@ app.post('/removeContact', (req, res)=>{
 });
 
 
-app.post('/acceptance', (req, res)=>{
-    console.log("Received!"); 
-    console.log(req.body);
-    res.end('Thanks for the post m8')
+app.post('/acceptance/:id/:companyId/:contactId', (req, res)=>{
+    console.log("Received!");
+    var id = req.params.id,
+        companyId = req.params.companyId,
+        contactId = req.params.contactId,
+        rap = req.body.rap,
+        manager = req.body.manager;
+    MongoClient.connect(mongoUrl, function(error, db) {
+        if(error)throw error;
+        var RACollection = db.collection('rideAlongs');
+        RACollection.update({id: id}, {$set: {status: 'ACCEPTED', accepted: {company: companyId, contact: contactId, rap: rap, manager: manager}}}, (err,result)=>{
+            if(err)throw err;
+            var COCollection = db.collection('companies');
+            COCollection.update({id: companyId}, {$push: {acceptedRideAlongs: id}}, (err, result)=>{
+                if(err)throw err;
+                RACollection.findOne({id: id}, (err, item)=>{
+                    if(err)throw err;
+                    res.end(JSON.stringify({success: true, updated: item}))
+                });
+            })
+        })
+    });
 });
 
 
