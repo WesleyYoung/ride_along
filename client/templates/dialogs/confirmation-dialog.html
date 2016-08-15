@@ -11,8 +11,8 @@
             </div>
         </md-toolbar>
         <md-dialog-content style="max-width:800px;max-height:810px; ">
-            <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Details">
+            <!--<md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Details">-->
                     <md-content class="md-padding">
                         <h1 class="md-display-3">Confirm Ride-Along</h1>
                         <md-list ng-cloak>
@@ -24,7 +24,7 @@
                                     </md-tooltip>
                                     <md-icon md-font-set="md">place</md-icon>
                                 </md-button>
-                                <h3>{{ra.county|regionToNormal}}, {{ra.province|regionToNormal}} - {{ra.selectedRegion.name|regionToNormal}}</h3>
+                                <h3>{{ra.county|regionToNormal}}, {{ra.province|regionToNormal}} - {{ra.region|regionToNormal}}</h3>
                                 <md-button class="md-secondary md-primary">Edit</md-button>
                                 <md-divider></md-divider>
                             </md-list-item>
@@ -89,25 +89,10 @@
                                 <md-divider></md-divider>
                             </md-list-item>
                         </md-list>
-                        <!--<div layout="row">
-                            <div layout="column">
-                                <h1 class="md-display-2">Are You Sure?</h1>
-                                <h3>Event Details</h3>
-                                <h4>{{countyName|regionToNormal}}, {{provinceName|regionToNormal}} - {{selectedRegion.name|regionToNormal}}</h4>
-                                <h4>{{startDate|longDate}} to {{endDate|longDate}}</h4>
-                                <br>
-                            </div>
-                            <span flex></span>
-                            <div layout="column" style="width: 50%; padding: 0 15px 0 15px">
-                                <h1 class="md-display-2">Notes: </h1>
-                                <textarea style="height: 100%" ng-model="notes" class="form-control"></textarea>
-                                <br>
-                            </div>
-                        </div>-->
-                        <p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{ra.name}}) agree to accept any valid responses from ride along partners from {{ra.startDate|longDate}} to {{ra.endDate|longDate}}</p>
+                        <!--<p class="disclaimer">DISCLAIMER: By clicking 'confirm' you ({{ra.name}}) agree to accept any valid responses from ride along partners from {{ra.startDate|longDate}} to {{ra.endDate|longDate}}</p>-->
                     </md-content>
-                </md-tab>
-                <md-tab label="two">
+                <!--</md-tab>-->
+               <!-- <md-tab label="two">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Tab Two</h1>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.</p>
@@ -120,15 +105,15 @@
                         <h1 class="md-display-2">Tab Three</h1>
                         <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
                     </md-content>
-                </md-tab>
-            </md-tabs>
+                </md-tab>-->
+            <!--</md-tabs>-->
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex></span>
             <md-button ng-click="cancel()" >
                 Cancel
             </md-button>
-            <md-button class="md-primary md-raised" ng-click="confirm()" style="margin-right:20px;" ng-disabled="edits.name||edits.region||edits.department||edits.phone||edits.province||edits.email||edits.county">
+            <md-button class="md-primary md-raised" ng-click="confirm($event)" style="margin-right:20px;" ng-disabled="edits.name||edits.region||edits.department||edits.phone||edits.province||edits.email||edits.county">
                 Confirm
             </md-button>
         </md-dialog-actions>

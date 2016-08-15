@@ -135,30 +135,61 @@
             $scope.cancel = function() {
                 $mdDialog.cancel();
             };
-            $scope.confirm = function() {
-                var postObj = $scope.ra;
-                $http.post('/formSubmit', postObj).then(function() {
-                    console.log('Submission successful!');
-                    console.log(postObj.id);
-                    $mdDialog.show(
-                        $mdDialog.alert()
-                            .parent(angular.element(document.querySelector('#popupContainer')))
-                            .clickOutsideToClose(true)
-                            .title('Submission Successful!')
-                            .textContent('The appropriate customers have been notified of your ride-along')
-                            .ariaLabel('Submission Successful')
-                            .ok('Okay!')
-                    );
-                }, function(err){
-                    if(err)throw err;
+            $scope.confirm = function(ev) {
+                var confirm = $mdDialog.confirm()
+                    .title('Are you sure you\'d like to schedule this ride-along?')
+                    .textContent(`
+                        DISCLAIMER: By clicking 'confirm' you (${$scope.ra.name}) agree to accept any valid responses from ride along partners from ${new Date($scope.ra.startDate).legibleDate()} to ${new Date($scope.ra.endDate).legibleDate()}
+                    `)
+                    .ariaLabel('Confirm your ride-along')
+                    .targetEvent(ev)
+                    .ok('Confirm')
+                    .cancel('Cancel');
+                $mdDialog.show(confirm).then(function(result) {
+                    var postObj = $scope.ra;
+                    $http.post('/formSubmit', postObj).then(function() {
+                        console.log('Submission successful!');
+                        console.log(postObj.id);
+                        $mdDialog.show(
+                            $mdDialog.alert()
+                                .parent(angular.element(document.querySelector('#popupContainer')))
+                                .clickOutsideToClose(true)
+                                .title('Submission Successful!')
+                                .textContent('The appropriate customers have been notified of your ride-along')
+                                .ariaLabel('Submission Successful')
+                                .ok('Okay!')
+                        );
+                    }, function(err){
+                        if(err)throw err;
+                    });
+                    $mdDialog.hide();
+                }, function() {
+                    console.log('ride-along cancelled')
                 });
-                $mdDialog.hide();
+
             };
 
             function uniqueId(){
                 var letters = ["A", "E", "I", "O", "U"];
                 return Math.floor((Math.random() * 999999) + 100000) + letters[Math.floor((Math.random()*(letters.length-1)))] + Math.floor((Math.random() * 999999) + 100000);
             }
+
+            Date.prototype.legibleDate=function(){
+                var input = this;
+                var monthNames = [
+                    "January", "February", "March",
+                    "April", "May", "June", "July",
+                    "August", "September", "October",
+                    "November", "December"
+                ];
+                var day = input.getDate(),
+                    month = input.getMonth(),
+                    year = input.getFullYear(),
+                    suffix = day=="1"||day=="21"||day=="31"?"st":day=="2"||day=="22"?"nd":day=="3"||day=="23"?"rd":"th";
+
+                return monthNames[month] + " " + day + suffix + " " + year;
+            };
+
 
         }
         

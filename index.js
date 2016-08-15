@@ -186,7 +186,8 @@ app.post('/formSubmit', function(req, res){
         counter++;
         transporter.sendMail(mailOptions, function(err, info){
             if(err){
-                console.log(err.response.split("<")[1].split(">")[0]);
+                throw err;
+                //console.log(err.response.split("<")[1].split(">")[0]);
             }
             //console.log('message sent! ' + info.response);
             if(emails[counter]!==undefined){
