@@ -132,6 +132,12 @@
                     <div class="md-dialog-content">
                         <h3 class="md-display-2">Notified</h3>
                         <md-subheader></md-subheader>
+                        <md-list>
+                            <md-list-item ng-repeat="id in company.notifiedRideAlongs">
+                                <h4>{{id}}</h4>
+                                <md-divider></md-divider>
+                            </md-list-item>
+                        </md-list>
                     </div>
                 </md-content>
             </md-tab>

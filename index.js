@@ -162,24 +162,20 @@ app.post('/formSubmit', function(req, res){
             html: `
                 <h2 style="color: black">Hello!</h2>
                 <p style="color: black">Xactware certified trainer ${rideAlong.name} is available to schedule a ride along with you!</p> 
-                <div >
-                    <p style="color: red">
+                <div>
+                    <p style="color: darkblue">
                     <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
                     <br>
                     <strong style="color: black">Where </strong> ${rideAlong.county.regionToNormal()}, ${rideAlong.province.regionToNormal()} - ${rideAlong.region.regionToNormal()} 
                     </p>
                 </div>
-                <p>${rideAlong.notes}</p>
-                
+                <p>${rideAlong.notes||""}</p>
                 <div>
-                    Copy this link into your browser to respond to the ride-along
+                    Follow this link to respond to the ride-along
                     
-                    
-                    localhost:8001/#/respond?id=${rideAlong.id}&companyId=${companyIds[counter]}&contactId=${contactIds[counter]}
+                    172.23.11.215:8001/#/respond?id=${rideAlong.id}&companyId=${companyIds[counter]}&contactId=${contactIds[counter]}
                 </div>
-                
-                <a href="localhost:8001/#/respond?id=${rideAlong.id}&companyId=${companyIds[counter]}&contactId=${contactIds[counter]}">Click Here To Respond To This Ride-Along</a>
-                      
+                                      
                 <h4 style="color: green">You may contact ${rideAlong.name} at ${rideAlong.email}</h4>  
                 `
         };
@@ -326,11 +322,12 @@ app.post('/acceptance/:id/:companyId/:contactId', (req, res)=>{
         companyId = req.params.companyId,
         contactId = req.params.contactId,
         rap = req.body.rap,
-        manager = req.body.manager;
+        manager = req.body.manager,
+        info = req.body.info;
     MongoClient.connect(mongoUrl, function(error, db) {
         if(error)throw error;
         var RACollection = db.collection('rideAlongs');
-        RACollection.update({id: id}, {$set: {status: 'ACCEPTED', accepted: {company: companyId, contact: contactId, rap: rap, manager: manager}}}, (err,result)=>{
+        RACollection.update({id: id}, {$set: {status: 'ACCEPTED', accepted: {company: companyId, contact: contactId, rap: rap, manager: manager, info: info}}}, (err,result)=>{
             if(err)throw err;
             var COCollection = db.collection('companies');
             COCollection.update({id: companyId}, {$push: {acceptedRideAlongs: id}}, (err, result)=>{
@@ -388,7 +385,6 @@ String.prototype.regionToNormal=function(){
         }
         return out.join(" ");
 };
-
 
 var port = 8000;
 server.listen(port, function() {

@@ -126,9 +126,6 @@
                 email: false,
                 name: false
             };
-            $scope.editField=function(field){
-                $scope.edits[field]==true?$scope.edits[field]=false:$scope.edits[field]=true;
-            };
             $scope.hide = function() {
                 $mdDialog.hide();
             };
@@ -189,12 +186,6 @@
 
                 return monthNames[month] + " " + day + suffix + " " + year;
             };
-
-
         }
-        
     }
-    
-    
-    
 })();
