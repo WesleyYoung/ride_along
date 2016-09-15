@@ -109,7 +109,7 @@ app.post('/changeRAStatus', function(req, res){
 app.post('/inviteSpecific', function(req, res){
 
 
-
+res.end();
 });
 
 
@@ -151,6 +151,8 @@ app.post('/formSubmit', function(req, res){
         });
     });
 
+
+    //This function will recursively send emails to all appropriate contacts
     function sendEmail(em){
         var mailOptions = {
             from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',

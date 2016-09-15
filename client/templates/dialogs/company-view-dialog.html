@@ -78,11 +78,11 @@
                     <div class="md-dialog-content">
                         <h3 class="md-display-2">Contacts</h3>
                         <md-subheader>Info</md-subheader>
-                        <md-list ng-cloak>
-                            <md-list-item ng-repeat="_contact in company.contacts">
+                        <md-list ng-cloak ng-repeat="_contact in company.contacts">
+                            <md-list-item>
                                 <md-button class="md-icon-button">
                                     <md-tooltip md-direction="top">
-                                        Contact
+                                        Name
                                     </md-tooltip>
                                     <md-icon md-font-set="md">person</md-icon>
                                 </md-button>
@@ -93,9 +93,35 @@
                                 <md-button class="md-secondary md-primary">
                                     Edit
                                 </md-button>
-                                <md-divider></md-divider>
                             </md-list-item>
-                            <md-list-item ng-if="company.contacts.length==0">
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                       Email Address
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">email</md-icon>
+                                </md-button>
+                                <h4>{{_contact.email}}</h4>
+                                <md-button class="md-secondary md-primary">
+                                    Edit
+                                </md-button>
+                            </md-list-item>
+                            <md-list-item>
+                                <md-button class="md-icon-button">
+                                    <md-tooltip md-direction="top">
+                                        Phone Number
+                                    </md-tooltip>
+                                    <md-icon md-font-set="md">phone</md-icon>
+                                </md-button>
+                                <h4>{{_contact.phone}}</h4>
+                                <md-button class="md-secondary md-primary">
+                                    Edit
+                                </md-button>
+                            </md-list-item>
+                            <md-divider></md-divider>
+                        </md-list>
+                        <md-list ng-if="company.contacts.length==0">
+                            <md-list-item >
                                 <h4>There are no contacts listed in the database for this company</h4>
                             </md-list-item>
                         </md-list>
@@ -132,11 +158,17 @@
                     <div class="md-dialog-content">
                         <h3 class="md-display-2">Notified</h3>
                         <md-subheader></md-subheader>
-                        <md-list>
-                            <md-list-item ng-repeat="id in company.notifiedRideAlongs">
-                                <h4>{{id}}</h4>
-                                <md-divider></md-divider>
+                        <md-list ng-repeat="_ra in company.notifiedRideAlongs">
+                            <md-list-item>
+                                <h3>{{_ra.name}}</h3>
+                                <md-button class="{{_ra.status=='ACCEPTED'?'md-accent':' md-primary'}} md-secondary">
+                                    {{_ra.status}}
+                                </md-button>
                             </md-list-item>
+                            <md-list-item>
+                                <h4>{{_ra.startDate|longDate}} - {{_ra.endDate|longDate}}</h4>
+                            </md-list-item>
+                            <md-divider></md-divider>
                         </md-list>
                     </div>
                 </md-content>

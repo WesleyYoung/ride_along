@@ -7,16 +7,21 @@
     angular.module('events-controller', [])
         .controller('events-controller', eventsController);
     
-    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster", "getDataFactory"];
+    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster", "getDataFactory", "$location"];
     
-    function eventsController($http, $mdDialog, $mdMedia, $timeout, toaster, getDataFactory){
+    function eventsController($http, $mdDialog, $mdMedia, $timeout, toaster, getDataFactory, $location){
         var ec = this;
 
         ec.rideAlongs=[];
-        ec.counts={Total: 0, Open: 0, Unapproved: 0, Cancelled: 0, Accepted: 0};
         ec.searchText="";
         ec.waitingForResponse=false;
         ec.filterByStatus="all";
+        
+        //If the user is directed to the page to a specific event, these are the variables which hold that data
+        var openSpecific = $location.search().openSpecific,
+            returnId = $location.search().returnId,
+            returnPath = $location.search().returnPath,
+            page = parseInt($location.search().page)||0;
         
         ec.showRADetails=showRADetails;
         ec.sortEvents=sortEvents;
@@ -60,18 +65,6 @@
             getEventsData().then(results=>{
                 var count=0;
                 ec.rideAlongs=[];
-                ec.counts.Total=0;
-                ec.counts.Open=0;
-                ec.counts.Unapproved=0;
-                ec.counts.Accepted=0;
-                ec.counts.Cancelled=0;
-                for(var i=0;i<results.data.length;i++){
-                    if(results.data[i].status=="OPEN")ec.counts.Open+=1;
-                    else if(results.data[i].status=="UNAPPROVED")ec.counts.Unapproved+=1;
-                    else if(results.data[i].status=="ACCEPTED")ec.counts.Accepted+=1;
-                    else if(results.data[i].status=="CANCELLED")ec.counts.Cancelled+=1;
-                    ec.counts.Total+=1;
-                }
                 function pushRA(){
                     if(results.data[count]!==undefined){
                         ec.rideAlongs.push(results.data[count]);
@@ -80,6 +73,14 @@
                             $timeout(function(){
                                 pushRA();
                             }, 200)
+                        }
+                        else if(openSpecific){
+                            for(var i=0;i<ec.rideAlongs.length;i++){
+                                console.log(ec.rideAlongs[i].id);
+                                if(ec.rideAlongs[i].id==openSpecific){
+                                    showRADetails(null, i, ec.rideAlongs[i], page);
+                                }
+                            }
                         }
                     }
                 }
@@ -112,6 +113,14 @@
                                     pushRA();
                                 }, 200)
                             }
+                        }else if(openSpecific){
+                            console.log(openSpecific);
+                            for(var i=0;i<ec.rideAlongs.length;i++){
+                                console.log(ec.rideAlongs[i].id);
+                                if(ec.rideAlongs[i].id==openSpecific){
+                                    showInfoDialog(null, i, ec.rideAlongs[i], page);
+                                }
+                            }
                         }
                     }
                     $timeout(function(){
@@ -135,7 +144,7 @@
             })
         }
 
-        function showRADetails(ev, ind, ra){
+        function showRADetails(ev, ind, ra, page){
             ec.selectedRideAlong=ra;
             ec.selectedIndex=ind;
             $mdDialog.show({
@@ -143,8 +152,82 @@
                 templateUrl: 'templates/dialogs/event-view-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
-                clickOutsideToClose:true
+                clickOutsideToClose:openSpecific==undefined
             })
+
+            //Event Dialog Controller
+
+            function DialogController($scope, $mdDialog){
+                $scope.rideAlong = ec.selectedRideAlong;
+                console.log($scope.rideAlong);
+                $scope.notified=[];
+                $scope.selectedTab=0||page;
+                getDataFactory.companiesByIds($scope.rideAlong.notified).then(results=>{
+                    $scope.notified = results;
+                    if($scope.rideAlong.status=="ACCEPTED"){
+                        getDataFactory.companiesByIds([$scope.rideAlong.accepted.company]).then(results=>{
+                            $scope.acceptingCompany=results[0];
+                        }, err=>{
+                            if(err)throw err;
+                        });
+                    }
+                }, err=>{
+                    if(err)throw err;
+                });
+                $scope.selectedIndex=ec.selectedIndex;
+                $scope.isOpen=$scope.rideAlong.status=='OPEN'||$scope.rideAlong.status=='ACCEPTED';
+                $scope.waiting=false;
+
+                $scope.reschedule=function(ra){
+                    console.log("You tried to reschedule this Ride Along!")
+                };
+
+                $scope.editInfo=function(ra){
+                    console.log("You tried to edit the info of this Ride Along")
+                };
+
+                $scope.changeOpenStatus=function(ra){
+                    if(ra.status=='OPEN'){
+                        ra.status='CANCELLED';
+                        $scope.isOpen=false;
+                    }else if(ra.status=='CANCELLED'){
+                        ra.status='OPEN';
+                        $scope.isOpen=true;
+                    }
+                };
+
+                $scope.specificNotification=function(){
+                    console.log("you tried to send a specific notification")
+                };
+
+                $scope.resendNotifications=resendNotifications;
+                $scope.remove = ec.removeRA;
+                $scope.changeStatus = function(ind, status){
+                    $scope.waiting=true;
+                    $timeout(function(){
+                        $scope.waiting=false;
+                    }, 1000);
+                    ec.changeStatus(ind, status);
+                    $scope.rideAlong.status=status;
+                };
+
+                $scope.close=function(){
+                    $mdDialog.cancel();
+                    if(openSpecific){
+                        console.log();
+                        if(returnPath){
+                            if(returnId){
+                                $location.search("openSpecific="+returnId+"&page="+returnPage||0);
+                            }else{
+                                $location.search("/")
+                            }
+                            $location.path(returnPath)
+                        }else{
+                            $location.search('/');
+                        }
+                    }
+                };
+            }
         }
         
         function resendNotifications(ra){
@@ -157,57 +240,7 @@
             })
         }
         
-        //Event Dialog Controller
-
-        function DialogController($scope, $mdDialog){
-            $scope.rideAlong = ec.selectedRideAlong;
-            $scope.notified=[];
-            getDataFactory.companiesByIds($scope.rideAlong.notified).then(results=>{
-                $scope.notified = results;
-            }, err=>{
-                if(err)throw err;
-            });
-            $scope.selectedIndex=ec.selectedIndex;
-            $scope.isOpen=$scope.rideAlong.status=='OPEN'||$scope.rideAlong.status=='ACCEPTED';
-            $scope.waiting=false;
-            
-            $scope.reschedule=function(ra){
-                console.log("You tried to reschedule this Ride Along!")
-            };
-
-            $scope.editInfo=function(ra){
-                console.log("You tried to edit the info of this Ride Along")
-            };
-            
-            $scope.changeOpenStatus=function(ra){
-                if(ra.status=='OPEN'){
-                    ra.status='CANCELLED';
-                    $scope.isOpen=false;
-                }else if(ra.status=='CANCELLED'){
-                    ra.status='OPEN';
-                    $scope.isOpen=true;
-                }
-            };
-            
-            $scope.specificNotification=function(){
-                console.log("you tried to send a specific notification")
-            };
-            
-            $scope.resendNotifications=resendNotifications;
-            $scope.remove = ec.removeRA;
-            $scope.changeStatus = function(ind, status){
-                $scope.waiting=true;
-                $timeout(function(){
-                    $scope.waiting=false;
-                }, 1000);
-                ec.changeStatus(ind, status);
-                $scope.rideAlong.status=status;
-            };
-
-            $scope.close=function(){
-                $mdDialog.cancel();
-            }
-        }
+        
 
         getEvents();
     }

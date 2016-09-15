@@ -41,14 +41,14 @@
             
             //Ride Alongs
             rideAlongs: function(){
-                return $http.get('/activeRideAlongs').then(results=>{
+                return $http.get('/openRideAlongs').then(results=>{
                     return results.data;
                 }, err=>{
                     return err;
                 })
             },
             rideAlongsByIds: function(ids){
-                return $http.get('/activeRideAlongs').then(results=>{
+                return $http.get('/openRideAlongs').then(results=>{
                     return results.data.filter(function(ra){
                         var correct=false;
                         for(var i=0;i<ids.length;i++){

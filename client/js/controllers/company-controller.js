@@ -7,10 +7,17 @@
         
         .controller('companyController', companyController);
 
-    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster", "getDataFactory"];
+    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster", "getDataFactory", "$location"];
 
-    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster, getDataFactory){
+    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster, getDataFactory, $location){
         var cc = this;
+
+        //If the user has reached this page through clicking on a company's information, these variables will store that data
+        var openSpecific = $location.search().openSpecific,
+            returnId = $location.search().returnId,
+            returnPath = $location.search().returnPath,
+            returnPage = $location.search().returnPage,
+            page = parseInt($location.search().page)||0;
         
         cc.showCreatorDialog=showCreatorDialog;
         cc.showInfoDialog=showInfoDialog;
@@ -34,7 +41,15 @@
                         if(results[count]!==undefined){
                             $timeout(function(){
                                 pushCO();
-                            }, 200)
+                            }, 200);
+                        }
+                        else if(openSpecific){
+                            for(var i=0;i<cc.companies.length;i++){
+                                console.log(cc.companies[i].id);
+                                if(cc.companies[i].id==openSpecific){
+                                    showInfoDialog(cc.companies[i], null, page);
+                                }
+                            }
                         }
                     }
                 }
@@ -80,79 +95,103 @@
 
         }
 
-        function showInfoDialog(co, ev){
+        function showInfoDialog(co, ev, page){
             cc.selectedCompany = co;
             $mdDialog.show({
                 controller: InfoDialogController,
                 templateUrl: 'templates/dialogs/company-view-dialog.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
-                clickOutsideToClose:true
+                clickOutsideToClose:openSpecific==undefined
             }).then(function(answer) {
 
                 }, function() {
 
                 }
             );
-        }
-        
-        function InfoDialogController($scope, $mdDialog){
-            var id = uniqueId();
-            
-            $scope.company = cc.selectedCompany;
-            $scope.selectedTab  = 0;
-            $scope.newContact={
-                name: "",
-                email: "",
-                phone: "",
-                id: id
-            };
 
-            $scope.cancel=$mdDialog.cancel;
+            function InfoDialogController($scope, $mdDialog){
+                var id = uniqueId();
 
-            $scope.switchToCreator=function(){
-                $scope.selectedTab=2;
-            };
-            
-            $scope.addContact=function(){
-                $http.post('/addContact', {id: $scope.company.id, contact: $scope.newContact})
-                    .then(result=>{
-                        getCompanies();
-                        toaster.pop('success', 'Contact Added!', '');
-                        var id = uniqueId();
-                        $scope.newContact={
-                            name: "",
-                            email: "",
-                            phone: "",
-                            id: id
-                        };
-                        $scope.company=result.data.updated;
-                    }, error=>{
-                        toaster.pop('error', 'There was an issue trying to add the contact');
-                        console.log(error);
-                    })
-            };
-            
-            $scope.removeContact=function(contact){
-                var confirm = $mdDialog.confirm()
-                    .title('Are you sure?')
-                    .textContent('As of now, contacts cannot be re-added once removed')
-                    .ariaLabel('Are you sure you want to delete this contact?')
-                    .ok('Delete')
-                    .cancel('Cancel');
-                $mdDialog.show(confirm).then(function(){
-                    $http.post('/removeContact', {companyId: $scope.company.id, contactId: contact.id})
+                $scope.company = cc.selectedCompany;
+                $scope.selectedTab  = page||0;
+                $scope.newContact={
+                    name: "",
+                    email: "",
+                    phone: "",
+                    id: id
+                };
+
+                getDataFactory.rideAlongsByIds($scope.company.notifiedRideAlongs).then(results=>{
+                    console.log(results)
+                    $scope.company.notifiedRideAlongs=results;
+                }, err=>{
+                    throw err;
+                });
+
+                $scope.cancel=function(){
+                    $mdDialog.cancel();
+                    if(openSpecific){
+                        console.log();
+                        if(returnPath){
+                            if(returnId){
+                                $location.search("openSpecific="+returnId+"&page="+returnPage||0);
+                            }else{
+                                $location.search("/")
+                            }
+                            $location.path(returnPath)
+                        }else{
+                            $location.search('/');
+                        }
+                    }
+                };
+
+                $scope.switchToCreator=function(){
+                    $scope.selectedTab=2;
+                };
+
+                $scope.addContact=function(){
+                    $http.post('/addContact', {id: $scope.company.id, contact: $scope.newContact})
                         .then(result=>{
                             getCompanies();
-                            toaster.pop('success', 'Contact Removed');
+                            toaster.pop('success', 'Contact Added!', '');
+                            var id = uniqueId();
+                            $scope.newContact={
+                                name: "",
+                                email: "",
+                                phone: "",
+                                id: id
+                            };
                             $scope.company=result.data.updated;
                         }, error=>{
-                            toaster.pop('error', 'There was an error');
+                            toaster.pop('error', 'There was an issue trying to add the contact');
                             console.log(error);
                         })
-                })
+                };
+
+                $scope.removeContact=function(contact){
+                    var confirm = $mdDialog.confirm()
+                        .title('Are you sure?')
+                        .textContent('As of now, contacts cannot be re-added once removed')
+                        .ariaLabel('Are you sure you want to delete this contact?')
+                        .ok('Delete')
+                        .cancel('Cancel');
+                    $mdDialog.show(confirm).then(function(){
+                        $http.post('/removeContact', {companyId: $scope.company.id, contactId: contact.id})
+                            .then(result=>{
+                                getCompanies();
+                                toaster.pop('success', 'Contact Removed');
+                                $scope.company=result.data.updated;
+                            }, error=>{
+                                toaster.pop('error', 'There was an error');
+                                console.log(error);
+                            })
+                    })
+                }
             }
         }
+        
+
         
         
         function showCreatorDialog(ev){
