@@ -7,10 +7,11 @@
     angular.module('events-controller', [])
         .controller('events-controller', eventsController);
     
-    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster", "getDataFactory", "$location"];
+    eventsController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster", "getDataFactory", "$location", "loadingDialogFactory"];
     
-    function eventsController($http, $mdDialog, $mdMedia, $timeout, toaster, getDataFactory, $location){
-        var ec = this;
+    function eventsController($http, $mdDialog, $mdMedia, $timeout, toaster, getDataFactory, $location, loadingDialogFactory){
+        var ec = this,
+            ldf = loadingDialogFactory;
 
         ec.rideAlongs=[];
         ec.searchText="";
@@ -22,6 +23,8 @@
             returnId = $location.search().returnId,
             returnPath = $location.search().returnPath,
             page = parseInt($location.search().page)||0;
+
+        if(openSpecific)ldf.show({title: "getting ride-along..."})
         
         ec.showRADetails=showRADetails;
         ec.sortEvents=sortEvents;
@@ -86,6 +89,7 @@
                 }
                 $timeout(function(){
                     ec.waitingForResponse=false;
+                    //ldf.hide();
                     if(results.data.length!==0)pushRA();
                 }, 750);
                 //console.log(results.data);
@@ -153,7 +157,7 @@
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 clickOutsideToClose:openSpecific==undefined
-            })
+            });
 
             //Event Dialog Controller
 
@@ -229,6 +233,8 @@
                 };
             }
         }
+
+
         
         function resendNotifications(ra){
             $http.post('/resendNotifications', ra).then(results=>{

@@ -28,6 +28,7 @@
         //Factories
         "list-factory",
         "get-data-factory",
+        "loading-dialog-factory",
         
         //Controllers
         'nav-controller',

@@ -7,10 +7,11 @@
         
         .controller('companyController', companyController);
 
-    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster", "getDataFactory", "$location"];
+    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster", "getDataFactory", "$location", "loadingDialogFactory"];
 
-    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster, getDataFactory, $location){
-        var cc = this;
+    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster, getDataFactory, $location, loadingDialogFactory){
+        var cc = this,
+            ldf = loadingDialogFactory;
 
         //If the user has reached this page through clicking on a company's information, these variables will store that data
         var openSpecific = $location.search().openSpecific,
@@ -18,6 +19,8 @@
             returnPath = $location.search().returnPath,
             returnPage = $location.search().returnPage,
             page = parseInt($location.search().page)||0;
+
+        if(openSpecific)ldf.show({title: "getting company...", color: "md-accent"});
         
         cc.showCreatorDialog=showCreatorDialog;
         cc.showInfoDialog=showInfoDialog;
@@ -33,6 +36,7 @@
             cc.waitingForResponse = true;
             cc.companies=[];
             getDataFactory.companies().then(results=> {
+                //ldf.hide();
                 var count=0;
                 function pushCO(){
                     if(results[count]!==undefined){
@@ -260,6 +264,7 @@
                     province: $scope.province,
                     county: $scope.county
                 }).then(response=>{
+                    toaster.pop('success', 'Your company has been successfully submitted');
                     $scope.cancel();
                     getCompanies();
                     cc.showInfoDialog({
@@ -276,9 +281,8 @@
                     });
                     console.log("Added Company");
                 }, error=>{
-                    if(error){
-                        console.log(error)
-                    }
+                    toaster.pop('error', "There was an error trying to submit your company");
+                    console.log(error);
                 })
             }
 

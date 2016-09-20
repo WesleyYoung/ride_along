@@ -7,11 +7,20 @@
     angular.module('event-creator-controller', [])
         .controller('event-creator-controller', eventCreatorController);
 
-    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia", "$timeout", "$http"];
+    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia", "$timeout", "$http", "toaster", "loadingDialogFactory"];
     
-    function eventCreatorController(listFactory, $mdDialog, $mdMedia, $timeout, $http){
+    function eventCreatorController(listFactory, $mdDialog, $mdMedia, $timeout, $http, toaster, loadingDialogFactory){
         var ecc = this;
         var today = new Date();
+
+        //Injected variables
+        var ldf=loadingDialogFactory;
+
+        //ldf.show({
+        //    color: "kth",
+        //    effect: "cycle",
+        //    interval: 3000
+        //});
 
         ecc.$http=$http;
 
@@ -144,22 +153,23 @@
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function(result) {
                     var postObj = $scope.ra;
-                    $http.post('/formSubmit', postObj).then(function() {
+                    $http.post('/formSubmit', postObj).then(function(results){
+                        ldf.hide();
                         console.log('Submission successful!');
                         console.log(postObj.id);
-                        $mdDialog.show(
-                            $mdDialog.alert()
-                                .parent(angular.element(document.querySelector('#popupContainer')))
-                                .clickOutsideToClose(true)
-                                .title('Submission Successful!')
-                                .textContent('The appropriate customers have been notified of your ride-along')
-                                .ariaLabel('Submission Successful')
-                                .ok('Okay!')
-                        );
+                        if(results.data.companies.length>0)toaster.pop('success', 'The appropriate companies have been notified of your ride-along');
+                        else toaster.pop('warning', 'Your ride-along has been successfully saved, but no contacts met the criteria');
                     }, function(err){
+                        toaster.pop('error', 'There was an error while attempting to submit your ride-along');
+                        ldf.hide();
                         if(err)throw err;
                     });
                     $mdDialog.hide();
+                    ldf.show({
+                        color: "md-warn",
+                        effect: "cycle",
+                        interval: 3000
+                    });
                 }, function() {
                     console.log('ride-along cancelled')
                 });

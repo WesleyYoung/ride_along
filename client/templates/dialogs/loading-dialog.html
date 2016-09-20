@@ -1,0 +1,38 @@
+<head>
+    <style>
+
+        md-dialog{
+            width: 100%;
+            max-width: 400px;
+            height: 200px;
+            padding-top: 65px;
+        }
+
+        md-dialog-content{
+            max-width:800px;
+            max-height:800px;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+        }
+
+        md-content{
+            height: 100%;
+            text-align: center;
+        }
+
+        h1{
+            text-align: center
+        }
+
+    </style>
+</head>
+<md-dialog aria-label="Please Wait">
+    <md-dialog-content>
+        <h2>{{title}}</h2>
+        <br>
+        <br>
+        <md-progress-linear ng-class="color" md-diameter="50" md-mode="linear"></md-progress-linear>
+        <md-subheader ng-class="color">{{subtitle}}</md-subheader>
+    </md-dialog-content>
+</md-dialog>

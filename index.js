@@ -27,12 +27,16 @@ var MongoClient = require('mongodb').MongoClient;
 
 var mongoUrl = "mongodb://localhost:27017/exampleDb";
 
+
+//Check to see if the Mongo URL is valid
 MongoClient.connect(mongoUrl, function(error, db) {
     if(error)throw error;
     console.log("We are connected to Mongo");
+    //Check if the rideAlongs collection exists, if not: create it
     db.createCollection('rideAlongs', function(err) {
         if(err)throw err;
         console.log("'Ride-Along' collection worked");
+        //Check if the companies collection exists, if not: create it
         db.createCollection('companies', function(err){
             if(err)throw err;
             console.log("'Companies' collection worked");
@@ -113,11 +117,12 @@ res.end();
 });
 
 
-app.post('/formSubmit', function(req, res){
+app.post('/formSubmit', (req, res)=>{
     
     //Here would be the logic in which we decide what emails go out to who
     var emails=[],
         companyIds=[],
+        companies=[],
         contactIds=[],
         counter=0;
     
@@ -136,6 +141,7 @@ app.post('/formSubmit', function(req, res){
                 if(items[i].province==rideAlong.province&&items[i].county==rideAlong.county){
                     rideAlong.notified.push(items[i].id);
                     coCollection.update({id: items[i].id}, {$push: {notifiedRideAlongs: rideAlong.id}});
+                    companies.push(items[i].name);
                     for(var j=0;j<items[i].contacts.length;j++){
                         emails.push(items[i].contacts[j].email);
                         contactIds.push(items[i].contacts[j].id);
@@ -147,8 +153,81 @@ app.post('/formSubmit', function(req, res){
                 if (err)throw err;
                 console.log("Added Ride Along");
                 if(emails.length!==0)sendEmail(emails[counter]);
+                else res.end(JSON.stringify({companies: []}));
             })
         });
+    });
+
+    //This function will recursively send emails to all appropriate contacts
+    function sendEmail(em){
+        var mailOptions = {
+            from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',
+            to: em,
+            subject: "Ride Along Available",
+            text: `
+                Hello! Xactware certified trainer ${rideAlong.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+            `,
+            html: `
+                <h2 style="color: black">Hello!</h2>
+                <p style="color: black">Xactware certified trainer ${rideAlong.name} is available to schedule a ride along with you!</p> 
+                <div>
+                    <p style="color: darkblue">
+                    <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
+                    <br>
+                    <strong style="color: black">Where </strong> ${rideAlong.county.regionToNormal()}, ${rideAlong.province.regionToNormal()} - ${rideAlong.region.regionToNormal()} 
+                    </p>
+                </div>
+                <p>${rideAlong.notes||""}</p>
+                <div>
+                    Follow this link to respond to the ride-along
+                    
+                    172.23.11.215:8001/#/respond?id=${rideAlong.id}&companyId=${companyIds[counter]}&contactId=${contactIds[counter]}
+                </div>
+                                      
+                <h4 style="color: green">You may contact ${rideAlong.name} at ${rideAlong.email}</h4>  
+                `
+        };
+        counter++;
+        transporter.sendMail(mailOptions, function(err, info){
+            if(err){
+                throw err;
+                //console.log(err.response.split("<")[1].split(">")[0]);
+            }
+            //console.log('message sent! ' + info.response);
+            if(emails[counter]!==undefined){
+                sendEmail(emails[counter]);
+            }else{
+                console.log("All emails sent! Receivers were: " + emails.join(" "));
+                res.end(JSON.stringify({companies: companies}));
+            }
+        });
+    }
+});
+
+app.post('/resendNotifications', function(req, res){
+    console.log("Resending")
+    var rideAlong = req.body,
+        emails=[],
+        counter=0;
+
+    MongoClient.connect(mongoUrl, (err, db)=>{
+        if(err)throw err;
+        var count=0;
+        function getEmail(id){
+            var collection = db.collection('companies');
+            collection.findOne({id: id}, (err, item)=>{
+                console.log(item);
+                for(var i=0;i<item.contacts.length;i++){
+                    console.log(item.contacts[i].email);
+                    emails.push(item.contacts[i].email)
+                }
+                count++;
+                if(rideAlong.notified[count]!=undefined)getEmail(rideAlong.notified[count]);
+                if(emails.length>0)sendEmail(emails[counter]);
+
+            })
+        }
+        if(rideAlong.notified.length>0)getEmail(rideAlong.notified[count]);
     });
 
 
@@ -192,70 +271,10 @@ app.post('/formSubmit', function(req, res){
                 sendEmail(emails[counter]);
             }else{
                 console.log("All emails sent! Receivers were: " + emails.join(" "));
-                res.end();
+                res.end(JSON.stringify({companies: companies}));
             }
         });
     }
-});
-
-app.post('/resendNotifications', function(req, res){
-    var emails = req.body.notified,
-        name = req.body.name,
-        employeeEmail = req.body.email,
-        region = req.body.region,
-        province = req.body.province,
-        county = req.body.county,
-        startDateObj = new Date(req.body.startDate),
-        endDateObj = new Date(req.body.endDate),
-        department = req.body.department,
-        notes = req.body.notes,
-        phone = req.body.phone,
-        counter = 0;
-
-
-    function sendEmail(em){
-        counter++;
-        var mailOptions = {
-            from: '"Xactware Scheduling App" <xactwaretraining@xactware.com>',
-            to: em,
-            subject: "Ride Along Available",
-            text: `
-                Hello! Xactware certified trainer ${req.body.name} is available to schedule a ride along with from ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
-            `,
-            html: `
-                <h2 style="color: black">Hello!</h2>
-                <p style="color: black">Xactware certified trainer ${name} is available to schedule a ride along with you!</p> 
-                <div >
-                    <p style="color: red">
-                    <strong style="color: black">When </strong> ${startDateObj.legibleDate()} to ${endDateObj.legibleDate()}
-                    <br>
-                    <strong style="color: black">Where </strong> ${county.regionToNormal()}, ${province.regionToNormal()} - ${region.regionToNormal()} 
-                    </p>
-                </div>
-                <p>${notes}</p>
-                      
-                <h4 style="color: green">You may contact ${name} at ${employeeEmail}</h4>  
-                `
-        };
-        transporter.sendMail(mailOptions, function(err, info){
-            if(err){
-                res.error(err);
-                return console.log(err)
-            }else{
-                console.log('message sent! ' + info.response);
-                if(emails[counter]!==undefined){
-                    sendEmail(emails[counter]);
-                }else{
-                    console.log("All emails sent! Recievers were " + emails.join(" "))
-                    res.end();
-                }
-            }
-
-        });
-    }
-
-    if(emails.length!==0)sendEmail(emails[counter]);
-
 });
 
 app.post('/addCompany', (req, res)=>{
@@ -265,7 +284,6 @@ app.post('/addCompany', (req, res)=>{
         var collection = db.collection('companies');
         collection.insert(com, {w: 1}, (err, result)=> {
             if (err)throw err;
-            console.log("Added Company");
             res.end();
         })
     });
@@ -319,7 +337,6 @@ app.post('/removeContact', (req, res)=>{
 
 
 app.post('/acceptance/:id/:companyId/:contactId', (req, res)=>{
-    console.log("Received!");
     var id = req.params.id,
         companyId = req.params.companyId,
         contactId = req.params.contactId,
@@ -347,15 +364,15 @@ app.post('/acceptance/:id/:companyId/:contactId', (req, res)=>{
 
 // verify connection configuration
 function verifyTransporter(){
-    transporter.verify(function(error, success) {
-        if (error) {
+    transporter.verify(function(error, success){
+        if (error){
             if(error.code=='ECONNRESET'){
                 console.log('ECONNRESET Error thrown, trying to verify again...');
                 verifyTransporter();
             }else{
                 throw error;
             }
-        } else {
+        }else{
             console.log('Server is ready to take our messages');
         }
     });
