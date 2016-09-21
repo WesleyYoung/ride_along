@@ -60,7 +60,7 @@
                                     $scope.color=colors[count];
                                     count++;
                                 })
-                            }, options.interval)
+                            }, interval)
 
                         }
                     }

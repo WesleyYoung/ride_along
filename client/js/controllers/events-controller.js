@@ -24,7 +24,7 @@
             returnPath = $location.search().returnPath,
             page = parseInt($location.search().page)||0;
 
-        if(openSpecific)ldf.show({title: "getting ride-along..."})
+        if(openSpecific)ldf.show({title: "getting ride-along..."});
         
         ec.showRADetails=showRADetails;
         ec.sortEvents=sortEvents;
@@ -75,7 +75,7 @@
                         if(results.data[count]!==undefined){
                             $timeout(function(){
                                 pushRA();
-                            }, 200)
+                            }, 100)
                         }
                         else if(openSpecific){
                             for(var i=0;i<ec.rideAlongs.length;i++){
@@ -91,7 +91,7 @@
                     ec.waitingForResponse=false;
                     //ldf.hide();
                     if(results.data.length!==0)pushRA();
-                }, 750);
+                }, 300);
                 //console.log(results.data);
             }, error=>{
                 ec.waitingForResponse=false;

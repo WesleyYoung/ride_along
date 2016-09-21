@@ -205,21 +205,25 @@ app.post('/formSubmit', (req, res)=>{
 });
 
 app.post('/resendNotifications', function(req, res){
-    console.log("Resending")
     var rideAlong = req.body,
         emails=[],
-        counter=0;
+        companyIds = [],
+        contactIds = [],
+        counter=0,
+        startDateObj = new Date(rideAlong.startDate),
+        endDateObj = new Date(rideAlong.endDate);
 
     MongoClient.connect(mongoUrl, (err, db)=>{
         if(err)throw err;
         var count=0;
         function getEmail(id){
+            companyIds.push(id);
             var collection = db.collection('companies');
             collection.findOne({id: id}, (err, item)=>{
-                console.log(item);
                 for(var i=0;i<item.contacts.length;i++){
                     console.log(item.contacts[i].email);
-                    emails.push(item.contacts[i].email)
+                    emails.push(item.contacts[i].email);
+                    contactIds.push(item.contacts[i].id);
                 }
                 count++;
                 if(rideAlong.notified[count]!=undefined)getEmail(rideAlong.notified[count]);
@@ -260,18 +264,18 @@ app.post('/resendNotifications', function(req, res){
                 <h4 style="color: green">You may contact ${rideAlong.name} at ${rideAlong.email}</h4>  
                 `
         };
-        counter++;
         transporter.sendMail(mailOptions, function(err, info){
             if(err){
                 throw err;
                 //console.log(err.response.split("<")[1].split(">")[0]);
             }
             //console.log('message sent! ' + info.response);
+            counter++;
             if(emails[counter]!==undefined){
                 sendEmail(emails[counter]);
             }else{
                 console.log("All emails sent! Receivers were: " + emails.join(" "));
-                res.end(JSON.stringify({companies: companies}));
+                res.end();
             }
         });
     }

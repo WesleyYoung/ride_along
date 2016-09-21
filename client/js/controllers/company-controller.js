@@ -7,9 +7,9 @@
         
         .controller('companyController', companyController);
 
-    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "listFactory", "$timeout", "toaster", "getDataFactory", "$location", "loadingDialogFactory"];
+    companyController.$inject=["$http", "$mdDialog", "$mdMedia", "$timeout", "toaster", "getDataFactory", "$location", "loadingDialogFactory"];
 
-    function companyController($http, $mdDialog, $mdMedia, listFactory, $timeout, toaster, getDataFactory, $location, loadingDialogFactory){
+    function companyController($http, $mdDialog, $mdMedia, $timeout, toaster, getDataFactory, $location, loadingDialogFactory){
         var cc = this,
             ldf = loadingDialogFactory;
 
@@ -45,7 +45,7 @@
                         if(results[count]!==undefined){
                             $timeout(function(){
                                 pushCO();
-                            }, 200);
+                            }, 100);
                         }
                         else if(openSpecific){
                             for(var i=0;i<cc.companies.length;i++){
@@ -61,7 +61,7 @@
                     //console.log(results.data);
                     cc.waitingForResponse = false;
                     if(results.length!==0)pushCO();
-                }, 750);
+                }, 300);
             }, error=>{
                 if(error){
                     console.log(error);
@@ -127,7 +127,7 @@
                 };
 
                 getDataFactory.rideAlongsByIds($scope.company.notifiedRideAlongs).then(results=>{
-                    console.log(results)
+                    console.log(results);
                     $scope.company.notifiedRideAlongs=results;
                 }, err=>{
                     throw err;
@@ -228,7 +228,7 @@
             $scope.selectedTab = 0;
 
             //Options
-            $scope.regions = listFactory.regions();
+            $scope.regions = getDataFactory.regions();
             $scope.provinces = [];
             $scope.counties = [];
 

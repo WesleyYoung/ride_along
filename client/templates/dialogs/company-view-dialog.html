@@ -159,7 +159,7 @@
                         <h3 class="md-display-2">Notified</h3>
                         <md-subheader></md-subheader>
                         <md-list ng-repeat="_ra in company.notifiedRideAlongs">
-                            <md-list-item>
+                            <md-list-item href="#/events?openSpecific={{_ra.id}}">
                                 <h3>{{_ra.name}}</h3>
                                 <md-button class="{{_ra.status=='ACCEPTED'?'md-accent':_ra.status=='OPEN'?' md-primary':'md-warn'}} md-secondary">
                                     {{_ra.status}}

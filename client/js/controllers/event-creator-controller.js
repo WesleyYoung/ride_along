@@ -7,9 +7,9 @@
     angular.module('event-creator-controller', [])
         .controller('event-creator-controller', eventCreatorController);
 
-    eventCreatorController.$inject=["listFactory", "$mdDialog", "$mdMedia", "$timeout", "$http", "toaster", "loadingDialogFactory"];
+    eventCreatorController.$inject=["getDataFactory", "$mdDialog", "$mdMedia", "$timeout", "$http", "toaster", "loadingDialogFactory"];
     
-    function eventCreatorController(listFactory, $mdDialog, $mdMedia, $timeout, $http, toaster, loadingDialogFactory){
+    function eventCreatorController(getDataFactory, $mdDialog, $mdMedia, $timeout, $http, toaster, loadingDialogFactory){
         var ecc = this;
         var today = new Date();
 
@@ -24,8 +24,8 @@
 
         ecc.$http=$http;
 
-        ecc.regions=listFactory.regions();
-        ecc.products=listFactory.products();
+        ecc.regions=getDataFactory.regions();
+        ecc.products=getDataFactory.products();
 
         ecc.assignProvinces=assignProvinces;
         ecc.assignCounties=assignCounties;
