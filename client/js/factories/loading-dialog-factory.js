@@ -67,8 +67,8 @@
                 }
 
             },
-            hide: function(){
-                $mdDialog.cancel();
+            hide: function(cb){
+                $mdDialog.cancel(typeof cb == 'function'?cb():undefined);
             }
         };
 

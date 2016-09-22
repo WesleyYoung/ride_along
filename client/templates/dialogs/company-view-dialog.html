@@ -87,7 +87,7 @@
                                     <md-icon md-font-set="md">person</md-icon>
                                 </md-button>
                                 <h4>{{_contact.name}}</h4>
-                                <md-button class="md-secondary md-warn" ng-click="removeContact(_contact)">
+                                <md-button class="md-secondary md-warn" ng-click="removeContact(_contact)" aria-label="Delete Contact {{_contact.name}}">
                                     Delete
                                 </md-button>
                                 <md-button class="md-secondary md-primary">
@@ -159,10 +159,10 @@
                         <h3 class="md-display-2">Notified</h3>
                         <md-subheader></md-subheader>
                         <md-list ng-repeat="_ra in company.notifiedRideAlongs">
-                            <md-list-item href="#/events?openSpecific={{_ra.id}}">
+                            <md-list-item>
                                 <h3>{{_ra.name}}</h3>
-                                <md-button class="{{_ra.status=='ACCEPTED'?'md-accent':_ra.status=='OPEN'?' md-primary':'md-warn'}} md-secondary">
-                                    {{_ra.status}}
+                                <md-button href="#/events?openSpecific={{_ra.id}}" class="md-primary md-secondary" aria-label="Status">
+                                    OPEN
                                 </md-button>
                             </md-list-item>
                             <md-list-item>
@@ -195,7 +195,7 @@
                         <md-list>
                             <md-list-item class="secondary-button-padding">
                                 <h4 style="color: red">Delete</h4>
-                                <md-icon class="md-secondary md-warn" md-font-set="md">
+                                 <md-icon class="md-secondary md-warn" md-font-set="md" aria-label="Delete Company">
                                     delete_forever
                                 </md-icon>
                                 <md-divider></md-divider>

@@ -36,7 +36,6 @@
             cc.waitingForResponse = true;
             cc.companies=[];
             getDataFactory.companies().then(results=> {
-                //ldf.hide();
                 var count=0;
                 function pushCO(){
                     if(results[count]!==undefined){
@@ -48,12 +47,13 @@
                             }, 100);
                         }
                         else if(openSpecific){
-                            for(var i=0;i<cc.companies.length;i++){
-                                console.log(cc.companies[i].id);
-                                if(cc.companies[i].id==openSpecific){
-                                    showInfoDialog(cc.companies[i], null, page);
+                            ldf.hide(function() {
+                                for (var i = 0; i < cc.companies.length; i++) {
+                                    if (cc.companies[i].id == openSpecific) {
+                                        showInfoDialog(cc.companies[i], null, page);
+                                    }
                                 }
-                            }
+                            });
                         }
                     }
                 }
@@ -61,6 +61,7 @@
                     //console.log(results.data);
                     cc.waitingForResponse = false;
                     if(results.length!==0)pushCO();
+
                 }, 300);
             }, error=>{
                 if(error){
@@ -127,7 +128,6 @@
                 };
 
                 getDataFactory.rideAlongsByIds($scope.company.notifiedRideAlongs).then(results=>{
-                    console.log(results);
                     $scope.company.notifiedRideAlongs=results;
                 }, err=>{
                     throw err;
@@ -136,17 +136,16 @@
                 $scope.cancel=function(){
                     $mdDialog.cancel();
                     if(openSpecific){
-                        console.log();
-                        if(returnPath){
-                            if(returnId){
-                                $location.search("openSpecific="+returnId+"&page="+returnPage||0);
-                            }else{
-                                $location.search("/")
-                            }
-                            $location.path(returnPath)
-                        }else{
-                            $location.search('/');
-                        }
+                        //if(returnPath){
+                        //    if(returnId){
+                        //        $location.search("openSpecific="+returnId+"&page="+returnPage||0);
+                        //    }else{
+                                $location.search("/");
+                        //    }
+                        //    $location.path(returnPath)
+                        //}else{
+                        //    $location.search('/');
+                        //}
                     }
                 };
 

@@ -78,12 +78,13 @@
                             }, 100)
                         }
                         else if(openSpecific){
-                            for(var i=0;i<ec.rideAlongs.length;i++){
-                                console.log(ec.rideAlongs[i].id);
-                                if(ec.rideAlongs[i].id==openSpecific){
-                                    showRADetails(null, i, ec.rideAlongs[i], page);
+                            ldf.hide(function() {
+                                for (var i = 0; i < ec.rideAlongs.length; i++) {
+                                    if (ec.rideAlongs[i].id == openSpecific) {
+                                        showRADetails(null, i, ec.rideAlongs[i], page);
+                                    }
                                 }
-                            }
+                            });
                         }
                     }
                 }
@@ -163,7 +164,6 @@
 
             function DialogController($scope, $mdDialog){
                 $scope.rideAlong = ec.selectedRideAlong;
-                console.log($scope.rideAlong);
                 $scope.notified=[];
                 $scope.selectedTab=0||page;
                 getDataFactory.companiesByIds($scope.rideAlong.notified).then(results=>{

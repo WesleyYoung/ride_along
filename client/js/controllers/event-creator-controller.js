@@ -155,8 +155,7 @@
                     var postObj = $scope.ra;
                     $http.post('/formSubmit', postObj).then(function(results){
                         ldf.hide();
-                        console.log('Submission successful!');
-                        console.log(postObj.id);
+                        //console.log('Submission successful!');
                         if(results.data.companies.length>0)toaster.pop('success', 'The appropriate companies have been notified of your ride-along');
                         else toaster.pop('warning', 'Your ride-along has been successfully saved, but no contacts met the criteria');
                     }, function(err){
@@ -166,7 +165,7 @@
                     });
                     $mdDialog.hide();
                     ldf.show({
-                        color: "md-warn",
+                        color: "md-primary",
                         effect: "cycle",
                         interval: 3000
                     });

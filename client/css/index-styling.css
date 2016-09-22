@@ -30,7 +30,7 @@
 
 .ui-window.ng-enter {
     transition:0.3s linear all;
-    transform:translateY(25px);
+    transform:translateY(5px);
     opacity:0;
 }
 .ui-window.ng-enter.ng-enter-active {
