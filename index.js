@@ -1,32 +1,30 @@
 /**
  * Created by I97143 on 6/8/2016.
  */
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var async = require('async');
-var http = require('http');
+const express = require('express'),
+      app = express(),
+      bodyParser = require('body-parser'),
+      async = require('async'),
+      http = require('http'),
+      server = http.createServer(app),
+      io = require('socket.io').listen(server),
+      nodemailer = require('nodemailer'),
+      smtpTransport = require('nodemailer-smtp-transport'),
+      fs = require('fs');
+
+var options = JSON.parse(fs.readFileSync('./urls.json', 'UTF-8')),
+    smtpUrl=options.smtpUrl,
+    mongoUrl=options.mongoUrl;
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/', express.static(__dirname + '/client'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 
-var server = http.createServer(app);
-
-var io = require('socket.io').listen(server);
-
-var nodemailer = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
-
-var transporter = nodemailer.createTransport("smtps://xactridealong%40gmail.com:XactWare4$6^8*@smtp.gmail.com");
-
-const fs = require('fs');
+var transporter = nodemailer.createTransport(smtpUrl);
 
 var MongoClient = require('mongodb').MongoClient;
-
-var mongoUrl = "mongodb://localhost:27017/exampleDb";
-
 
 //Check to see if the Mongo URL is valid
 MongoClient.connect(mongoUrl, function(error, db) {
