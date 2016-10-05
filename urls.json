@@ -1,0 +1,4 @@
+{
+  "mongoUrl": "mongodb://localhost:27017/exampleDb",
+  "smtpUrl": "smtps://xactridealong%40gmail.com:XactWare4$6^8*@smtp.gmail.com"
+}
